@@ -1,6 +1,6 @@
 # CATENA: Transaction-Conditioned State Transport
 
-REALM @ EMNLP 2026 제출을 위한 **4-GPU full-access baseline repository**다. 중심 질문은 다음 하나다.
+REALM @ EMNLP 2026 제출을 위한 **4-GPU full-access baseline repository**다. 중심 질문은 다음과 같다.
 
 > 검증된 외부 메모리 transaction이 발생했을 때, 이미 형성된 recurrent execution state를 짧은 native forward로 갱신해 최신 canonical state의 exact-refresh behavior와 일치시킬 수 있는가?
 
