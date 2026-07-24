@@ -1,0 +1,6 @@
+experiment: e09_h4_eval
+output_dir: artifacts/metrics/e09_h4
+model: configs/models/rwkv_fla_2.9b.yaml
+data_path: data/processed/chains_main/chains/test.jsonl
+checkpoint: artifacts/checkpoints/h4_composition/seed_11/encoder_final.pt
+metrics: [gold_accuracy, own_oracle_agreement, c_update, c_retain, c_joint, mean_logit_kl, drift_slope]

@@ -1,0 +1,7 @@
+backend: hf_stateful
+model_id: fla-hub/rwkv7-0.4B-g1
+trust_remote_code: true
+dtype: bfloat16
+attn_implementation: null
+use_cache: true
+compile: false

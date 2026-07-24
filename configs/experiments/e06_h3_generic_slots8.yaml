@@ -1,0 +1,33 @@
+experiment: e06_h3_generic_slots8
+output_dir: artifacts/checkpoints/e06_slot_sweep/generic_k8
+teacher_cache_dir: artifacts/teacher_cache/main
+data_dir: data/processed/main
+model: configs/models/rwkv_fla_2.9b.yaml
+encoder:
+  type: generic_soft_slot
+  include_closure: true
+  num_slots: 8
+  hidden_dim: 512
+  num_layers: 2
+  num_heads: 8
+  dropout: 0.1
+training:
+  seeds:
+  - 11
+  - 22
+  - 33
+  precision: bf16
+  optimizer: adamw
+  learning_rate: 0.0003
+  weight_decay: 0.01
+  warmup_steps: 200
+  max_steps: 4000
+  batch_size_per_gpu: 1
+  gradient_accumulation: 16
+  gradient_clip_norm: 1.0
+  eval_every_steps: 500
+loss:
+  affected_kl: 1.0
+  retention_kl: 0.6
+  gold_ce: 0.5
+  temperature: 1.0

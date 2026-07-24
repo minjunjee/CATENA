@@ -1,0 +1,18 @@
+experiment: e01_runtime
+output_dir: artifacts/metrics/e01_runtime
+data_config: configs/data/smoke.yaml
+models:
+- configs/models/rwkv_fla_0.4b_debug.yaml
+- configs/models/rwkv_fla_2.9b.yaml
+- configs/models/rwkv_pip_2.9b.yaml
+- configs/models/qwen2.5_3b.yaml
+checks:
+  rwkv_chunk_parity: true
+  state_clone_alias: true
+  state_serialize_restore: true
+  embedding_gradient: true
+  transformer_cache_parity: true
+  cache_clone: true
+  suffix_reprefill: true
+atol: 0.01
+rtol: 0.005

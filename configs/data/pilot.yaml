@@ -1,0 +1,12 @@
+seed: 13
+output_dir: data/processed/pilot
+num_train: 1200
+num_val: 240
+num_test: 800
+history_token_targets: [1024, 4096]
+domains: [api, access, workflow]
+operations: [SUPERSEDE, AMEND, INVALIDATE, ADD_EXCEPTION]
+dependency_depths: [0, 1, 2]
+query_gap_tokens: [0, 128, 512]
+chain_lengths: [1]
+split_holdout_schema_families: false

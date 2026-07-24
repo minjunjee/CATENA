@@ -1,0 +1,13 @@
+seed: 20260725
+output_dir: data/processed/chains_main
+num_train: 3000
+num_val: 400
+num_test: 1000
+history_token_targets: [1024, 4096]
+domains: [api, access, workflow]
+operations: [SUPERSEDE, AMEND, INVALIDATE, ADD_EXCEPTION]
+dependency_depths: [1, 2]
+query_gap_tokens: [0]
+train_chain_lengths: [1, 2]
+val_chain_lengths: [1, 2, 4]
+test_chain_lengths: [4, 8, 16]

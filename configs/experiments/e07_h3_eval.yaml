@@ -1,0 +1,28 @@
+experiment: e07_h3_eval
+output_dir: artifacts/metrics/e07_h3
+model: configs/models/rwkv_fla_2.9b.yaml
+data_dirs:
+- data/processed/main
+- data/processed/stress
+checkpoints_dir: artifacts/checkpoints/e07_h3_main
+policies:
+- stale
+- plain_correction
+- typed_closure
+- reset_snapshot
+- query_time_retrieval
+- generic_soft_slot
+- catena
+- exact_refresh
+metrics:
+- gold_accuracy
+- own_oracle_agreement
+- teacher_correct_agreement
+- c_update
+- c_retain
+- c_joint
+- stale_action_rate
+- logit_kl
+- update_latency_ms
+- resident_state_bytes
+- tokens_processed

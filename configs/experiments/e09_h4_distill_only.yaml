@@ -1,0 +1,29 @@
+experiment: e09_h4_distillation_control
+output_dir: artifacts/checkpoints/h4_distill_only
+model: configs/models/rwkv_fla_2.9b.yaml
+data_dir: data/processed/chains_main/chains
+teacher_cache_dir: artifacts/teacher_cache/rwkv_chains
+init_checkpoint: null
+encoder:
+  type: typed_transaction
+  include_closure: true
+  num_slots: 8
+  hidden_dim: 512
+  num_layers: 2
+  num_heads: 8
+  dropout: 0.1
+training:
+  seeds: [11, 22, 33]
+  learning_rate: 1.0e-4
+  weight_decay: 0.01
+  warmup_steps: 100
+  max_steps: 3000
+  gradient_accumulation: 8
+  gradient_clip_norm: 1.0
+  eval_every_steps: 250
+loss:
+  exact_kl: 1.0
+  sequential_composed_kl: 0.0
+  retention_kl: 0.5
+  gold_ce: 0.25
+  temperature: 1.0

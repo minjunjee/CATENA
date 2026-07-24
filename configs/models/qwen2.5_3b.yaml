@@ -1,0 +1,7 @@
+backend: hf_stateful
+model_id: Qwen/Qwen2.5-3B-Instruct
+trust_remote_code: false
+dtype: bfloat16
+attn_implementation: sdpa
+use_cache: true
+compile: false

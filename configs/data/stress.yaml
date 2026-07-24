@@ -1,0 +1,12 @@
+seed: 20260724
+output_dir: data/processed/stress
+num_train: 0
+num_val: 0
+num_test: 1200
+history_token_targets: [16384, 32768]
+domains: [api, access, workflow]
+operations: [SUPERSEDE, AMEND, INVALIDATE, ADD_EXCEPTION]
+dependency_depths: [1, 2, 3]
+query_gap_tokens: [512, 2048]
+chain_lengths: [4, 8, 16]
+split_holdout_schema_families: true

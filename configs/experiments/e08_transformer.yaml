@@ -1,0 +1,36 @@
+experiment: e08_transformer_boundary
+output_dir: artifacts/metrics/e08_transformer
+model: configs/models/qwen2.5_3b.yaml
+data_dirs:
+- data/processed/main
+- data/processed/stress
+policies:
+- stale_kv
+- plain_append
+- typed_append
+- closure_append
+- compact_capsule
+- oracle_suffix_reprefill
+- full_reprefill
+learned_patch:
+  enabled: true
+  num_slots: 8
+  hidden_dim: 512
+  num_layers: 2
+  num_heads: 8
+  seeds:
+  - 11
+  - 22
+  - 33
+  max_steps: 6000
+metrics:
+- gold_accuracy
+- own_oracle_agreement
+- c_update
+- c_retain
+- c_joint
+- update_latency_ms
+- ttfa_ms
+- decode_32_latency_ms
+- resident_cache_bytes
+- tokens_recomputed

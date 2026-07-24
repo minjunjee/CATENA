@@ -1,0 +1,9 @@
+backend: rwkv_pip
+model_path_env: CATENA_RWKV_PTH
+strategy: cuda bf16
+rwkv_cuda_on: false
+rwkv_jit_on: true
+tokenizer: rwkv_vocab_v20230424
+chunk_len: 256
+expected_source_checkpoint: rwkv7-g1-2.9b-20250519-ctx4096.pth
+role: official_pth_crosscheck_same_weights

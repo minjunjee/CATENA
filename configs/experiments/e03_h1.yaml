@@ -1,0 +1,21 @@
+experiment: e03_h1_stale_failure
+output_dir: artifacts/metrics/e03_h1
+data_dir: data/processed/pilot
+model: configs/models/rwkv_fla_2.9b.yaml
+policies:
+- stale
+- exact_refresh
+query_kinds:
+- affected_direct
+- affected_derived
+- unaffected
+- old_rule_probe
+metrics:
+- gold_accuracy
+- own_oracle_agreement
+- c_update
+- c_retain
+- c_joint
+- stale_action_rate
+- logit_kl
+bootstrap_samples: 2000

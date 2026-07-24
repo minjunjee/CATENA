@@ -1,0 +1,25 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+.env
+wandb/
+runs/
+
+# Local data and artifacts
+data/raw/*
+data/processed/*
+data/manifests/*
+artifacts/checkpoints/*
+artifacts/metrics/*
+artifacts/profiles/*
+artifacts/figures/*
+artifacts/teacher_cache/*
+artifacts/state_cache/*
+artifacts/logs/*
+
+# Keep directory placeholders
+!**/.gitkeep

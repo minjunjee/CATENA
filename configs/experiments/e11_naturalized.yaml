@@ -1,0 +1,16 @@
+experiment: e11_naturalized_toolcall
+output_dir: artifacts/metrics/e11_naturalized
+data_dir: data/processed/stress
+max_episodes: 300
+max_new_tokens: 96
+runs:
+  - model: configs/models/rwkv_fla_2.9b.yaml
+    policy: typed_closure
+  - model: configs/models/rwkv_fla_2.9b.yaml
+    policy: exact_refresh
+  - model: configs/models/qwen2.5_3b.yaml
+    policy: closure_append
+  - model: configs/models/qwen2.5_3b.yaml
+    policy: full_reprefill
+  # Add a fifth run after H3 by setting policy: catena and a validated checkpoint.
+metrics: [tool_name_exact, argument_exact_match, schema_validity, simulator_success, stale_field_rate]

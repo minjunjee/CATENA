@@ -1,0 +1,10 @@
+experiment: e10_system_profile
+output_dir: artifacts/profiles/e10
+models:
+  - configs/models/rwkv_fla_2.9b.yaml
+  - configs/models/qwen2.5_3b.yaml
+history_lengths: [1024, 4096, 16384, 32768]
+repetitions: 30
+warmup_repetitions: 5
+generation_tokens: 32
+metrics: [prefill_ms, update_ms, ttfa_ms, decode_ms, peak_allocated_bytes, resident_state_bytes, energy_joules_optional]

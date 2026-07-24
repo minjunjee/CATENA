@@ -1,0 +1,8 @@
+experiment: e00_audit
+output_dir: artifacts/profiles/e00_audit
+checks:
+  - driver_cuda
+  - gpu_topology
+  - pytorch_cuda
+  - bf16_matmul
+  - state_cache_storage

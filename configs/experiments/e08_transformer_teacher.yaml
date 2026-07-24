@@ -1,0 +1,7 @@
+experiment: e08_transformer_teacher_cache
+output_dir: artifacts/teacher_cache/qwen_main
+data_dir: data/processed/main
+model: configs/models/qwen2.5_3b.yaml
+store_base_state: false
+store_exact_state: false
+store_teacher_candidate_logits: true

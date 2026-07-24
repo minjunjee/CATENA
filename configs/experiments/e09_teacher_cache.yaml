@@ -1,0 +1,6 @@
+experiment: e09_chain_teacher_cache
+output_dir: artifacts/teacher_cache/rwkv_chains
+model: configs/models/rwkv_fla_2.9b.yaml
+data_dir: data/processed/chains_main/chains
+dataset_type: chain
+store_teacher_candidate_logits: true

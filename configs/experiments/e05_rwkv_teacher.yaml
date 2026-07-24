@@ -1,0 +1,6 @@
+experiment: e05_rwkv_teacher_cache
+output_dir: artifacts/teacher_cache/main
+data_dir: data/processed/main
+model: configs/models/rwkv_fla_2.9b.yaml
+store_teacher_candidate_logits: true
+shard_size: 64

@@ -1,0 +1,15 @@
+seed: 20260723
+output_dir: data/processed/main
+num_train: 6000
+num_val: 800
+num_test: 2400
+history_token_targets: [1024, 4096, 16384]
+train_history_token_targets: [1024, 4096]
+val_history_token_targets: [1024, 4096, 16384]
+test_history_token_targets: [1024, 4096, 16384]
+domains: [api, access, workflow]
+operations: [SUPERSEDE, AMEND, INVALIDATE, ADD_EXCEPTION]
+dependency_depths: [0, 1, 2]
+query_gap_tokens: [0, 128, 512]
+chain_lengths: [1, 2]
+split_holdout_schema_families: true

@@ -1,0 +1,12 @@
+seed: 13
+output_dir: data/processed/smoke
+num_train: 48
+num_val: 8
+num_test: 8
+history_token_targets: [256, 512]
+domains: [api, access, workflow]
+operations: [SUPERSEDE, AMEND, INVALIDATE, ADD_EXCEPTION]
+dependency_depths: [0, 1]
+query_gap_tokens: [0, 32]
+chain_lengths: [1]
+naturalized_fraction: 0.0

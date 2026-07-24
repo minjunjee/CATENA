@@ -1,0 +1,7 @@
+backend: hf_stateful
+model_id: RWKV/RWKV7-Goose-World3-2.9B-HF
+trust_remote_code: true
+dtype: bfloat16
+attn_implementation: null
+use_cache: true
+compile: false

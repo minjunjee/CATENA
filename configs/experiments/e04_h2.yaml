@@ -1,0 +1,24 @@
+experiment: e04_h2_transaction_representation
+output_dir: artifacts/metrics/e04_h2
+data_dir: data/processed/pilot
+model: configs/models/rwkv_fla_2.9b.yaml
+policies:
+- stale
+- plain_correction
+- typed_transaction
+- typed_closure
+- shuffled_closure
+- tx_only_zero_state
+- reset_snapshot
+- query_time_retrieval
+- exact_refresh
+metrics:
+- gold_accuracy
+- own_oracle_agreement
+- c_update
+- c_retain
+- c_joint
+- stale_action_rate
+- token_count
+- update_latency_ms
+bootstrap_samples: 2000
