@@ -4,14 +4,14 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import yaml
-
 
 class ConfigError(ValueError):
     """Raised when a configuration file is missing or malformed."""
 
 
 def load_yaml(path: str | Path) -> dict[str, Any]:
+    import yaml
+
     p = Path(path)
     if not p.exists():
         raise ConfigError(f"Configuration file does not exist: {p}")
@@ -59,5 +59,11 @@ class RunPaths:
         if not output:
             raise ConfigError("Configuration must define output_dir")
         output_path = (root_path / str(output)).resolve()
+        try:
+            output_path.relative_to(root_path)
+        except ValueError as exc:
+            raise ConfigError(
+                f"Configuration output_dir must stay inside repository: {output_path}"
+            ) from exc
         output_path.mkdir(parents=True, exist_ok=True)
         return cls(root=root_path, output_dir=output_path)

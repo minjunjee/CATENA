@@ -2,8 +2,9 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
-source .venv/bin/activate
+source scripts/require_catena_conda.sh
 source scripts/setup_paths.sh
+source scripts/require_e00_pass.sh
 
 # 1) Inference-only repair policies. The config joins main and stress test sets.
 RUN_ID="qwen_boundary_$(date +%Y%m%d_%H%M%S)" \

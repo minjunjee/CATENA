@@ -18,6 +18,10 @@
 | E11 | candidate coherence가 tool action으로 이어지는가 | stress/naturalized subset | RWKV closure/exact/CATENA; Qwen closure/full | - | JSON validity, tool/arg exact, simulator success, stale field | action-level validation |
 | E12 | 결과와 주장이 재현되는가 | validation-selected configs only | clean rerun, bootstrap, bundle | - | raw predictions→tables/figures, hashes, CI | anonymous submission package |
 
+현재 E00은 dependency, native CUDA/PyTorch BF16, storage integrity와
+repository validation을 모두 통과했다. E01 인프라 선행조건은 열렸으며,
+다음 분기점은 pinned RWKV/Qwen backend의 모델별 runtime hard gate다.
+
 ## 4-GPU 배치 원칙
 
 - **Teacher 또는 inference shard:** 같은 config를 데이터 4 shard로 분할한다.

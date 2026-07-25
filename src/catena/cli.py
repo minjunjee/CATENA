@@ -1,18 +1,75 @@
 from __future__ import annotations
 
 import json
-import tempfile
-from pathlib import Path
-from typing import Optional
+import math
 
 import typer
 from rich.console import Console
 from rich.table import Table
 
-from catena.config import load_yaml
-
 app = typer.Typer(no_args_is_help=True, help="CATENA research experiment CLI")
 console = Console()
+
+
+def _run_mock_smoke() -> dict[str, object]:
+    """Exercise the mock pipeline without treating its hash tie-break as accuracy."""
+    from catena.data.generator import generate_episode
+    from catena.methods.policies import apply_text_policy, build_base_state
+    from catena.models.mock import MockStatefulModel
+
+    episode = generate_episode(
+        split="smoke",
+        index=0,
+        seed=13,
+        history_token_target=128,
+        domain="api",
+        operation="SUPERSEDE",
+        dependency_depth=1,
+        query_gap_tokens=0,
+        schema_family="payment-client",
+    )
+    model = MockStatefulModel()
+    base = build_base_state(model, episode)
+    exact = apply_text_policy(model, episode, base, "exact_refresh")
+    typed = apply_text_policy(model, episode, base, "typed_closure")
+    query = episode.queries[0]
+    exact_scores = model.score_candidates(exact, query.prompt, query.candidates)
+    typed_scores = model.score_candidates(typed, query.prompt, query.candidates)
+    exact_finite = all(math.isfinite(value) for value in exact_scores.log_likelihoods)
+    typed_finite = all(math.isfinite(value) for value in typed_scores.log_likelihoods)
+    base_bytes = model.state_bytes(base)
+    exact_bytes = model.state_bytes(exact)
+    typed_bytes = model.state_bytes(typed)
+    candidate_count = len(query.candidates)
+    states_distinct = len({base.text, exact.text, typed.text}) == 3
+    result: dict[str, object] = {
+        "episode_id": episode.episode_id,
+        "base_bytes": base_bytes,
+        "exact_bytes": exact_bytes,
+        "typed_bytes": typed_bytes,
+        "candidate_count": candidate_count,
+        "exact_prediction": exact_scores.prediction_index,
+        "typed_prediction": typed_scores.prediction_index,
+        "gold_index": query.gold_index,
+        "exact_gold_match": exact_scores.prediction_index == query.gold_index,
+        "typed_gold_match": typed_scores.prediction_index == query.gold_index,
+        "exact_scores_finite": exact_finite,
+        "typed_scores_finite": typed_finite,
+        "states_distinct": states_distinct,
+    }
+    result["passed"] = (
+        base_bytes > 0
+        and exact_bytes > 0
+        and typed_bytes > 0
+        and candidate_count == len(exact_scores.log_likelihoods)
+        and candidate_count == len(typed_scores.log_likelihoods)
+        and 0 <= exact_scores.prediction_index < candidate_count
+        and 0 <= typed_scores.prediction_index < candidate_count
+        and exact_finite
+        and typed_finite
+        and states_distinct
+    )
+    return result
 
 
 @app.command("audit")
@@ -40,42 +97,47 @@ def audit() -> None:
                 }
                 for i in range(torch.cuda.device_count())
             ]
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001 - audit reports optional runtime failures
         payload["error"] = repr(exc)
     console.print_json(json.dumps(payload, ensure_ascii=False))
+    if "error" in payload or not payload.get("cuda_available"):
+        raise typer.Exit(code=1)
+
+
+@app.command("e00-audit")
+def e00_audit(
+    config: str = typer.Option(
+        "configs/experiments/e00_audit.yaml", help="E00 audit configuration"
+    ),
+    root: str = typer.Option(".", help="Repository root"),
+) -> None:
+    """Run the complete E00 environment hard gate."""
+    from catena.experiments.e00_audit import run_e00_audit
+
+    report = run_e00_audit(config, root)
+    console.print_json(
+        json.dumps(
+            {
+                "run_id": report["run_id"],
+                "status": report["status"],
+                "artifact_dir": report["artifact_dir"],
+                "failed_check_ids": report["failed_check_ids"],
+                "warning_check_ids": report["warning_check_ids"],
+            },
+            ensure_ascii=False,
+        )
+    )
+    if not report["passed"]:
+        raise typer.Exit(code=1)
 
 
 @app.command("smoke")
 def smoke() -> None:
     """Run a CPU-only end-to-end smoke test with the mock model."""
-    from catena.data.generator import generate_episode
-    from catena.methods.policies import apply_text_policy, build_base_state
-    from catena.models.mock import MockStatefulModel
-
-    episode = generate_episode(
-        split="smoke",
-        index=0,
-        seed=13,
-        history_token_target=128,
-        domain="api",
-        operation="SUPERSEDE",
-        dependency_depth=1,
-        query_gap_tokens=0,
-        schema_family="payment-client",
-    )
-    model = MockStatefulModel()
-    base = build_base_state(model, episode)
-    exact = apply_text_policy(model, episode, base, "exact_refresh")
-    typed = apply_text_policy(model, episode, base, "typed_closure")
-    query = episode.queries[0]
-    result = {
-        "episode_id": episode.episode_id,
-        "base_bytes": model.state_bytes(base),
-        "exact_prediction": model.score_candidates(exact, query.prompt, query.candidates).prediction_index,
-        "typed_prediction": model.score_candidates(typed, query.prompt, query.candidates).prediction_index,
-        "gold_index": query.gold_index,
-    }
+    result = _run_mock_smoke()
     console.print_json(json.dumps(result, ensure_ascii=False))
+    if not result["passed"]:
+        raise typer.Exit(code=1)
 
 
 @app.command("data-generate")
@@ -151,7 +213,7 @@ def runtime_gate(
 def eval_inference(
     config: str = typer.Option(...),
     device: str = typer.Option("cuda"),
-    max_episodes: Optional[int] = typer.Option(None),
+    max_episodes: int | None = typer.Option(None),
     shard_index: int = typer.Option(0, min=0),
     num_shards: int = typer.Option(1, min=1),
 ) -> None:
@@ -210,7 +272,7 @@ def train_h3(
     config: str = typer.Option(...),
     seed: int = typer.Option(...),
     device: str = typer.Option("cuda"),
-    max_steps: Optional[int] = typer.Option(None),
+    max_steps: int | None = typer.Option(None),
 ) -> None:
     from catena.training.h3_trainer import train_h3 as train
 
@@ -225,7 +287,7 @@ def eval_h3(
     data: str = typer.Option(..., help="Episode JSONL file"),
     output: str = typer.Option(...),
     device: str = typer.Option("cuda"),
-    max_episodes: Optional[int] = typer.Option(None),
+    max_episodes: int | None = typer.Option(None),
     shard_index: int = typer.Option(0, min=0),
     num_shards: int = typer.Option(1, min=1),
 ) -> None:
@@ -249,8 +311,8 @@ def train_h4_cmd(
     config: str = typer.Option(...),
     seed: int = typer.Option(...),
     device: str = typer.Option("cuda"),
-    max_steps: Optional[int] = typer.Option(None),
-    init_checkpoint: Optional[str] = typer.Option(
+    max_steps: int | None = typer.Option(None),
+    init_checkpoint: str | None = typer.Option(
         None, help="Validated H3 checkpoint used to initialize the transaction encoder"
     ),
 ) -> None:
@@ -273,7 +335,7 @@ def eval_h4_cmd(
     data: str = typer.Option(...),
     output: str = typer.Option(...),
     device: str = typer.Option("cuda"),
-    max_episodes: Optional[int] = typer.Option(None),
+    max_episodes: int | None = typer.Option(None),
 ) -> None:
     from catena.experiments.h4_eval import evaluate_h4
 
@@ -304,7 +366,7 @@ def profile_system(
 def predictions_merge(
     input_root: str = typer.Option(...),
     filename: str = typer.Option("predictions.jsonl"),
-    output_dir: Optional[str] = typer.Option(None),
+    output_dir: str | None = typer.Option(None),
 ) -> None:
     from catena.eval.merge import merge_prediction_shards
 
@@ -321,7 +383,7 @@ def eval_toolcalls(
     config: str = typer.Option(...),
     run_index: int = typer.Option(..., min=0),
     device: str = typer.Option("cuda"),
-    max_episodes: Optional[int] = typer.Option(None),
+    max_episodes: int | None = typer.Option(None),
 ) -> None:
     from catena.experiments.toolcall_eval import run_toolcall_eval
 

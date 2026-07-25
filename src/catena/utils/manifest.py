@@ -9,24 +9,43 @@ from pathlib import Path
 from typing import Any
 
 
-def _git_value(args: list[str]) -> str | None:
+def _git_value(args: list[str], cwd: Path) -> str | None:
     try:
-        return subprocess.check_output(["git", *args], text=True, stderr=subprocess.DEVNULL).strip()
+        return subprocess.check_output(
+            ["git", *args],
+            cwd=cwd,
+            text=True,
+            stderr=subprocess.DEVNULL,
+        ).strip()
     except Exception:
         return None
 
 
-def runtime_manifest(config: dict[str, Any] | None = None) -> dict[str, Any]:
+def runtime_manifest(
+    config: dict[str, Any] | None = None,
+    root: str | Path = ".",
+) -> dict[str, Any]:
+    root_path = Path(root).resolve()
+    git_status = _git_value(["status", "--porcelain"], root_path)
     payload: dict[str, Any] = {
         "created_at": datetime.now(timezone.utc).isoformat(),
         "hostname": platform.node(),
         "platform": platform.platform(),
         "python": platform.python_version(),
-        "git_commit": _git_value(["rev-parse", "HEAD"]),
-        "git_dirty": bool(_git_value(["status", "--porcelain"])),
+        "conda_environment": os.getenv("CONDA_DEFAULT_ENV"),
+        "git_commit": _git_value(["rev-parse", "HEAD"], root_path),
+        "git_dirty": None if git_status is None else bool(git_status),
         "cuda_visible_devices": os.getenv("CUDA_VISIBLE_DEVICES"),
         "config": config or {},
     }
+    e00_path = root_path / "artifacts" / "profiles" / "e00_audit" / "latest_passed.json"
+    if e00_path.is_file():
+        try:
+            payload["e00_gate"] = json.loads(e00_path.read_text(encoding="utf-8"))
+        except Exception as exc:
+            payload["e00_gate_error"] = repr(exc)
+    else:
+        payload["e00_gate"] = None
     try:
         import torch
 
@@ -49,7 +68,17 @@ def runtime_manifest(config: dict[str, Any] | None = None) -> dict[str, Any]:
 
 
 def write_manifest(output_dir: str | Path, config: dict[str, Any] | None = None) -> Path:
-    path = Path(output_dir) / "run_manifest.json"
+    root = Path.cwd().resolve()
+    output = Path(output_dir)
+    output_path = output.resolve() if output.is_absolute() else (root / output).resolve()
+    try:
+        output_path.relative_to(root)
+    except ValueError as exc:
+        raise ValueError(f"manifest output must stay inside repository: {output_path}") from exc
+    path = output_path / "run_manifest.json"
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(runtime_manifest(config), indent=2, ensure_ascii=False), encoding="utf-8")
+    path.write_text(
+        json.dumps(runtime_manifest(config, root), indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
     return path

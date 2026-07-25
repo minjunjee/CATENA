@@ -28,7 +28,10 @@ Raw gold accuracy와 own-oracle agreement를 함께 보고한다. 이는 backbon
 
 ### 목적
 
-CUDA 13.0/driver 580.126.16 환경에서 실제 GPU 4장, VRAM, compute capability, P2P topology, MIG 여부, storage와 compiler를 기록한다. 제품명이나 96 GB VRAM은 audit 이전에는 가정하지 않는다.
+CUDA 13.0/driver 580.126.16 환경에서 host 전체 GPU를 조사하고, 설정에서
+선택한 실제 GPU 4장의 VRAM, compute capability, P2P topology, MIG 여부,
+storage와 compiler를 기록한다. 제품명이나 96 GB VRAM은 audit 이전에는
+가정하지 않는다.
 
 ### 입력과 실행
 
@@ -57,6 +60,15 @@ bash scripts/00_bootstrap_and_audit.sh
 - custom extension용 `nvcc`와 compiler 확인
 
 이 단계가 실패하면 어떤 과학적 실험도 시작하지 않는다.
+
+### 현재 판정
+
+현재 host는 동일한 RTX PRO 6000 Blackwell Server Edition 8장을 노출하며,
+표준 할당 GPU 0--3의 CUDA 13.0 `sm_120` kernel, 장치 identity, BF16 입력
+cuBLAS GEMM, PyTorch BF16과 두 cache 경로의 무결성 검사를 통과했다.
+`catena`의 고정 dependency와 저장소 검증까지 포함한 E00 전체 판정은
+PASS다. E01의 pinned RWKV/Qwen runtime gate가 다음 단계다. 상세 결과와
+계획 영향은 `E00_RESULT_SUMMARY.md`에 있다.
 
 ---
 

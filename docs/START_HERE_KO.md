@@ -9,28 +9,40 @@
 - H1/H2가 통과하기 전 H3를 시작하지 않고, H3가 통과하기 전 H4를 시작하지 않는다.
 - Test split은 validation에서 slot 수와 checkpoint를 고른 뒤 한 번만 연다.
 
-## 1. 설치와 서버 audit
+## 1. 기존 Conda 환경과 서버 audit
 
 ```bash
-cd CATENA_REALM2026_baseline_repo_v0.6.0
+cd /home/minjun_dev/CATENA
 bash scripts/00_bootstrap_and_audit.sh
-source .venv/bin/activate
-source scripts/setup_paths.sh
 ```
+
+E00은 기존 Conda 환경 `catena`에서 실행되며 설치나 환경 변경을 하지
+않는다. 이후 stage script도 필요한 경우 같은 환경으로 스스로 재실행한다.
 
 확인할 파일:
 
 ```text
-artifacts/logs/system_audit_*.txt
-artifacts/logs/pip-freeze*.txt
+artifacts/profiles/e00_audit/latest.json
+artifacts/profiles/e00_audit/runs/<run-id>/
 ```
+
+현재 결과는 `E00_RESULT_SUMMARY.md`에 정리돼 있다. 필수 검사는 모두
+통과하여 전체 PASS이고 E01 인프라 선행조건이 열렸다. 다만 모델과 cache를
+내려받기 전에는 약 25 GiB인 가용 공간을 확충해야 한다.
 
 ## 2. RWKV backend 설치와 hard gate
 
+`catena` 내부 package 작업은 승인돼 있다. FLA revision은 기록 가능한
+commit으로 고정해 설치한다.
+
 ```bash
-FLA_REF=main bash scripts/install_rwkv_fla.sh
+CATENA_ALLOW_ENV_MODIFICATION=1 FLA_REF=<pinned-commit> \
+  bash scripts/install_rwkv_fla.sh
+bash scripts/00_bootstrap_and_audit.sh
 bash scripts/01_runtime_gates.sh
 ```
+
+FLA 설치로 환경 snapshot이 달라지므로 E01 전에 E00을 다시 PASS해야 한다.
 
 첫 설치에서는 최신 Blackwell/CUDA 13 수정이 필요할 수 있어 `main`을 허용한다. gate를 통과한 즉시 `artifacts/logs/fla-commit.txt`의 commit으로 이후 실행을 고정한다.
 

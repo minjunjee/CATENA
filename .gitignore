@@ -1,9 +1,13 @@
 .venv/
 __pycache__/
 *.py[cod]
+*.egg-info/
+.codex-doc-cache/
+/error.log
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
+.scratch/
 .ipynb_checkpoints/
 .env
 wandb/

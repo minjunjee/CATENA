@@ -2,8 +2,9 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
-source .venv/bin/activate
+source scripts/require_catena_conda.sh
 source scripts/setup_paths.sh
+source scripts/require_e00_pass.sh
 RUN_ID="system_profile_$(date +%Y%m%d_%H%M%S)" \
 CMD0="python -m catena.cli profile-system --config configs/experiments/e10_profile.yaml --model-index 0" \
 CMD1="python -m catena.cli profile-system --config configs/experiments/e10_profile.yaml --model-index 1" \

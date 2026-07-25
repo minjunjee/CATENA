@@ -2,8 +2,9 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
-source .venv/bin/activate
+source scripts/require_catena_conda.sh
 source scripts/setup_paths.sh
+source scripts/require_e00_pass.sh
 
 # Stage A: one-seed slot sweep and a parameter-matched generic control.
 # Run 300 steps first. After checking finite gradients and validation improvement,

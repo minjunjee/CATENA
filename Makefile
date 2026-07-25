@@ -1,9 +1,12 @@
 SHELL := /bin/bash
-PYTHON ?= python
+CONDA_ENV ?= catena
+CONDA_RUN ?= conda run --no-capture-output -n $(CONDA_ENV)
+PYTHON ?= $(CONDA_RUN) python
 
 .PHONY: help install audit config-audit smoke test runtime data h1h2 teacher h3-sweep h3-main h3-eval transformer h4 h4-eval profile toolcalls freeze bundle lint clean
 
 help:
+	@echo "All Python targets use the existing Conda environment: $(CONDA_ENV)"
 	@echo "make audit          Hardware/software audit"
 	@echo "make config-audit   Validate YAML and shell references"
 	@echo "make runtime        E01 four-GPU runtime gates"
@@ -21,10 +24,12 @@ help:
 	@echo "make freeze         E12 clean environment/config freeze"
 
 install:
-	$(PYTHON) -m pip install -e '.[models,train,dev]'
+	@echo "ERROR: CATENA does not install or modify environments from Makefile." >&2
+	@echo "Use the existing Conda environment '$(CONDA_ENV)' and run 'make audit'." >&2
+	@exit 2
 
 audit:
-	bash scripts/audit_system.sh
+	bash scripts/00_bootstrap_and_audit.sh
 
 config-audit:
 	$(PYTHON) -m catena.cli config-audit
@@ -78,7 +83,7 @@ bundle:
 	bash scripts/12_bundle_results.sh
 
 lint:
-	ruff check src tests
+	$(CONDA_RUN) ruff check src tests
 
 clean:
 	find . -type d -name __pycache__ -prune -exec rm -rf {} +

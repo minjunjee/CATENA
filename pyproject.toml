@@ -21,7 +21,7 @@ dependencies = [
   "pyarrow>=18,<24",
   "jsonlines>=4,<5",
   "psutil>=6,<8",
-  "pynvml>=12,<14",
+  "nvidia-ml-py>=12,<14",
   "safetensors>=0.5,<1",
   "tqdm>=4.67,<5",
 ]

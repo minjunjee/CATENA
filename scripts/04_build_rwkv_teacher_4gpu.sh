@@ -2,8 +2,9 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
-source .venv/bin/activate
+source scripts/require_catena_conda.sh
 source scripts/setup_paths.sh
+source scripts/require_e00_pass.sh
 
 for split in train val; do
   RUN_ID="rwkv_teacher_${split}_$(date +%Y%m%d_%H%M%S)" \

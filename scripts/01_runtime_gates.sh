@@ -2,8 +2,9 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
-source .venv/bin/activate
+source scripts/require_catena_conda.sh
 source scripts/setup_paths.sh
+source scripts/require_e00_pass.sh
 
 # Four independent correctness lanes.  Scientific runs do not start until the
 # differentiable main RWKV lane (GPU1) and the Qwen cache lane (GPU3) pass.

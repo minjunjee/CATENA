@@ -2,8 +2,9 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
-source .venv/bin/activate
+source scripts/require_catena_conda.sh
 source scripts/setup_paths.sh
+source scripts/require_e00_pass.sh
 
 # Stage B: main three-seed confirmation at the validation-selected K plus
 # one structural ablation. The remaining no-closure/untyped/generic ablations

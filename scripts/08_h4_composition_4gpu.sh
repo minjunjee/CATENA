@@ -2,8 +2,9 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
-source .venv/bin/activate
+source scripts/require_catena_conda.sh
 source scripts/setup_paths.sh
+source scripts/require_e00_pass.sh
 
 H3_INIT_CHECKPOINT="${H3_INIT_CHECKPOINT:-artifacts/checkpoints/e07_h3_main/seed_11/encoder_final.pt}"
 if [[ ! -f "$H3_INIT_CHECKPOINT" ]]; then

@@ -3,11 +3,16 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
+source scripts/require_catena_conda.sh
 source scripts/setup_paths.sh
 
-if [[ -z "${VIRTUAL_ENV:-}" ]]; then
-  echo "Activate the project virtual environment first." >&2
-  exit 1
+if [[ "${CATENA_ALLOW_ENV_MODIFICATION:-0}" != "1" ]]; then
+  cat >&2 <<'MSG'
+ERROR: this script clones a backend and modifies the Conda environment.
+Run it only after the user explicitly approves that environment change, then set:
+  CATENA_ALLOW_ENV_MODIFICATION=1
+MSG
+  exit 2
 fi
 
 export CUDA_HOME="${CUDA_HOME:-/usr/local/cuda}"

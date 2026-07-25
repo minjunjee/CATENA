@@ -8,7 +8,8 @@ Transformer는 메인 방법이 아니라 경계와 공정성을 확인하는 �
 
 ## 대상 서버
 
-- GPU: NVIDIA RTX PRO 6000 Blackwell 계열 4장; 실제 제품명/VRAM/MIG/P2P는 audit로 확정
+- Host GPU: NVIDIA RTX PRO 6000 Blackwell Server Edition 8장
+- 표준 실험 할당: 같은 NUMA 권역의 물리 GPU 0--3 네 장
 - NVIDIA driver: `580.126.16`
 - System CUDA toolkit: `13.0`
 - Python: `3.11`
@@ -20,14 +21,22 @@ Transformer는 메인 방법이 아니라 경계와 공정성을 확인하는 �
 ## 첫 실행
 
 ```bash
-cd CATENA_REALM2026_baseline_repo_v0.6.0
+cd /home/minjun_dev/CATENA
 bash scripts/00_bootstrap_and_audit.sh
-source .venv/bin/activate
-source scripts/setup_paths.sh
-bash scripts/install_rwkv_fla.sh
+# 아래 두 단계는 E00 PASS를 확인한 뒤에만 실행
 bash scripts/01_runtime_gates.sh
 bash scripts/02_generate_and_validate_data.sh
 ```
+
+모든 stage script는 기존 Conda 환경 `catena`를 요구한다. 다른 환경에서
+호출하면 인자를 보존한 채
+`conda run --no-capture-output -n catena`로 스스로 한 번 재실행한다.
+E00은 환경이나 패키지를 설치·변경하지 않고 현재 상태만 검증한다.
+현재 `catena`에는 고정된 PyTorch/CUDA와 프로젝트 의존성이 설치됐고,
+E00의 네이티브 CUDA/PyTorch BF16, 저장장치 무결성, 저장소 검증과
+재현성 manifest가 모두 통과했다. E01의 모델별 runtime gate가 다음
+단계이며, 환경 또는 소스가 바뀌면 E00을 다시 실행해야 한다. 요약은
+[`docs/E00_RESULT_SUMMARY.md`](docs/E00_RESULT_SUMMARY.md)에 있다.
 
 장시간 작업은 SSH와 분리한다.
 
@@ -70,13 +79,13 @@ tmux attach -t catena-h1h2
 ## 주요 명령
 
 ```bash
-python -m catena.cli experiment-list
-python -m catena.cli data-generate --config configs/data/pilot.yaml
-python -m catena.cli eval-inference --config configs/experiments/e03_h1.yaml
-python -m catena.cli teacher-cache --config configs/experiments/e05_rwkv_teacher.yaml --split train
-python -m catena.cli train-h3 --config configs/experiments/e06_h3_slots8.yaml --seed 11 --max-steps 300
-python -m catena.cli train-h4 --config configs/experiments/e09_h4_train.yaml --seed 11
-python -m catena.cli profile-system --config configs/experiments/e10_profile.yaml --model-index 0
+PYTHONPATH=src conda run --no-capture-output -n catena python -m catena.cli experiment-list
+PYTHONPATH=src conda run --no-capture-output -n catena python -m catena.cli data-generate --config configs/data/pilot.yaml
+PYTHONPATH=src conda run --no-capture-output -n catena python -m catena.cli eval-inference --config configs/experiments/e03_h1.yaml
+PYTHONPATH=src conda run --no-capture-output -n catena python -m catena.cli teacher-cache --config configs/experiments/e05_rwkv_teacher.yaml --split train
+PYTHONPATH=src conda run --no-capture-output -n catena python -m catena.cli train-h3 --config configs/experiments/e06_h3_slots8.yaml --seed 11 --max-steps 300
+PYTHONPATH=src conda run --no-capture-output -n catena python -m catena.cli train-h4 --config configs/experiments/e09_h4_train.yaml --seed 11
+PYTHONPATH=src conda run --no-capture-output -n catena python -m catena.cli profile-system --config configs/experiments/e10_profile.yaml --model-index 0
 ```
 
 ## Backbone 고정 원칙
@@ -92,7 +101,7 @@ H3/H4의 실제 과학적 run은 대상 서버에서 pinned FLA/HF RWKV backend�
 ## 테스트
 
 ```bash
-PYTHONPATH=src pytest -q
-python -m compileall -q src
+PYTHONPATH=src conda run --no-capture-output -n catena python -m pytest -q
+conda run --no-capture-output -n catena python -m compileall -q src
 for f in scripts/*.sh; do bash -n "$f"; done
 ```

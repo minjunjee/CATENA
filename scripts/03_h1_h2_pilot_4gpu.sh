@@ -2,8 +2,9 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
-source .venv/bin/activate
+source scripts/require_catena_conda.sh
 source scripts/setup_paths.sh
+source scripts/require_e00_pass.sh
 
 RUN_ID="h1_h2_pilot_$(date +%Y%m%d_%H%M%S)" \
 CMD0="python -m catena.cli eval-inference --config configs/experiments/e03_h1.yaml --shard-index 0 --num-shards 4" \

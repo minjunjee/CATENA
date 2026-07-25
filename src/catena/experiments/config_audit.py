@@ -18,7 +18,11 @@ def _path_value(value: Any) -> list[str]:
     return []
 
 
-def audit_configs(root: str | Path = ".") -> dict[str, Any]:
+def audit_configs(
+    root: str | Path = ".",
+    *,
+    write_report: bool = True,
+) -> dict[str, Any]:
     root_path = Path(root).resolve()
     config_paths = sorted((root_path / "configs").rglob("*.yaml"))
     errors: list[str] = []
@@ -38,6 +42,11 @@ def audit_configs(root: str | Path = ".") -> dict[str, Any]:
                 errors.append(f"{rel}: missing experiment")
             if "output_dir" not in cfg:
                 errors.append(f"{rel}: missing output_dir")
+            if cfg.get("experiment") == "e00_audit":
+                from catena.experiments.e00_audit import validate_e00_config
+
+                for message in validate_e00_config(cfg, root_path):
+                    errors.append(f"{rel}: {message}")
         if path.parent.name == "models" and "backend" not in cfg:
             errors.append(f"{rel}: missing backend")
 
@@ -53,7 +62,8 @@ def audit_configs(root: str | Path = ".") -> dict[str, Any]:
     script_refs: set[str] = set()
     for script in sorted((root_path / "scripts").glob("*.sh")):
         text = script.read_text(encoding="utf-8")
-        for match in _CONFIG_RE.findall(text):
+        executable_text = "\n".join(line.split("#", 1)[0] for line in text.splitlines())
+        for match in _CONFIG_RE.findall(executable_text):
             script_refs.add(match)
             if not (root_path / match).exists():
                 errors.append(f"{script.relative_to(root_path)} references missing {match}")
@@ -74,7 +84,8 @@ def audit_configs(root: str | Path = ".") -> dict[str, Any]:
         "warnings": warnings,
         "passed": not errors,
     }
-    out = root_path / "artifacts" / "logs" / "config_audit.json"
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    if write_report:
+        out = root_path / "artifacts" / "logs" / "config_audit.json"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     return payload
