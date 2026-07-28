@@ -1,0 +1,39 @@
+experiment_id: e00_protocol_lock
+environment:
+  required_python_major_minor: "3.11"
+  required_torch_prefix: "2.12.1"
+  required_torch_cuda: "13.0"
+  selected_gpu_indices: [0, 1, 2, 3]
+  allow_more_visible_gpus: true
+storage:
+  warn_free_gib: 128
+  probe_mib: 16
+repository_checks:
+  run_pytest: true
+  run_compileall: true
+  audit_all_configs: true
+tolerances:
+  target_atol: 1.0e-6
+  fp64_parity_max_abs: 1.0e-10
+  bf16_relative_l2: 3.0e-2
+  cross_gpu_max_abs: 1.0e-6
+reference_parity:
+  dim: 16
+tamp:
+  num_associations: 16
+  key_dim: 32
+  value_dim: 32
+  key_correlation: 0.25
+protocol_lock:
+  primary_metrics:
+    h1: projection_regret_and_raw_target_state_mse
+    h2: raw_affected_read_mse_with_unaffected_retention_noninferiority
+    h3: granularity_by_orientation_interaction
+    h4: graded_specificity_transplant_rescue
+    h5: heldout_supersede_and_heldout_domain
+    h6: multi_update_coherence_and_query_update_break_even
+  forbidden_shortcuts:
+    - affected_key_in_retention_metric
+    - nonlinear_joint_as_primary_estimand
+    - oracle_candidate_claimed_as_semantic_inference
+    - mock_backend_reported_as_scientific_result

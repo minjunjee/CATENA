@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e13a_r1_sequence_floor_throughput",
+  "frozen_at_utc": "2026-07-27T18:35:46Z",
+  "evaluation_started": false,
+  "original_e13a": {
+    "run_id": "20260727T180703.836996Z",
+    "disposition": "CALIBRATION_PILOT_ONLY",
+    "used_as_e13b_dependency": false,
+    "report_sha256": "dc45ccb753501c36185b41dea386f121148db8905aa7b667453f9008c1982530",
+    "run_manifest_sha256": "9405e07fc7ed38173e1bd6431061d339648574253c88e9ee5fc46942025e58c7"
+  },
+  "files": {
+    "configs/e13a_r1_sequence_floor_throughput.yaml": "8414541842392354bb6a79390f3fe043fe74d58352dfc97dd7157c4415b5a57c",
+    "configs/e13b_transactional_sequence_memory.yaml": "a27483d89acbbbdc51e962a65392b694cb45e8880048eac85408122db4334b53",
+    "docs/E13A_R1_SEQUENCE_CALIBRATION_KO.md": "b9f488fb34c51843eb7d134c4f798478928e2f84d3a62589780006a7a839be37",
+    "experiments/common.py": "3249c01b79139e51d1cdd1632485d18a57a38993c40ae6b51bb0328f19926053",
+    "experiments/e13a_r1_sequence_floor_throughput.py": "fef73ae6841221626a1b258847c5a9c36a12980065eae55289feb62e850a469a",
+    "experiments/e13b_transactional_sequence_memory.py": "abb35c428e2d275c6094af413185fb0a0c10886716b14f4aabbcf09c97d149ba",
+    "src/catena/data/transactional_sequence.py": "b022f22285b3b85229b9504280fb4f8aae4bc8c90799c9329169acbe3df7faf6",
+    "src/catena/models/sequence_memory.py": "c3140611c9947fbc5b8b721e57badc1b68fb89707a86cd24d797516513283c23",
+    "src/catena/training/sequence_training.py": "8e2a8b9f1f039d01f8307a98bc609634ecda29cd07df655c89af1a487c1fdeed"
+  },
+  "claim_boundary": {
+    "gate_role": "E13B_EXECUTION_DEPENDENCY_ONLY",
+    "sequence_claim_eligible": false,
+    "language_model_claim_eligible": false,
+    "official_backend_claim_eligible": false
+  }
+}

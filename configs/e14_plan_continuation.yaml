@@ -1,0 +1,24 @@
+experiment_id: e14_plan_continuation
+dependency:
+  e13c_experiment_id: e13c_r1_transactional_sequence_aggregate
+  e13c_config_path: configs/e13c_r1_transactional_sequence_aggregate.yaml
+  e13b_experiment_id: e13b_r1_transactional_sequence_memory
+  e13b_config_path: configs/e13b_r1_transactional_sequence_memory.yaml
+  calibration_experiment_id: e13a_r2_sequence_floor_throughput
+  calibration_gate_field: claim_gate.go_for_e13b_r1
+  required_variant: dual
+  required_seeds: [101, 211, 307, 401, 503]
+  required_updates: [1, 4, 8]
+  required_gap_events: [0, 128, 512, 2048]
+model:
+  variant: dual
+evaluation:
+  seed: 1701
+  updates: [1, 4, 8]
+  gap_events: [0, 128, 512, 2048]
+  batches: 32
+  batch_size: 256
+claim_gate:
+  primary_estimand: affected_plan_correction_gain
+  minimum_affected_plan_correction_gain: 0.001
+  maximum_retention_mse: 0.0005

@@ -1,0 +1,55 @@
+experiment_id: e18a_sequence_control_lattice
+protocol:
+  protocol_id: prospective_sequence_control_lattice_v1
+  distractor_layout: one_total_block_after_first_verified_update
+  verified_role: semantic_input_only
+  update_mask_role: audit_metadata_only
+  paired_base_transactions_across_gaps: true
+  oracle_address: true
+  oracle_candidate: true
+seeds: [101, 211, 307, 401, 503]
+data:
+  num_entities: 32
+  value_dim: 32
+  families:
+    - magnitude_factorization
+    - value_granularity
+    - address_decoupling
+    - state_conditioning
+model:
+  variants:
+    - tied_scalar
+    - dual_scalar
+    - diagonal_value
+    - separate_address
+    - state_aware
+  embedding_dim: 128
+  hidden_dim: 512
+  maximal_head_shared: true
+training:
+  steps: 3000
+  batch_size: 128
+  updates: 4
+  gap_events: 128
+  learning_rate: 0.0005
+  retention_weight: 1.0
+  optimizer: AdamW
+  family_order: round_robin_registered_order
+evaluation:
+  updates: [1, 4, 8]
+  gap_events: [0, 128, 512, 2048]
+  batches: 8
+  batch_size: 128
+  active_path_assay:
+    updates: 8
+    gap_events: 2048
+    intervention: activate_distractor_verified_bit
+statistics:
+  alpha: 0.05
+claim_gate:
+  minimum_corresponding_demand_gain: 0.001
+  maximum_simpler_demand_degradation: 0.0005
+  maximum_retention_degradation: 0.0005
+  stress_positive_seed_fraction: 1.0
+  minimum_active_path_retention_harm: 0.001
+  minimum_unmasked_path_delta: 1.0e-8

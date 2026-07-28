@@ -1,0 +1,27 @@
+experiment_id: e13b_transactional_sequence_memory
+seeds: [101, 211, 307, 401, 503]
+data:
+  num_entities: 64
+  value_vocab: 128
+model:
+  variants: [tied, dual]
+  embedding_dim: 128
+  hidden_dim: 512
+training:
+  steps: 30000
+  batch_size: 128
+  updates: 4
+  gap_events: 128
+  learning_rate: 0.0005
+  retention_weight: 1.0
+evaluation:
+  updates: [1, 4, 8]
+  gap_events: [0, 128, 512, 2048]
+  batches: 32
+  batch_size: 256
+statistics:
+  alpha: 0.05
+claim_gate:
+  minimum_asymmetric_gain: 0.001
+  retention_noninferiority: 0.0005
+  minimum_seed_direction_fraction: 1.0

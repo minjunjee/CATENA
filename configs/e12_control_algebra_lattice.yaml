@@ -1,0 +1,31 @@
+experiment_id: e12_control_algebra_lattice
+seeds: [101, 211, 307, 401, 503, 601, 701, 809]
+data:
+  slots: 8
+  value_dim: 32
+  descriptor_dim: 12
+  families:
+    - magnitude_factorization
+    - value_granularity
+    - address_decoupling
+    - state_conditioning
+model:
+  freedoms:
+    - tied_scalar
+    - dual_scalar
+    - diagonal_value
+    - separate_address
+    - state_aware
+  hidden_dim: 192
+training:
+  steps: 8000
+  batch_size: 256
+  learning_rate: 0.001
+evaluation:
+  episodes_per_family: 4096
+  batch_size: 512
+statistics:
+  alpha: 0.05
+claim_gate:
+  selective_gain: 0.001
+  simpler_task_noninferiority: 0.0005

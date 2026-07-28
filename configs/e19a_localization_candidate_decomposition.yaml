@@ -1,0 +1,32 @@
+experiment_id: e19a_localization_candidate_decomposition
+seeds: [101, 211, 307, 401, 503]
+conditions:
+  - A_oracle_address_oracle_candidate
+  - B_learned_address_oracle_candidate
+  - C_oracle_address_state_read_candidate
+  - D_learned_address_state_read_candidate
+data:
+  slots: 8
+  value_dim: 32
+  address_code_dim: 16
+  address_schema_seed: 19001
+  state_scale: 0.5
+model:
+  variants:
+    - base
+    - separate_address
+    - state_aware
+    - full
+  hidden_dim: 192
+  address_temperature: 0.35
+training:
+  steps: 6000
+  batch_size: 256
+  learning_rate: 0.001
+  address_loss_weight: 0.25
+  candidate_loss_weight: 1.0
+  retention_weight: 1.0
+evaluation:
+  episodes_per_condition: 4096
+  batch_size: 512
+

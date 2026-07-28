@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e13c_r1_transactional_sequence_aggregate",
+  "frozen_at_utc": "2026-07-27T19:18:47Z",
+  "evaluation_started": false,
+  "amendment_type": "PROSPECTIVE_OPERATIONAL_INCOMPLETE_SOURCE_FILTER",
+  "reason": "FAILED_NOHUP_LAUNCH_CREATED_RUN_START_PROVENANCE_WITHOUT_SCIENTIFIC_OUTPUT",
+  "source_change": {
+    "prior_e13c_r1_sha256": "cda481984c253370d7907d400ca38873732ba186227525f90c09e6043ae4d361",
+    "amended_e13c_r1_sha256": "642344c9c186bcd3c8b4a07aeccee50c52b26d46dc3f8341300535b1f3e211b8",
+    "e13b_r1_source_changed": false,
+    "e13b_r1_config_changed": false,
+    "e13c_r1_config_changed": false
+  },
+  "filter_contract": {
+    "skippable_file_set_exactly": [
+      "config.resolved.yaml",
+      "environment.json",
+      "run_manifest.json"
+    ],
+    "required_manifest_schema_version": 2,
+    "required_manifest_run_mode": "MAIN",
+    "required_manifest_phase": "RUN_START",
+    "completed_at_forbidden": true,
+    "report_sha256_forbidden": true,
+    "report_forbidden": true,
+    "metrics_forbidden": true,
+    "checkpoint_forbidden": true,
+    "unknown_file_or_directory_forbidden": true,
+    "tampered_run_start_provenance_is_hard_error": true,
+    "partially_completed_result_is_hard_error": true,
+    "duplicate_complete_result_is_hard_error": true,
+    "complete_required_seed_variant_grid_unchanged": true,
+    "excluded_run_dir_and_manifest_hash_reported": true
+  },
+  "known_failed_run_start_records_at_lock": [
+    {
+      "run_id": "20260727T191226.039404Z",
+      "run_manifest_sha256": "86040ddb071df0860c183545a6dffdc73c5e8c878daf9d2b4ffce55d3b71249b"
+    },
+    {
+      "run_id": "20260727T191226.069595Z",
+      "run_manifest_sha256": "74036acff82110e17a57575e484d8e810e15b9c53fd58fa7a300b24062e05d8c"
+    },
+    {
+      "run_id": "20260727T191226.084356Z",
+      "run_manifest_sha256": "adce8ba201689ac758c626a6727aa023fd7ec3dba5989363ae942ca1f6f4645b"
+    },
+    {
+      "run_id": "20260727T191226.089631Z",
+      "run_manifest_sha256": "92379d213fa7fbda47a826e3689dd77ae81072f129c0152f47f6b37bc709de2e"
+    }
+  ],
+  "registered_protocol_invariants": {
+    "required_seeds": [
+      101,
+      211,
+      307,
+      401,
+      503
+    ],
+    "required_variants": [
+      "tied",
+      "dual"
+    ],
+    "required_updates": [
+      1,
+      4,
+      8
+    ],
+    "required_gap_events": [
+      0,
+      128,
+      512,
+      2048
+    ],
+    "minimum_asymmetric_gain": 0.001,
+    "retention_noninferiority": 0.0005,
+    "minimum_seed_direction_fraction": 1.0,
+    "stress_updates": 8,
+    "stress_gap_events": 2048,
+    "minimum_stress_affected_gain": 0.001,
+    "maximum_dual_stress_retention_mse": 0.001,
+    "maximum_dual_gap_degradation": 0.0005,
+    "minimum_active_path_retention_harm": 0.001,
+    "statistics_alpha": 0.05
+  },
+  "files": {
+    "configs/e13b_r1_transactional_sequence_memory.yaml": "514278b573ef838b748be0642b9851376e23d66e7bc24c74988b7e384a198ae1",
+    "configs/e13c_r1_transactional_sequence_aggregate.yaml": "10743062685019a345f31766b1d7e779a1e79664f6234470de4982ac02597693",
+    "experiments/e13b_r1_transactional_sequence_memory.py": "f59ad81899fd2679ec6b3492c4518c61d04231c572069263606f10868fefaf37",
+    "experiments/e13c_r1_transactional_sequence_aggregate.py": "642344c9c186bcd3c8b4a07aeccee50c52b26d46dc3f8341300535b1f3e211b8",
+    "tests/test_e13_r2_pipeline_contract.py": "34f2c530f73e1b50e520297dd2ac73d4d09aa439d286983c3f94744f0778eb1a"
+  },
+  "validation_before_lock": {
+    "focused_pytest": "12 passed",
+    "ruff": "PASS",
+    "live_failed_manifest_only_records_verified": 4,
+    "gpu_jobs_modified_or_interrupted": false,
+    "artifacts_moved_or_deleted": false
+  },
+  "claim_boundary": {
+    "claim_gate_changed": false,
+    "metric_definition_changed": false,
+    "statistical_unit_changed": false,
+    "evidence_tier": "CONTROLLED_REFERENCE",
+    "scientific_evidence": false
+  }
+}

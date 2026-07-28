@@ -1,0 +1,33 @@
+experiment_id: e10_learned_rank_scaling
+protocol_repairs:
+  - id: prospective_pre_evaluation_gate_identifiability_repair
+    timing: before_any_evaluable_e10_main_report
+    thresholds_or_rank_grids_changed: false
+    require_minimum_qualifying_rank_at_least_intrinsic_rank: true
+    require_seedwise_nondecreasing_minimum_qualifying_rank: true
+    reachable_floor_recovery_role: optimization_diagnostic_only
+    minimum_rank_qualification_metric: exact_target_recovery
+seeds: [101, 211, 307, 401, 503, 601, 701, 809]
+data:
+  dimension: 64
+  descriptor_dim: 16
+  intrinsic_ranks: [1, 2, 4, 8, 16]
+  train_count: 4096
+  test_count: 2048
+model:
+  learned_ranks: [1, 2, 4, 8, 16, 32]
+  hidden_dim: 256
+training:
+  steps: 4000
+  batch_size: 256
+  learning_rate: 0.001
+  weight_decay: 0.0001
+evaluation:
+  batch_size: 512
+statistics:
+  alpha: 0.05
+claim_gate:
+  oracle_normalized_recovery: 0.95
+  max_rank_factor: 2.0
+  minimum_rank_match_fraction: 0.8
+  monotonic_fraction: 0.9

@@ -1,0 +1,215 @@
+{
+  "contrasts": [
+    {
+      "family": "magnitude_factorization",
+      "label": "Magnitude",
+      "max_simpler_task_degradation": 0.0,
+      "mean_selective_gain": 0.006537658144997405,
+      "passed": true,
+      "richer": "dual_scalar",
+      "seed_gains": [
+        0.00654720871472847,
+        0.006418613411966589,
+        0.006436477295771681,
+        0.006584232444197369,
+        0.006598957727590005,
+        0.006675867175268024,
+        0.006437009084400813,
+        0.006602899306056287
+      ],
+      "sign_flip_p": 0.00390625,
+      "simpler": "tied_scalar"
+    },
+    {
+      "family": "value_granularity",
+      "label": "Value channels",
+      "max_simpler_task_degradation": -2.1041888587092217e-07,
+      "mean_selective_gain": 0.008680886769980134,
+      "passed": true,
+      "richer": "diagonal_value",
+      "seed_gains": [
+        0.008643694429338211,
+        0.00867209498755983,
+        0.008622092544101179,
+        0.00867394729721127,
+        0.008757035724556772,
+        0.0087459569767816,
+        0.008736564734135754,
+        0.008595707466156455
+      ],
+      "sign_flip_p": 0.00390625,
+      "simpler": "dual_scalar"
+    },
+    {
+      "family": "address_decoupling",
+      "label": "Address",
+      "max_simpler_task_degradation": 1.1554157008930588e-07,
+      "mean_selective_gain": 0.015625036822696205,
+      "passed": true,
+      "richer": "separate_address",
+      "seed_gains": [
+        0.015625023425823864,
+        0.015625031412542935,
+        0.015625044063539262,
+        0.01562504678792516,
+        0.01562503346382675,
+        0.01562503268993487,
+        0.01562502870745991,
+        0.015625054030516866
+      ],
+      "sign_flip_p": 0.00390625,
+      "simpler": "diagonal_value"
+    },
+    {
+      "family": "state_conditioning",
+      "label": "State-aware",
+      "max_simpler_task_degradation": 5.7480388932162896e-05,
+      "mean_selective_gain": 0.01312475694362547,
+      "passed": true,
+      "richer": "state_aware",
+      "seed_gains": [
+        0.013145150445780018,
+        0.012905006671644514,
+        0.01307901742075046,
+        0.013224345331764198,
+        0.013142586209141882,
+        0.01310829597969132,
+        0.013178538056308753,
+        0.01321511543392262
+      ],
+      "sign_flip_p": 0.00390625,
+      "simpler": "separate_address"
+    }
+  ],
+  "seeds": [
+    101,
+    211,
+    307,
+    401,
+    503,
+    601,
+    701,
+    809
+  ],
+  "sequence": {
+    "claim_supported": true,
+    "contrasts": [
+      {
+        "family": "magnitude_factorization",
+        "label": "Magnitude",
+        "max_retention_degradation": 0.0003299933178500543,
+        "max_simpler_task_degradation": 0.0,
+        "mean_selective_gain": 0.006718861874943277,
+        "passed": true,
+        "richer": "dual_scalar",
+        "seed_gains": [
+          0.00662766211347511,
+          0.0067273950790003876,
+          0.006615210150933776,
+          0.006744718719657361,
+          0.006879323311649748
+        ],
+        "sign_flip_p": 0.03125,
+        "simpler": "tied_scalar",
+        "stress_positive_seed_fraction": 1.0,
+        "stress_seed_gains": [
+          0.0068175425686365365,
+          0.006983620750461639,
+          0.0068565580481695,
+          0.006838696816862767,
+          0.00684664775099455
+        ]
+      },
+      {
+        "family": "value_granularity",
+        "label": "Value channels",
+        "max_retention_degradation": 0.0,
+        "max_simpler_task_degradation": 3.738698151811005e-06,
+        "mean_selective_gain": 0.009157734079113796,
+        "passed": true,
+        "richer": "diagonal_value",
+        "seed_gains": [
+          0.009245635392393708,
+          0.009109381024577427,
+          0.00916264218650638,
+          0.009124996084316587,
+          0.00914601570777488
+        ],
+        "sign_flip_p": 0.03125,
+        "simpler": "dual_scalar",
+        "stress_positive_seed_fraction": 1.0,
+        "stress_seed_gains": [
+          0.009559353095492213,
+          0.009443861285964734,
+          0.009478810022901858,
+          0.009423408452426474,
+          0.009566659089040926
+        ]
+      },
+      {
+        "family": "address_decoupling",
+        "label": "Address",
+        "max_retention_degradation": 0.00014862483743623262,
+        "max_simpler_task_degradation": 0.00025590644623005304,
+        "mean_selective_gain": 0.016459643207023453,
+        "passed": true,
+        "richer": "separate_address",
+        "seed_gains": [
+          0.016446471930806807,
+          0.01641247026157576,
+          0.01646020608171924,
+          0.016519655408562216,
+          0.016459412352453236
+        ],
+        "sign_flip_p": 0.03125,
+        "simpler": "diagonal_value",
+        "stress_positive_seed_fraction": 1.0,
+        "stress_seed_gains": [
+          0.017311991788678358,
+          0.01728390302035901,
+          0.01742549478607149,
+          0.017453479028309866,
+          0.01739943196620854
+        ]
+      },
+      {
+        "family": "state_conditioning",
+        "label": "State-aware",
+        "max_retention_degradation": 6.104455097489222e-05,
+        "max_simpler_task_degradation": 0.00017211601880262606,
+        "mean_selective_gain": 0.011191457421204512,
+        "passed": true,
+        "richer": "state_aware",
+        "seed_gains": [
+          0.011017279134796146,
+          0.011270123005058183,
+          0.011363839753995146,
+          0.011074268994122722,
+          0.011231776218050368
+        ],
+        "sign_flip_p": 0.03125,
+        "simpler": "separate_address",
+        "stress_positive_seed_fraction": 1.0,
+        "stress_seed_gains": [
+          0.011185524594324973,
+          0.011374845393159177,
+          0.011517431553492784,
+          0.011323411856086124,
+          0.011280909095352435
+        ]
+      }
+    ],
+    "evidence_tier": "CONTROLLED_REFERENCE",
+    "metric_rows": 1200,
+    "minimum_active_path_retention_harm": 0.016931147138510065,
+    "scientific_evidence": false,
+    "seeds": [
+      101,
+      211,
+      307,
+      401,
+      503
+    ],
+    "source_runs": 25
+  }
+}

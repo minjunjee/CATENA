@@ -1,0 +1,351 @@
+experiment_id: e03b_graded_jd_calibration
+
+# Immutable source result that motivated this prospective calibration repair.
+# E03b never relabels the original E03 run as successful H3 evidence.
+source_e03:
+  experiment_id: e03_granularity_orientation
+  run_id: 20260726T161535.271015Z
+  schema_version: 1
+  status: PASS
+  run_mode: main
+  manifest_sha256: be56f91b5fc3a5992a02dc2b13b70f82b0b6bd6c5a7e1231f0e0ddee6987f327
+  report_sha256: ee0114f45d5facbc3ccdd0e3a0235531e1de078f29fd7a949420df0899fa98c0
+  config_sha256: 42f69bc5c4ab5097ccd90483582e1ef5fb94474d66dacc1b9a293425338a9589
+  config_file_sha256: 6daa0d633b9a0b1193c715ec754b7208eddf7b266f86b453e822932ca08fe5cb
+  source_fingerprint_sha256: 2be6b99e369e595ac8e65dffb5deeaa32bd3747559e7c530be29b6857638f09a
+  source_fingerprint_files: 110
+  operator_family_metrics:
+    path: operator_family_metrics.jsonl
+    rows: 24
+    sha256: 54efda16cc92da17e0a40472de0075b7fec252c3451fde682304f7f63fa29dc4
+  control_frontier:
+    path: control_frontier.jsonl
+    rows: 12
+    sha256: 59c1aba1bffa039b85a61aa51714951924869ad8164787361e3f982927c1f035
+  claim_status_registry:
+    path: E03_CLAIM_STATUS.json
+    sha256: fb53ae74d4702aefad4a5503129552cfe34a0f75079bc0bbb9fd9b4a2deb26f6
+    schema_version: 1
+    source_run: 20260726T161535.271015Z
+    source_report_sha256: ee0114f45d5facbc3ccdd0e3a0235531e1de078f29fd7a949420df0899fa98c0
+    categorical_status: SUPPORTED
+    categorical_four_practical_contrasts_passed: true
+    categorical_absolute_geometry_gates_passed: true
+    quantitative_status: FAILED
+    quantitative_preregistered_gate_passed: false
+    quantitative_diagnosis: PREDICTOR_RANGE_RESTRICTION
+    full_claim_open: false
+  split_registry:
+    main_seeds: [101, 211, 307, 401, 503, 601, 701, 809]
+    dry_run_seeds: [9001, 9002]
+    train_operators_per_family: 24
+    heldout_operators_per_family: 8
+  split_registry_sha256: 8b5fa4c13693e12a69afab8f27ae289f778efba0615988afa6c4c0f2bc67cdef
+
+data:
+  dimension: 32
+  projector_rank: 8
+  train_operators_per_family: 24
+  heldout_operators_per_family: 8
+  probes_per_heldout_operator: 16384
+  max_rotation_radians: 3.141592653589793
+
+# The primary basis minimizes the original E03 normalized off-diagonal
+# objective on the 24 training projectors only. The weighted eigensolution is
+# retained solely as a train-only adequacy comparator; it is never a fallback.
+basis_estimator:
+  method: e03_train_only_multirestart_qr_adam
+  steps: 1000
+  learning_rate: 0.03
+  restarts: 4
+  dry_run_steps: 250
+  dry_run_restarts: 2
+  optimizer_seed_offset: 30000000
+  weight_seed: 73021
+  weight_lower: 0.5
+  weight_upper: 1.5
+  weight_vector_sha256: 829000d33992018bb98e92432ae9af26f25c5e2e848cced7390aed3260f7821c
+  eigenvalue_order: descending
+  eigenvector_sign_rule: largest_absolute_coordinate_positive
+  require_unique_train_inclusion_signatures: true
+  minimum_weighted_eigenvalue_gap: 1.0e-8
+  maximum_zero_alpha_heldout_regret: 1.0e-10
+  maximum_orthogonality_error: 1.0e-10
+  maximum_comparator_regret_gap: 1.0e-12
+  minimum_competitive_restarts: 2
+  restart_consensus_absolute_tolerance: 1.0e-7
+  restart_consensus_relative_tolerance: 1.0e-3
+  maximum_optimizer_uncertainty: 1.0e-5
+  saturation_heldout_uncertainty_floor: 4.61e-6
+  minimum_bin_boundary_clearance: 1.0e-5
+  bin_boundary_uncertainty_multiplier: 10.0
+
+selection:
+  policy: deterministic_first_valid_analytic_only
+  families_per_bin: 8
+  dry_run_families_per_bin: 1
+  minimum_nonzero_range: 0.004
+  regret_bins:
+    - {label: bin_01, lower: 1.0e-5, upper: 2.5e-4, include_upper: false}
+    - {label: bin_02, lower: 2.5e-4, upper: 7.5e-4, include_upper: false}
+    - {label: bin_03, lower: 7.5e-4, upper: 1.5e-3, include_upper: false}
+    - {label: bin_04, lower: 1.5e-3, upper: 3.0e-3, include_upper: false}
+    - {label: bin_05, lower: 3.0e-3, upper: 4.5e-3, include_upper: false}
+    - {label: bin_06, lower: 4.5e-3, upper: 6.5e-3, include_upper: true}
+
+# This complete stream is prospective and finite. The first six anchors were
+# chosen from analytic-only development diagnostics; all remaining values are
+# immutable fallback coverage. No empirical application result may alter it.
+candidate_registry:
+  version: e03b-graded-jd-candidates-v1
+  traversal: alpha_major_then_replicate
+  development_analytic_pilot:
+    empirical_probe_calls: 0
+    excluded_from_candidate_selection: true
+    artifact_path: docs/E03B_ANALYTIC_PILOT_KO.md
+    artifact_sha256: 21d60d79738e5bd05034312ec630a694d6485f00be1bc824344088eebc9fe94c
+    primary_budget: {steps: 1000, restarts: 4, learning_rate: 0.03}
+    saturation_budget: {steps: 2000, restarts: 8, learning_rate: 0.03}
+    maximum_observed_saturation_heldout_delta: 4.61e-6
+    selected_alpha_anchors: [0.06, 0.12, 0.18, 0.26, 0.40, 0.55]
+    inspected_generation_seeds:
+      - 300001
+      - 300002
+      - 300003
+      - 300004
+      - 300005
+      - 300006
+      - 300007
+      - 300008
+      - 900001
+      - 900002
+      - 900003
+      - 900004
+      - 900005
+      - 900006
+      - 900007
+      - 900008
+      - 900009
+      - 900010
+      - 900011
+      - 900012
+      - 900013
+      - 900014
+      - 900015
+      - 900016
+      - 900017
+      - 900018
+      - 900019
+      - 900020
+      - 900021
+      - 900022
+      - 900023
+      - 900024
+    generation_seeds:
+      - 300001
+      - 300002
+      - 300003
+      - 300004
+      - 300005
+      - 300006
+      - 300007
+      - 300008
+      - 300009
+      - 300010
+      - 300011
+      - 300012
+      - 300013
+      - 300014
+      - 300015
+      - 300016
+      - 300017
+      - 300018
+      - 300019
+      - 300020
+      - 300021
+      - 300022
+      - 300023
+      - 300024
+      - 300025
+      - 300026
+      - 300027
+      - 300028
+      - 300029
+      - 300030
+      - 300031
+      - 300032
+      - 300033
+      - 300034
+      - 300035
+      - 300036
+      - 300037
+      - 300038
+      - 300039
+      - 300040
+      - 300041
+      - 300042
+      - 300043
+      - 300044
+      - 300045
+      - 300046
+      - 300047
+      - 300048
+      - 300049
+      - 300050
+      - 300051
+      - 300052
+      - 300053
+      - 300054
+      - 300055
+      - 300056
+      - 300057
+      - 300058
+      - 300059
+      - 300060
+      - 300061
+      - 300062
+      - 300063
+      - 300064
+      - 300065
+      - 300066
+      - 300067
+      - 300068
+      - 300069
+      - 300070
+      - 300071
+      - 300072
+      - 300073
+      - 300074
+      - 300075
+      - 300076
+      - 300077
+      - 300078
+      - 300079
+      - 300080
+      - 300081
+      - 300082
+      - 300083
+      - 300084
+      - 300085
+      - 300086
+      - 300087
+      - 300088
+      - 300089
+      - 300090
+      - 300091
+      - 300092
+      - 300093
+      - 300094
+      - 300095
+      - 300096
+      - 301001
+      - 301002
+      - 301003
+      - 301004
+      - 301005
+      - 301006
+      - 301007
+      - 301008
+      - 301009
+      - 301010
+      - 301011
+      - 301012
+      - 301013
+      - 301014
+      - 301015
+      - 301016
+      - 301017
+      - 301018
+      - 301019
+      - 301020
+      - 301021
+      - 301022
+      - 301023
+      - 301024
+      - 301025
+      - 301026
+      - 301027
+      - 301028
+      - 301029
+      - 301030
+      - 301031
+      - 301032
+      - 900001
+      - 900002
+      - 900003
+      - 900004
+      - 900005
+      - 900006
+      - 900007
+      - 900008
+      - 900009
+      - 900010
+      - 900011
+      - 900012
+      - 900013
+      - 900014
+      - 900015
+      - 900016
+      - 900017
+      - 900018
+      - 900019
+      - 900020
+      - 900021
+      - 900022
+      - 900023
+      - 900024
+  alpha_schedule:
+    - 0.06
+    - 0.12
+    - 0.18
+    - 0.26
+    - 0.40
+    - 0.55
+    - 0.50
+    - 0.60
+    - 0.05
+    - 0.07
+    - 0.10
+    - 0.14
+    - 0.16
+    - 0.20
+    - 0.24
+    - 0.30
+    - 0.35
+    - 0.45
+    - 0.0
+    - 1.0
+    - 0.025
+    - 0.09
+    - 0.15
+    - 0.25
+    - 0.28
+    - 0.70
+    - 0.90
+  main:
+    generation_seed_start: 500001
+    replicates_per_alpha: 16
+    hard_max_candidates: 432
+  dry_run:
+    generation_seed_start: 950001
+    replicates_per_alpha: 4
+    hard_max_candidates: 108
+  probe_seed_offset: 10000000
+  registry_sha256: 92be93d2c71a90a688859e783ce26438414b0d8852b7f672df719ac782826671
+
+statistics:
+  minimum_empirical_prediction_r2: 0.99
+  minimum_empirical_calibration_slope: 0.95
+  maximum_empirical_calibration_slope: 1.05
+  maximum_absolute_empirical_calibration_intercept: 1.0e-4
+
+runtime:
+  # Matches the analytic pilot and avoids slow oversubscription on d=32 kernels.
+  cpu_threads: 1
+
+evidence_scope:
+  evidence_tier: CONTROLLED_REFERENCE
+  scientific_evidence: false
+  official_backend_claim_eligible: false
+  language_model_claim_eligible: false
+  architecture_transfer_claim_eligible: false

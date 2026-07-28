@@ -1,0 +1,57 @@
+experiment_id: e20_quality_constrained_break_even
+protocol:
+  version: E20_PREMAIN_V1
+  lock_path: docs/E20_QUALITY_CONSTRAINED_BREAK_EVEN_LOCK.json
+  main_evaluation_started: false
+evidence:
+  tier: CONTROLLED_SYSTEMS_PROXY
+  scientific_evidence: false
+  official_backend_claim_eligible: false
+  production_systems_claim_eligible: false
+  language_model_claim_eligible: false
+policies:
+  internal: one_time_internal_assimilation
+  baselines:
+    - external_canonical_state_per_query
+    - retrieve_once_cached_compact_snapshot
+    - full_refresh
+  registered_order:
+    - one_time_internal_assimilation
+    - external_canonical_state_per_query
+    - retrieve_once_cached_compact_snapshot
+    - full_refresh
+query_counts: [1, 2, 4, 8, 16, 32, 64]
+workload:
+  schema: CATENA_E20_STRUCTURED_WORKLOAD_V1
+  seed: 20001
+  batch_size: 256
+  slots: 128
+  value_dim: 64
+  state_scale: 0.5
+  logical_reads_per_query: 2
+  query_pair:
+    affected_correction_read: 1
+    unaffected_retention_read: 1
+timing:
+  warmup_repeats: 20
+  measured_repeats: 100
+  primary_statistic: median_total_seconds
+  device_sync_before_and_after_each_measurement: true
+quality_guardrails:
+  affected_correction_mse_epsilon: 0.001
+  retention_mse_epsilon: 0.0005
+primary_estimand:
+  name: minimum_quality_constrained_break_even_m
+  internal_policy: one_time_internal_assimilation
+  latency_relation: internal_median_total_seconds_lte_baseline
+  quality_required_for_both_policies: true
+  cached_dominance_decision: NOT_SUPPORTED_BOUNDARY
+execution:
+  dry_run_required_device_type: cpu
+  main_required_device_type: cuda
+  dry_run_claim_eligible: false
+dry_run_overrides:
+  batch_size: 4
+  warmup_repeats: 1
+  measured_repeats: 3
+

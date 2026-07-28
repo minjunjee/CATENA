@@ -1,0 +1,290 @@
+experiment_id: e05a_r1_semantic_design_repair
+
+protocol:
+  version: 1
+  design: one-time prospective semantic representation and design-validity repair
+  original_e05a_reused: false
+  original_e05a_rows_in_r1_inference: 0
+  original_e05a_status_preserved: NO_GO
+  evidence_role: design_validity_not_h5_claim_evidence
+  only_semantic_protocol_repair_allowed_for_this_submission: true
+  r1_no_go_terminates_h5_for_this_submission: true
+
+source_e05a:
+  freeze_id: E05A_ARTIFACT_FREEZE_V1
+  freeze_filename: E05A_ARTIFACT_FREEZE_V1.json
+  freeze_sha256: f6e6edebd303fb1b6d48cff9630516a8864dc317386778202da58a2a6c189122
+  claim_status_filename: E05A_CLAIM_STATUS.json
+  claim_status_sha256: f1c1e1585829048c47ac725ce03ffaa3293bfe67c10a23a1b205aaa4af432ec3
+  experiment_id: e05a_semantic_protocol_lock
+  run_id: 20260727T081532.073522Z
+  manifest_sha256: c2571fa8c4ec184068dff3bb002dc08be1c503c147348bb19ada1fd1199b5e2b
+  report_sha256: 34bab0288d5bbe82e1debcfa81e51493f4fa280475b86f0d097cb2a4aff8057c
+  failed_registered_gates:
+    - factorized_minus_oracle_affected_excess
+    - shared_minus_oracle_affected_excess
+    - shared_minus_factorized_affected_parity
+  failure_branch: REPRESENTATION_GENERALIZATION_CASE_B
+  original_four_seeds_are_design_history_only: true
+
+r1:
+  seeds: [1103, 2207, 3301, 4409, 5501, 6607, 7703, 8807]
+  dry_seed: 9919
+  train_count_per_cell: 330
+  validation_count_per_cell: 154
+  dry_train_count_per_cell: 66
+  dry_validation_count_per_cell: 44
+  operations: [preserve, add, invalidate]
+  primary_operations: [add, invalidate]
+  preserve_role: no_op_and_retention_guardrail
+  seen_domains: [api, access]
+  seen_templates: [record, ledger]
+
+memory:
+  num_associations: 16
+  key_dim: 32
+  value_dim: 32
+  orthonormal_keys: true
+  oracle_address: true
+  candidate_source: visible_state_read_at_visible_address
+  gate_receives_state_read: false
+  dtype: float32
+
+semantic_schema:
+  hidden_old_lexical_value: true
+  operation_label_visible: false
+  oracle_erase_write_visible: false
+  exact_mask_visible: false
+  gate_encoder_fields:
+    - prior_valid_to_day
+    - observation_day
+    - evidence_valid_from_day
+    - evidence_valid_to_day
+    - evidence_version
+    - prior_version
+    - current_relation
+    - scope
+  gate_forbidden_sources:
+    - operation
+    - derive_operation
+    - derive_raw_demand
+    - erase
+    - write
+    - demand
+    - target
+    - target_state
+    - exact_mask
+    - affected_index
+    - state
+    - state_read
+    - address
+    - old_value
+    - old_value_token
+    - new_value
+    - incoming_value_token
+    - entity_description
+    - domain
+    - incoming_evidence
+    - evidence_timestamp_day
+    - prior_valid_from_day
+    - source
+    - provenance
+    - template_surface
+    - namespace
+    - numeric_seed
+  banned_surface_cues:
+    - add
+    - delete
+    - revoke
+    - invalidate
+    - replace
+    - supersede
+
+feature_encoder:
+  name: fixed_relational_semantic_encoder_r1
+  dimension: 6
+  ordered_features:
+    - prior_valid_to_minus_observation_over_32
+    - evidence_valid_from_minus_observation_over_32
+    - evidence_valid_to_minus_observation_over_32
+    - evidence_version_minus_prior_version_over_4
+    - evidence_scope_equals_current_scope
+    - evidence_scope_differs_from_current_scope
+  day_scale: 32.0
+  version_scale: 4.0
+  numeric_transform: raw_signed_continuous_no_clipping_no_threshold
+  scope_transform: equality_partition_one_hot
+  fitted_state: none
+  frozen: true
+
+data_generation:
+  operation_is_private_scoring_metadata: true
+  relational_predicates_determine_private_operation: true
+  absolute_day_and_version_translation_randomized: true
+  nuisance_fields_generated_from_independent_hash_streams: true
+  write_time_regimes: [active, expired, future]
+  write_version_regimes: [positive, nonpositive]
+  write_scope_regimes: [same, different]
+  excluded_write_false_tuple: [active, positive, same]
+  feasible_write_false_strata: 11
+  every_preserve_and_invalidate_cell_balances_all_write_false_strata: true
+  count_per_cell_must_be_divisible_by_write_false_strata: true
+  train_validation_entity_old_new_vocab_intersection: empty
+
+model:
+  path_hidden_dim: 64
+  hidden_layers: 2
+  activation: gelu
+  gate_activation: sigmoid
+  factorized_route: identity
+  shared_route: rank_one_average
+  identical_parameter_tensors: true
+  identical_dense_compute_graph: true
+  common_initialization: true
+
+training:
+  steps: 2400
+  dry_steps: 320
+  batch_size: 128
+  learning_rate: 0.002
+  weight_decay: 0.0
+  gradient_clip_norm: 1.0
+  affected_read_weight: 1.0
+  unaffected_retention_weight: 1.0
+  target_state_weight: 0.0
+  checkpoint_selection: fixed_final_step
+
+controls:
+  shuffled_fields: domain_template_stratified_operation_changing_derangement
+  wrong_address: same_operation_same_base_state_candidate_norm_matched
+  wrong_address_norm_tolerance: 0.000001
+  transaction_only: zero_visible_state_and_state_derived_erase_candidate
+  state_only: zero_relational_semantics_and_transaction_derived_write_candidate
+  wrong_semantics: coherent_other_demand_same_entity_address_and_new_value
+  mappings_use_outcomes: false
+  primary_control_operations: [add, invalidate]
+
+namespace:
+  integer_root: 6000000000000
+  split_stride: 100000000
+  seed_stride: 100000
+  dry_split_offsets:
+    r1_train: 1
+    r1_validation: 2
+  main_split_offsets:
+    r1_train: 11
+    r1_validation: 12
+  forbid_overlap_with_prior_numeric_seed_max: 5002700000000
+  audit_pool_root_reserved_not_opened: 6100000000000
+  e05b_r1_root_reserved_not_opened: 7000000000000
+
+statistics:
+  alpha: 0.05
+  bootstrap_samples: 5000
+  bootstrap_confidence: 0.95
+  seed_weighting: equal
+  seed_cluster_resampling: paired_training_seed
+  episode_resampling_for_primary_inference: false
+  positive_effect_sesoi: 0.001
+  equivalence_margin: 0.0005
+  retention_noninferiority_margin: 0.0005
+  oracle_absolute_ceiling: 0.00000001
+  primary_estimand: equal_weight_add_invalidate_shared_minus_factorized_affected_mse
+  primary_requirements:
+    mean_gain_at_least_sesoi: true
+    two_sided_seed_cluster_ci_lower_above_zero: true
+    one_sided_unshifted_exact_sign_flip_p_at_most_alpha: true
+    every_seed_positive: true
+  shared_headroom_requirements:
+    ci_lower_above_sesoi: true
+    every_seed_above_sesoi: true
+  control_requirements:
+    ci_lower_above_sesoi: true
+    one_sided_shifted_exact_sign_flip_p_at_most_alpha: true
+    every_seed_raw_direction_positive: true
+  bootstrap_seeds:
+    oracle_affected: 5301
+    oracle_retention: 5302
+    factorized_asymmetric_excess: 5303
+    shared_asymmetric_headroom: 5304
+    primary_gain: 5305
+    factorized_preserve_excess: 5306
+    shared_preserve_excess: 5307
+    factorized_retention_excess: 5308
+    shared_retention_excess: 5309
+    retention_noninferiority: 5310
+    shuffled_degradation: 5311
+    wrong_address_degradation: 5312
+    transaction_only_degradation: 5313
+    state_only_degradation: 5314
+    wrong_semantics_degradation: 5315
+
+go_conjunction:
+  - oracle_affected_and_retention_below_absolute_ceiling
+  - factorized_asymmetric_oracle_excess_within_equivalence_margin
+  - shared_asymmetric_oracle_headroom_identifiable
+  - primary_factorized_gain_all_requirements
+  - preserve_factorized_and_shared_oracle_excess_within_equivalence_margin
+  - retention_factorized_and_shared_oracle_excess_within_equivalence_margin
+  - factorized_retention_noninferior_to_shared
+  - all_five_controls_pass
+  - forbidden_access_pass
+  - namespace_and_balance_pass
+  - parameter_and_compute_budget_match
+
+human_audit_boundary:
+  generated_only_after_r1_go: true
+  separate_experiment_id: e05a_r1_semantic_audit_pool_lock
+  separate_adjudication_experiment_id: e05a_r1_semantic_audit_adjudication
+  audit_pool_root: 6100000000000
+  total_items: 300
+  independent_reviewers: 2
+  labels:
+    - meaning_preserved
+    - operation_leakage
+    - address_entity_ambiguous
+    - old_value_lexically_leaked
+    - gold_target_consistent
+  minimum_meaning_preservation: 0.95
+  maximum_operation_leakage: 0.02
+  maximum_address_entity_ambiguity: 0.02
+  maximum_old_value_lexical_leakage: 0.02
+  minimum_gold_target_consistency: 0.98
+  minimum_raw_agreement_each_label: 0.80
+  cohen_kappa_reported: true
+  finite_kappa_not_required_for_zero_prevalence_label: true
+  ai_agent_substitution_allowed: false
+
+downstream_e05b_r1_boundary:
+  original_e05b_protocol_reused: false
+  reason: original_seen_operation_parity_is_incompatible_with_r1_positive_gain_estimand
+  registry_generated_only_after_r1_go_and_human_audit_pass: true
+  registry_experiment_id: e05b_r1_registry_lock
+  main_experiment_id: e05b_r1_semantic_anchor
+  integer_root: 7000000000000
+  reserved_split_offsets: [11, 12, 13, 14, 15, 16]
+  checkpoint_seeds: [1201, 2309, 3413, 4517, 5623, 6733, 7841, 8951]
+  primary_operation: supersede
+  primary_domains: [api, access]
+  primary_templates: [record, ledger]
+  primary_estimand: shared_minus_factorized_affected_read_mse
+  positive_effect_sesoi: 0.001
+  retention_noninferiority_margin: 0.0005
+  primary_test_rows_materialized_before_audit_pass: 0
+
+claim:
+  dry_status: NOT_EVALUATED_DRY_RUN
+  go_status: GO
+  no_go_status: NO_GO
+  execution_failure_status: FAIL
+  e05a_r1_opens_h5_claim: false
+  any_gate_failure_blocks_audit_and_e05b_r1: true
+  no_go_interpretation: H5_NOT_REFUTED_DESIGN_VALIDITY_NOT_ESTABLISHED
+  no_go_disposition: TERMINATE_H5_FOR_THIS_SUBMISSION
+
+evidence_scope:
+  evidence_tier: CONTROLLED_REFERENCE
+  scientific_evidence: false
+  official_backend_claim_eligible: false
+  language_model_claim_eligible: false
+  architecture_transfer_claim_eligible: false

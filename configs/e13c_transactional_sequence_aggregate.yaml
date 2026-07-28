@@ -1,0 +1,14 @@
+experiment_id: e13c_transactional_sequence_aggregate
+source:
+  experiment_id: e13b_transactional_sequence_memory
+  config_path: configs/e13b_transactional_sequence_memory.yaml
+  required_seeds: [101, 211, 307, 401, 503]
+  required_variants: [tied, dual]
+  required_updates: [1, 4, 8]
+  required_gap_events: [0, 128, 512, 2048]
+statistics:
+  alpha: 0.05
+claim_gate:
+  minimum_asymmetric_gain: 0.001
+  retention_noninferiority: 0.0005
+  minimum_seed_direction_fraction: 1.0

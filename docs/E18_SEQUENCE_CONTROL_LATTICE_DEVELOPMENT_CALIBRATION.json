@@ -1,0 +1,88 @@
+{
+  "assay_type": "DEVELOPMENT_BUDGET_CALIBRATION",
+  "artifact_written": false,
+  "development_seed": 99001,
+  "main_seed_overlap": false,
+  "main_metrics_or_stress_grid_observed": false,
+  "registered_training_cell": {
+    "batch_size": 128,
+    "gap_events": 128,
+    "steps": 3000,
+    "updates": 4
+  },
+  "affected_mse": {
+    "diagonal_value": {
+      "address_decoupling": 0.016484996602661003,
+      "magnitude_factorization": 0.0000056012734881692105,
+      "state_conditioning": 0.013539803680977038,
+      "value_granularity": 0.00036115768458600244
+    },
+    "dual_scalar": {
+      "address_decoupling": 0.016484216416998494,
+      "magnitude_factorization": 0.0000032705026085907305,
+      "state_conditioning": 0.013678530892300558,
+      "value_granularity": 0.009299221481492613
+    },
+    "separate_address": {
+      "address_decoupling": 0.0000034469050486583115,
+      "magnitude_factorization": 0.00000708741451435755,
+      "state_conditioning": 0.013563424046576386,
+      "value_granularity": 0.00038273450584873543
+    },
+    "state_aware": {
+      "address_decoupling": 0.000037581498450945474,
+      "magnitude_factorization": 0.00012307139462552338,
+      "state_conditioning": 0.0021239424211258336,
+      "value_granularity": 0.0005406245935095547
+    },
+    "tied_scalar": {
+      "address_decoupling": 0.02274087119538766,
+      "magnitude_factorization": 0.0066172873459802274,
+      "state_conditioning": 0.013618939304932135,
+      "value_granularity": 0.009302028132495437
+    }
+  },
+  "adjacent_diagnostics": [
+    {
+      "baseline": "tied_scalar",
+      "corresponding_demand": "magnitude_factorization",
+      "gain": 0.006614016843371637,
+      "treatment": "dual_scalar"
+    },
+    {
+      "baseline": "dual_scalar",
+      "corresponding_demand": "value_granularity",
+      "gain": 0.00893806379690661,
+      "maximum_simpler_demand_degradation": 0.00000233077087957848,
+      "treatment": "diagonal_value"
+    },
+    {
+      "baseline": "diagonal_value",
+      "corresponding_demand": "address_decoupling",
+      "gain": 0.016481549697612344,
+      "maximum_simpler_demand_degradation": 0.00002157682126273299,
+      "treatment": "separate_address"
+    },
+    {
+      "baseline": "separate_address",
+      "corresponding_demand": "state_conditioning",
+      "gain": 0.011439481625450552,
+      "maximum_simpler_demand_degradation": 0.0001578900876608193,
+      "treatment": "state_aware"
+    }
+  ],
+  "maximum_adjacent_retention_degradation": 0.0000013241596357505565,
+  "throughput_examples_per_second": {
+    "diagonal_value": 1069.7035426048926,
+    "dual_scalar": 1085.3830384433768,
+    "separate_address": 1162.5776410772803,
+    "state_aware": 1030.6279359790458,
+    "tied_scalar": 1034.5756525774068
+  },
+  "decision": {
+    "initial_placeholder_steps": 30000,
+    "main_steps": 3000,
+    "metric_or_gate_changed": false,
+    "reason": "ALL_ADJACENT_DEVELOPMENT_GAINS_EXCEEDED_SESOI_BY_AT_LEAST_6_6X_WITH_GUARDRAIL_HEADROOM"
+  }
+}

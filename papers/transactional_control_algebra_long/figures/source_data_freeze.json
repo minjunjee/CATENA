@@ -1,0 +1,240 @@
+{
+  "artifact_root": "/data/minjun_dev/CATENA/artifacts",
+  "generated_outputs": {
+    "RESULTS_MACROS.md": {
+      "bytes": 1074,
+      "sha256": "68cb03d38872923bc26c508a29c536f7cec64e19afe56758afd112750cde500a"
+    },
+    "figure1_geometry.svg": {
+      "bytes": 18818,
+      "sha256": "c53d8b3a2e389cdb57d93ac0987ba68107127debbe3d43f1b81eb027b1080350"
+    },
+    "figure2_control_lattice.svg": {
+      "bytes": 18741,
+      "sha256": "9fc6ff0e6dd11ca9a9d54634a4be4e61428cc6c90dc1092c232871cbcb840b19"
+    },
+    "figure3_sequence_transfer.svg": {
+      "bytes": 18489,
+      "sha256": "4740e192cb740047f5cfff2ad72827fa271061421ccd0dcc4d6fdc6f3cf365a6"
+    },
+    "source_data/e19.json": {
+      "bytes": 1062,
+      "sha256": "8152c5745d1781a3ca579eb3b0816ab7fb2b3fcbc052aa8c29711e0c58c8f4f0"
+    },
+    "source_data/e20.json": {
+      "bytes": 1740,
+      "sha256": "c1055ba8f0c03dde0c6f7d9fbe4ba4763c430f17efd5be15c710a6633941332d"
+    },
+    "source_data/figure1.json": {
+      "bytes": 16251,
+      "sha256": "f06ebc4e47352698e7c35e63d3d80b05e1c7363e787c3e444c283e528a720d5e"
+    },
+    "source_data/figure2.json": {
+      "bytes": 6051,
+      "sha256": "4cc39aa89dd1c6154eae6278ff702ce24895559826aa2ef6653bf6479de2a504"
+    },
+    "source_data/figure3.json": {
+      "bytes": 4992,
+      "sha256": "0a65793cfacf53b730215d926f870f405928e0fbb34a0e06ed527d6f03184175"
+    }
+  },
+  "generator": {
+    "numpy_version": "2.4.4",
+    "path": "/home/minjun_dev/CATENA/papers/transactional_control_algebra_long/scripts/generate_main_figures.py",
+    "sha256": "51d15eb2029053b1a176faf8cdadcb7aff2f3961eeef940606108fd8da860073"
+  },
+  "mode": "DETERMINISTIC_FIGURE_SOURCE_FREEZE",
+  "schema_version": 1,
+  "source_manifest": {
+    "path": "/home/minjun_dev/CATENA/papers/transactional_control_algebra_long/data/source_manifest.json",
+    "sha256": "274e1ffa59bf223eee2e487c091c72f675c5e0a43b2b4c30000f376db9679f48"
+  },
+  "validated_sources": {
+    "e03b_claim_status": {
+      "path": "/data/minjun_dev/CATENA/artifacts/E03B_CLAIM_STATUS.json",
+      "relative_path": "E03B_CLAIM_STATUS.json",
+      "section": "provenance_anchors",
+      "sha256": "ac796ad02d0dca72671f00aa28c2aa0ab704253290920d28abe78b3f67e967be"
+    },
+    "e03b_family_calibration": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e03b_graded_jd_calibration/20260726T180514.626996Z/family_calibration_metrics.jsonl",
+      "relative_path": "e03b_graded_jd_calibration/20260726T180514.626996Z/family_calibration_metrics.jsonl",
+      "section": "data_sources",
+      "sha256": "47d264beb42e5826646cb69c62db0824688c9af0a01d2b7311923f67b14ee086"
+    },
+    "e03b_report": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e03b_graded_jd_calibration/20260726T180514.626996Z/report.json",
+      "relative_path": "e03b_graded_jd_calibration/20260726T180514.626996Z/report.json",
+      "section": "data_sources",
+      "sha256": "fc88dd3923bbcfb63b99953a9f839b25cbee956f155ce1dd4c397ea82a71772c"
+    },
+    "e10b_freeze": {
+      "path": "/data/minjun_dev/CATENA/artifacts/E10B_POSTCORE_ARTIFACT_FREEZE_V1.json",
+      "relative_path": "E10B_POSTCORE_ARTIFACT_FREEZE_V1.json",
+      "section": "provenance_anchors",
+      "sha256": "d0dc495349f33a29629539e41af8f45da65583e2465f715b2a3005e1f966e3eb"
+    },
+    "e10b_rank_tracking_cells": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e10b_floor_aware_rank_scaling/20260727T190906.272784Z/e10b_rank_tracking_cells.jsonl",
+      "relative_path": "e10b_floor_aware_rank_scaling/20260727T190906.272784Z/e10b_rank_tracking_cells.jsonl",
+      "section": "data_sources",
+      "sha256": "c319843574528df24e271e83da3aecfafa8f56a0c03476948cebfe343a7068f9"
+    },
+    "e10b_report": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e10b_floor_aware_rank_scaling/20260727T190906.272784Z/report.json",
+      "relative_path": "e10b_floor_aware_rank_scaling/20260727T190906.272784Z/report.json",
+      "section": "data_sources",
+      "sha256": "30f2f781bcc8528964602e0c66e1b61bb9d71a6ca5f964b833b2551c93b72484"
+    },
+    "e12_freeze": {
+      "path": "/data/minjun_dev/CATENA/artifacts/E12_POSTCORE_ARTIFACT_FREEZE_V1.json",
+      "relative_path": "E12_POSTCORE_ARTIFACT_FREEZE_V1.json",
+      "section": "provenance_anchors",
+      "sha256": "a507e84eaf4773e1b9d2ace8839f4634bde696bf359132eb90ee960b51d25078"
+    },
+    "e12_metrics": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e12_control_algebra_lattice/20260727T184511.437394Z/control_lattice_metrics.jsonl",
+      "relative_path": "e12_control_algebra_lattice/20260727T184511.437394Z/control_lattice_metrics.jsonl",
+      "section": "data_sources",
+      "sha256": "594d22c7d2a076931a9187c171da0231cfbff289709266814c437582406d57e8"
+    },
+    "e12_report": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e12_control_algebra_lattice/20260727T184511.437394Z/report.json",
+      "relative_path": "e12_control_algebra_lattice/20260727T184511.437394Z/report.json",
+      "section": "data_sources",
+      "sha256": "5d300ea84fbe004370a2a44854637b2d60a0a0ccf5c63fc2ee2a24bce8fa2562"
+    },
+    "e13bc_freeze": {
+      "path": "/data/minjun_dev/CATENA/artifacts/E13BC_R1_POSTCORE_ARTIFACT_FREEZE_V1.json",
+      "relative_path": "E13BC_R1_POSTCORE_ARTIFACT_FREEZE_V1.json",
+      "section": "provenance_anchors",
+      "sha256": "0a14049789e6778882605980d62ac4e7389d337b0ec2d0954ea04861fb1378b3"
+    },
+    "e13c_paired_metrics": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e13c_r1_transactional_sequence_aggregate/20260727T214126.954177Z/sequence_paired_metrics.jsonl",
+      "relative_path": "e13c_r1_transactional_sequence_aggregate/20260727T214126.954177Z/sequence_paired_metrics.jsonl",
+      "section": "data_sources",
+      "sha256": "f8a483819a2a6f08d00537c5d88d0553094e876b7f0353a0e02b9d50e4361cd7"
+    },
+    "e13c_report": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e13c_r1_transactional_sequence_aggregate/20260727T214126.954177Z/report.json",
+      "relative_path": "e13c_r1_transactional_sequence_aggregate/20260727T214126.954177Z/report.json",
+      "section": "data_sources",
+      "sha256": "78121aa5dc7bd423065d8aef0fab908fc9fcd9e2412a49d9f0601a4f722e6a30"
+    },
+    "e14_proxy_only_freeze": {
+      "path": "/data/minjun_dev/CATENA/artifacts/E14_POSTCORE_ARTIFACT_FREEZE_V1.json",
+      "relative_path": "E14_POSTCORE_ARTIFACT_FREEZE_V1.json",
+      "section": "provenance_anchors",
+      "sha256": "e203b1a7b16efad20a393d579b6cdc3d02c810b7e6400498c40fc2e34ca4181a"
+    },
+    "e15_not_configured_freeze": {
+      "path": "/data/minjun_dev/CATENA/artifacts/E15_DRY_GATE_ARTIFACT_FREEZE_V1.json",
+      "relative_path": "E15_DRY_GATE_ARTIFACT_FREEZE_V1.json",
+      "section": "provenance_anchors",
+      "sha256": "3d5977f655e53a3afed6fccf95abaef86c5e12c456dbead9fe71077ec7269fff"
+    },
+    "e15a_disposition_freeze": {
+      "path": "/data/minjun_dev/CATENA/artifacts/E15A_OFFICIAL_GATE_DISPOSITION_FREEZE_V1.json",
+      "relative_path": "E15A_OFFICIAL_GATE_DISPOSITION_FREEZE_V1.json",
+      "section": "provenance_anchors",
+      "sha256": "00de24069a3131432259427384c2c0d8f6735880eb146763a69fec5808ce1297"
+    },
+    "e18_freeze": {
+      "path": "/data/minjun_dev/CATENA/artifacts/E18_SEQUENCE_CONTROL_LATTICE_FREEZE_V1.json",
+      "relative_path": "E18_SEQUENCE_CONTROL_LATTICE_FREEZE_V1.json",
+      "section": "provenance_anchors",
+      "sha256": "39416476994963900305e04682dabd458719a0a94c92820405feeb639c33e67c"
+    },
+    "e18b_paired_metrics": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e18b_sequence_control_lattice_aggregate/20260728T074753.618843Z/sequence_control_lattice_paired_metrics.jsonl",
+      "relative_path": "e18b_sequence_control_lattice_aggregate/20260728T074753.618843Z/sequence_control_lattice_paired_metrics.jsonl",
+      "section": "data_sources",
+      "sha256": "dcaf3f9f138bce33654896762dfff67c78ef9173c9e103064619979a7d595ed6"
+    },
+    "e18b_report": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e18b_sequence_control_lattice_aggregate/20260728T074753.618843Z/report.json",
+      "relative_path": "e18b_sequence_control_lattice_aggregate/20260728T074753.618843Z/report.json",
+      "section": "data_sources",
+      "sha256": "055f2669e01180ce554f338545e5d928367eb258532a6e84a939b60784e4ddab"
+    },
+    "e19_freeze": {
+      "path": "/data/minjun_dev/CATENA/artifacts/E19_LOCALIZATION_CANDIDATE_FREEZE_V1.json",
+      "relative_path": "E19_LOCALIZATION_CANDIDATE_FREEZE_V1.json",
+      "section": "provenance_anchors",
+      "sha256": "6eda4821d77fef1fdb39a069ca9c9bcfd9f2df93fae16306ec9716acb7290896"
+    },
+    "e19_report": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e19b_localization_candidate_aggregate/20260728T060318.439621Z/report.json",
+      "relative_path": "e19b_localization_candidate_aggregate/20260728T060318.439621Z/report.json",
+      "section": "data_sources",
+      "sha256": "5e7661edf8bd904a43ed3f2681ba87d070f8ec8a6a69619a136c2b3e8f879906"
+    },
+    "e19_seed_contrasts": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e19b_localization_candidate_aggregate/20260728T060318.439621Z/localization_candidate_seed_contrasts.jsonl",
+      "relative_path": "e19b_localization_candidate_aggregate/20260728T060318.439621Z/localization_candidate_seed_contrasts.jsonl",
+      "section": "data_sources",
+      "sha256": "a4cf4ab141313c68b191075ddbe06cd0c43572f378e9d0cbbb34f0720794a424"
+    },
+    "e20_freeze": {
+      "path": "/data/minjun_dev/CATENA/artifacts/E20_QUALITY_BREAK_EVEN_FREEZE_V1.json",
+      "relative_path": "E20_QUALITY_BREAK_EVEN_FREEZE_V1.json",
+      "section": "provenance_anchors",
+      "sha256": "f9a2099174a24324245383351222fd4225588565ae6213509b661311c4f6a81b"
+    },
+    "e20_metrics": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e20_quality_constrained_break_even/20260728T062658.423644Z/quality_break_even_metrics.jsonl",
+      "relative_path": "e20_quality_constrained_break_even/20260728T062658.423644Z/quality_break_even_metrics.jsonl",
+      "section": "data_sources",
+      "sha256": "20d21a0989a5d6c347d53b2e6ec4041950605d211d0f4803b6391a55dbef1b61"
+    },
+    "e20_report": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e20_quality_constrained_break_even/20260728T062658.423644Z/report.json",
+      "relative_path": "e20_quality_constrained_break_even/20260728T062658.423644Z/report.json",
+      "section": "data_sources",
+      "sha256": "6bd5ef166fcca2137f54b5749ceac30581ed104a54fecc30bf3043e7403fb354"
+    },
+    "e21_freeze": {
+      "path": "/data/minjun_dev/CATENA/artifacts/E21_STRUCTURED_SEQUENCE_TRANSFER_FREEZE_V1.json",
+      "relative_path": "E21_STRUCTURED_SEQUENCE_TRANSFER_FREEZE_V1.json",
+      "section": "provenance_anchors",
+      "sha256": "c27eff42a9ee0fdb1d88f8c78882f3a08ee06857012db78715ab8781b295efce"
+    },
+    "e21_original_report": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e21b_structured_sequence_localization_aggregate/20260728T091532.426698Z/report.json",
+      "relative_path": "e21b_structured_sequence_localization_aggregate/20260728T091532.426698Z/report.json",
+      "section": "data_sources",
+      "sha256": "a71bc9976bd0dea4aacbe3a6165f43d12b38aeb183c836d6bba624c647289ea3"
+    },
+    "e21_r1_report": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e21b_r1_structured_sequence_localization_aggregate/20260728T091547.163300Z/report.json",
+      "relative_path": "e21b_r1_structured_sequence_localization_aggregate/20260728T091547.163300Z/report.json",
+      "section": "data_sources",
+      "sha256": "7b43124884ef987f35a4e14740570afc1d4962bd62f32860b21c6f7f3fdec076"
+    },
+    "e21_r1_seed_contrasts": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e21b_r1_structured_sequence_localization_aggregate/20260728T091547.163300Z/structured_sequence_seed_contrasts_r1.jsonl",
+      "relative_path": "e21b_r1_structured_sequence_localization_aggregate/20260728T091547.163300Z/structured_sequence_seed_contrasts_r1.jsonl",
+      "section": "data_sources",
+      "sha256": "17ecc2bd28c7cdf74a380f29d9653e0a0c15c09579e2a2ba19ad55ce6a5fd750"
+    },
+    "h1_e16_registry": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e16_core_evidence_freeze/20260727T181946.576248Z/evidence_registry.json",
+      "relative_path": "e16_core_evidence_freeze/20260727T181946.576248Z/evidence_registry.json",
+      "section": "provenance_anchors",
+      "sha256": "95ff18620537da7f5cdb48f52c35d26f66ac03683491c64aebc34cdd54393a1a"
+    },
+    "h1_report": {
+      "path": "/data/minjun_dev/CATENA/artifacts/e01b_constrained_behavioral_reachability/20260726T152354.081239Z/report.json",
+      "relative_path": "e01b_constrained_behavioral_reachability/20260726T152354.081239Z/report.json",
+      "section": "data_sources",
+      "sha256": "8e1d16ca7763cec1e4e5b13d2b0f163f4015c8058ed7764871a6fbb5fa5ea6d6"
+    },
+    "h5_closed_status": {
+      "path": "/data/minjun_dev/CATENA/artifacts/E05A_R1_CLAIM_STATUS.json",
+      "relative_path": "E05A_R1_CLAIM_STATUS.json",
+      "section": "provenance_anchors",
+      "sha256": "6847805450e30d08c5b6216865a0ea9c0459b8f7a7c485f3973604b84829b238"
+    }
+  }
+}

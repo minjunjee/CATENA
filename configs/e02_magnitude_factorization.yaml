@@ -1,0 +1,29 @@
+experiment_id: e02_magnitude_factorization
+seeds: [11, 22, 33, 44, 55, 66, 77, 88]
+data:
+  train_count_per_operation: 512
+  test_count_per_operation: 512
+  num_associations: 16
+  key_dim: 32
+  value_dim: 32
+  key_correlation: 0.15
+  old_scale: 1.0
+  new_scale: 1.0
+  old_new_cosine: 0.0
+model:
+  hidden_dim: 64
+training:
+  steps: 12000
+  learning_rate: 0.003
+  run_equal_budget_tuning: true
+  tuning_learning_rates: [0.001, 0.003, 0.01]
+  tuning_objective: equal_weight_behavioral_mse
+statistics:
+  alpha: 0.05
+  bootstrap_samples: 5000
+  # Avoid unstable normalized gains when the tied model is already at the oracle floor.
+  minimum_tied_oracle_headroom: 0.000001
+  asymmetric_normalized_gain_sesoi: 0.10
+  preserve_absolute_equivalence_margin: 0.0005
+  supersede_relative_equivalence_margin: 0.05
+  retention_noninferiority_margin: 0.0005

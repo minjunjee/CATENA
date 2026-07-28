@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "experiment_family": "E21",
+  "experiment_id": "e21b_r1_structured_sequence_localization_aggregate",
+  "protocol_id": "prospective_e21b_active_guardrail_repair_v1",
+  "frozen_at_utc": "2026-07-28T07:18:22.020342Z",
+  "frozen_before_any_e21a_main_report": true,
+  "e21a_main_report_count_at_freeze": 0,
+  "original_e21b_main_report_count_at_freeze": 0,
+  "seed113_training_active_at_freeze": true,
+  "main_execution_started": false,
+  "aggregate_only": true,
+  "source_training_or_evaluation_changed": false,
+  "source_rows_selected_or_observed": false,
+  "thresholds_seeds_grid_or_primary_estimands_changed": false,
+  "original_e21b_disposition": "INCONCLUSIVE_GATE_IMPLEMENTATION",
+  "repair_reason": [
+    "The original state-read non-target guard compared A/B oracle-candidate routes in which state read is bypassed.",
+    "The original non-target and retention guards averaged registered cells before taking a maximum, allowing cell-specific harm to cancel."
+  ],
+  "repair_scope": {
+    "primary_b_c_d_estimands": "UNCHANGED",
+    "exact_sign_flip_and_stress_direction": "UNCHANGED",
+    "floors_activity_and_source_provenance": "UNCHANGED",
+    "state_read_guard_active_conditions": [
+      "C_oracle_address_state_read_candidate",
+      "D_learned_address_state_read_candidate"
+    ],
+    "nontarget_aggregation": "CELLWISE_MAXIMUM_TREATMENT_MINUS_COMPARISON",
+    "retention_aggregation": "CELLWISE_MAXIMUM_TREATMENT_MINUS_COMPARISON",
+    "identifying_targets_excluded": [
+      "B_learned_address_oracle_candidate|address_decoupling|separate_address",
+      "C_oracle_address_state_read_candidate|state_conditioning|state_read",
+      "D_learned_address_state_read_candidate|address_decoupling|full_only"
+    ],
+    "source_run_count": 5,
+    "source_rows_per_run": 768,
+    "total_source_rows": 3840
+  },
+  "validation_before_freeze": {
+    "pytest_e21_and_r1": "12 PASSED",
+    "ruff_check": "PASS",
+    "ruff_format_check": "PASS",
+    "mypy_strict": "PASS",
+    "python_compile": "PASS"
+  },
+  "parent_e21_lock_sha256": "e07139064b6f2cf1ca990f4f595d38c64f295cd7b25ef2fd3a935cbefe498579",
+  "source_e21_config_sha256": "9363d70a7cda51b9c9d92f895e970865a365a75ffb9a156162a0be496b2e1922",
+  "files": {
+    "configs/e21b_r1_structured_sequence_localization_aggregate.yaml": "31a8c738b77a66fef7647084107a59e65c7d1b3613a801effdbbaa75d8f6d1c6",
+    "docs/E21B_R1_STRUCTURED_SEQUENCE_AGGREGATE_PROTOCOL_KO.md": "b0f8b778125a4c86d33dd61c7f0799fa1337f134295de3b111a023b715c1672e",
+    "experiments/e21b_r1_structured_sequence_localization_aggregate.py": "907547339ecb11678a65c5978154a2669123bf063b61b7d1e61f26300c31ccac",
+    "src/catena/eval/structured_sequence_localization_r1.py": "c92e4f2d144357ef493b5691152970f63aede90cfb8441c48ca17c5c29053996",
+    "tests/test_e21b_r1_structured_sequence_localization_aggregate.py": "bd0b23a825a1f6a59da9eb540d9f0338ac41ada88e484e5c0a0d94fede5b5833"
+  },
+  "claim_boundary": {
+    "evidence_tier": "CONTROLLED_REFERENCE",
+    "scientific_evidence": false,
+    "h5_reopened": false,
+    "semantic_or_natural_language_claim_eligible": false,
+    "novel_identifier_claim_eligible": false,
+    "pretrained_or_recurrent_lm_claim_eligible": false,
+    "agent_or_planning_claim_eligible": false,
+    "official_backend_claim_eligible": false,
+    "runtime_superiority_claim_eligible": false
+  }
+}

@@ -1,0 +1,32 @@
+experiment_id: e15a_official_gdn2_kda_gate
+backend:
+  name: gdn2_kda_official
+  repo_path: ${CATENA_GDN2_REPO}
+  expected_commit: ${CATENA_GDN2_COMMIT}
+  plugin_module: catena_official_plugins.gdn2_gate
+  checks:
+    full_sequence_chunked_fp32:
+      metric_key: full_chunked_fp32_relative_l2
+      comparison: le
+      threshold: 1.0e-5
+    tied_reduction_kda_fp32:
+      metric_key: tied_kda_fp32_relative_l2
+      comparison: le
+      threshold: 1.0e-5
+    bf16_parity:
+      metric_key: bf16_relative_l2
+      comparison: le
+      threshold: 5.0e-3
+    backward_finite:
+      metric_key: backward_all_finite
+      comparison: eq
+      expected: true
+    state_carry_clone_restore:
+      metric_key: state_carry_clone_restore
+      comparison: eq
+      expected: true
+    intervention_hook_confinement:
+      metric_key: intervention_hook_confined
+      comparison: eq
+      expected: true
+

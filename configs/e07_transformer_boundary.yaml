@@ -1,0 +1,14 @@
+experiment_id: e07_transformer_boundary
+fairness:
+  localization_condition: oracle_for_both_architectures
+official_backend:
+  repository: ${CATENA_KVERASER_REPO}
+  revision: PIN_EXACT_COMMIT_BEFORE_OFFICIAL_RUN
+model:
+  transformer: Qwen/Qwen2.5-3B-Instruct
+policies:
+  preserve: kv_reuse
+  add: typed_append
+  invalidate: kveraser
+  supersede: kveraser_then_typed_append
+  exact: affected_suffix_or_full_reprefill

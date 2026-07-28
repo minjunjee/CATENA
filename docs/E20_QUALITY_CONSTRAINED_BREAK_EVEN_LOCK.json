@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e20_quality_constrained_break_even",
+  "protocol_version": "E20_PREMAIN_V1",
+  "frozen_at_utc": "2026-07-28T06:21:31Z",
+  "amendment_type": "PROSPECTIVE_INITIAL_PROTOCOL",
+  "main_evaluation_started": false,
+  "main_artifact_existed_at_lock": false,
+  "gpu_main_executed": false,
+  "cpu_dry_run_claim_eligible": false,
+  "registered_design": {
+    "policies": [
+      "one_time_internal_assimilation",
+      "external_canonical_state_per_query",
+      "retrieve_once_cached_compact_snapshot",
+      "full_refresh"
+    ],
+    "query_counts": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64
+    ],
+    "same_structured_state_update_workload_across_m": true,
+    "paired_workload_digest_across_policies": true,
+    "logical_query_contains_affected_and_retention_read": true,
+    "primary_latency_statistic": "median_total_seconds",
+    "warmup_required": true,
+    "device_sync_before_and_after_cuda_measurement": true,
+    "raw_repeats_recorded": true
+  },
+  "registered_estimand": {
+    "name": "minimum_quality_constrained_break_even_m",
+    "definition": "For each baseline, the smallest registered m at which both policies meet absolute correction and retention guardrails and one-time internal assimilation median total latency is no greater than baseline median total latency.",
+    "latency_relation": "internal_median_total_seconds_lte_baseline",
+    "grid_extrapolation_allowed": false
+  },
+  "registered_thresholds": {
+    "affected_correction_mse_epsilon": 0.001,
+    "retention_mse_epsilon": 0.0005
+  },
+  "registered_decision_logic": {
+    "cached_policy": "retrieve_once_cached_compact_snapshot",
+    "cached_dominance_definition": "Cached policy and internal policy meet both quality guardrails, and cached median total latency is no greater than internal median total latency, at every registered m.",
+    "cached_dominance_status": "NOT_SUPPORTED_BOUNDARY",
+    "all_three_break_evens_required_for_support": true,
+    "dry_run_status": "NOT_EVALUATED_DRY_RUN"
+  },
+  "execution_split": {
+    "cpu": "DRY_RUN_ONLY",
+    "cuda": "MAIN_ONLY"
+  },
+  "technical_amendments_before_main": [
+    {
+      "timestamp_utc": "2026-07-28T06:23:11Z",
+      "scope": "TEST_TYPE_ANNOTATIONS_ONLY",
+      "metric_or_gate_changed": false,
+      "main_evaluation_started": false,
+      "gpu_main_executed": false
+    }
+  ],
+  "claim_boundary": {
+    "evidence_tier": "CONTROLLED_SYSTEMS_PROXY",
+    "scientific_evidence": false,
+    "official_backend_claim_eligible": false,
+    "production_systems_claim_eligible": false,
+    "pretrained_language_model_claim_eligible": false,
+    "agent_runtime_claim_eligible": false,
+    "allowed_claim": "Quality-constrained latency boundary on the registered in-process structured-state systems proxy only."
+  },
+  "guardrail_source_files": {
+    "configs/e13a_r2_sequence_floor_throughput.yaml": "4784daf9fe6321ae0e7608aaa99999abb40cc8c32993bfba4976ad8c347b7e69",
+    "configs/e14_plan_continuation.yaml": "06c3433f774a4420b6f27b1db741267799389189ad44f17eb8c5d7b2cf29d201"
+  },
+  "files": {
+    "configs/e20_quality_constrained_break_even.yaml": "66d7ad814c6ca6cd635524b2616cf314b04337bac338274ee41f297c44002c06",
+    "docs/E20_QUALITY_CONSTRAINED_BREAK_EVEN_PROTOCOL_KO.md": "f14cd93cb19cc894ab526954d9f258d7dd3d0222ef878718f2a8c51c3d9ef625",
+    "experiments/e20_quality_constrained_break_even.py": "e6fdf80f0fed9bbefd6157d0b61ac749ef2f4693882643a8dc7908e875ac0a2e",
+    "src/catena/eval/quality_break_even.py": "d0628517b5b98a819bf3c740dab927337541a43106302e789aa72ef2c26ccbc9",
+    "tests/test_e20_quality_constrained_break_even.py": "949f82a635dcd9c4b7a5958edfbc0bff76ef8655ae6bd013fa08bacc43e22dd8"
+  }
+}

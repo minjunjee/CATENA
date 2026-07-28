@@ -1,0 +1,24 @@
+experiment_id: e13a_sequence_floor_throughput
+seed: 101
+data:
+  num_entities: 32
+  value_vocab: 64
+  updates: 4
+  gap_events: 64
+model:
+  variants: [tied, dual]
+  embedding_dim: 64
+  hidden_dim: 256
+training:
+  steps: 2000
+  batch_size: 128
+  learning_rate: 0.001
+  retention_weight: 1.0
+evaluation:
+  batches: 32
+  batch_size: 256
+claim_gate:
+  minimum_dual_exact_match: 0.95
+  minimum_affected_gain: 0.001
+  max_retention_mse: 0.001
+  minimum_examples_per_second: 100.0

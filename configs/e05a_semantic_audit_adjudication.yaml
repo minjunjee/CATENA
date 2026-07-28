@@ -1,0 +1,28 @@
+experiment_id: e05a_semantic_audit_adjudication
+protocol:
+  parent_protocol_sha256: e235a351ca84589d92a211e78f6f4ebe6631ce228adad8f8da34dec17527b8e0
+  parent_protocol_lock_sha256: 4aaadf16eb02abff19f519191c0c56de0ad383cf01dfeea91fedacfb8a41980e
+  additive_artifact: true
+  modifies_e05a_artifact: false
+  model_outcomes_visible_to_reviewers: false
+
+inputs:
+  audit_items_filename: naturalization_audit_items.csv
+  independent_reviewer_files: 2
+  adjudication_file_required: true
+
+thresholds:
+  total_items: 300
+  minimum_meaning_preservation: 0.95
+  maximum_answer_leakage: 0.02
+  minimum_raw_agreement_each_label: 0.80
+  adjudication_required_rows: 300
+
+claim:
+  passed_status: PASSED
+  failed_status: FAILED
+  pass_is_dependency_not_h5_support: true
+
+evidence_scope:
+  evidence_tier: CONTROLLED_REFERENCE
+  scientific_evidence: false

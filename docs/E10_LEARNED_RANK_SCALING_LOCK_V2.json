@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "experiment_id": "e10_learned_rank_scaling",
+  "frozen_at_utc": "2026-07-27T18:42:34Z",
+  "evaluation_started_after_this_lock": false,
+  "amendment": {
+    "id": "artifact_contract_checkpoint_addition_only",
+    "reason": "The registered post-core artifact contract requires reusable checkpoints and their SHA-256 values.",
+    "config_changed": false,
+    "metrics_changed": false,
+    "thresholds_changed": false,
+    "rank_grid_changed": false,
+    "claim_gate_changed": false
+  },
+  "supersedes_for_execution_only": {
+    "lock_path": "docs/E10_LEARNED_RANK_SCALING_LOCK.json",
+    "lock_sha256": "f27fdf2c43ad2b553d88b5e30c10aa1618239f20b89976306ae0a783d8bd8c5b",
+    "original_protocol_remains_immutable": true
+  },
+  "prior_incomplete_runs": [
+    {
+      "run_id": "20260727T180703.792069Z",
+      "disposition": "NO_REPORT_INELIGIBLE"
+    },
+    {
+      "run_id": "20260727T180747.984294Z",
+      "disposition": "NO_REPORT_INELIGIBLE"
+    },
+    {
+      "run_id": "20260727T183537.502519Z",
+      "disposition": "NO_REPORT_INELIGIBLE",
+      "run_manifest_sha256": "cf79b003a340e449682f04619ddd352489bf76a19db5f2ec1f0fed0f38f37ced"
+    }
+  ],
+  "files": {
+    "configs/e10_learned_rank_scaling.yaml": "d82ef56f7ebd9e049d39eba896f3b57f42919f306ac6033065734dad593d0faa",
+    "docs/E10_LEARNED_RANK_SCALING_KO.md": "d3c1fae8eacb599f9bd5a3f008767e72203bb2fc27004473c2d1b69b0513c332",
+    "experiments/common.py": "3249c01b79139e51d1cdd1632485d18a57a38993c40ae6b51bb0328f19926053",
+    "experiments/e10_learned_rank_scaling.py": "74fb375d7df33294d603d817ee9cc212b729f55ca80e4b9ccaae456416fb9714",
+    "src/catena/data/learned_rank.py": "21fb27389f5b56c862e4371b7c2a4fde121cc592c3016f9fa0a5a03640454820",
+    "src/catena/eval/postcore_metrics.py": "6b30a24d73ae8f437f0af98706f0d4486678bea9f61e074b9faae8d057905ef9",
+    "src/catena/eval/rank_scaling.py": "e07e63f9515bcd3926ec39d0f94300b4c22e718d21a66fe902d490a2cae990a9",
+    "src/catena/models/operator_controllers.py": "11aff4df33bf0d1cd31def5d824f0e4f2ab5200750f0b52c67e86a6bf6c07b9a",
+    "src/catena/training/postcore.py": "e14cbead25125a67c2fa9d99437736fb643613ed2983cba40a428ed9b0d4097c",
+    "tests/test_e10_rank_scaling_contract.py": "fe89202c2d0072d3699ec8932bb0ac00b2f6304ae141dcd08a85ca23ffc8ec85"
+  },
+  "claim_boundary": {
+    "evidence_tier": "CONTROLLED_REFERENCE",
+    "pretrained_language_model_claim_eligible": false,
+    "official_backend_claim_eligible": false
+  }
+}

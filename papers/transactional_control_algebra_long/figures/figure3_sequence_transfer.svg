@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="540" viewBox="0 0 920 540" role="img" aria-labelledby="title desc">
+<title id="title">Structured sequence transfer across updates and gaps</title>
+<desc id="desc">Generated from hash-verified canonical CATENA artifacts.</desc>
+<rect width="100%" height="100%" fill="white"/>
+<text x="28.000" y="30.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="18.000" font-weight="bold" fill="#17212b" text-anchor="start">Sequence transfer across repeated updates and distractor gaps</text>
+<text x="239.000" y="66.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="12.000" font-weight="bold" fill="#17212b" text-anchor="middle">0</text>
+<text x="389.000" y="66.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="12.000" font-weight="bold" fill="#17212b" text-anchor="middle">128</text>
+<text x="539.000" y="66.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="12.000" font-weight="bold" fill="#17212b" text-anchor="middle">512</text>
+<text x="689.000" y="66.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="12.000" font-weight="bold" fill="#17212b" text-anchor="middle">2048</text>
+<text x="464.000" y="40.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="12.000" font-weight="normal" fill="#17212b" text-anchor="middle">Distractor events</text>
+<text x="144.000" y="144.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="12.000" font-weight="bold" fill="#17212b" text-anchor="end">1</text>
+<rect x="164.000" y="88.000" width="146.000" height="100.000" rx="4.000" fill="#e8f2f7" stroke="white" stroke-width="2.000"/>
+<text x="237.000" y="131.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="16.000" font-weight="bold" fill="#17212b" text-anchor="middle">1.9719</text>
+<text x="237.000" y="155.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="middle">range 1.949–2.002</text>
+<rect x="314.000" y="88.000" width="146.000" height="100.000" rx="4.000" fill="#e8f2f7" stroke="white" stroke-width="2.000"/>
+<text x="387.000" y="131.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="16.000" font-weight="bold" fill="#17212b" text-anchor="middle">1.9719</text>
+<text x="387.000" y="155.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="middle">range 1.949–2.002</text>
+<rect x="464.000" y="88.000" width="146.000" height="100.000" rx="4.000" fill="#e8f2f7" stroke="white" stroke-width="2.000"/>
+<text x="537.000" y="131.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="16.000" font-weight="bold" fill="#17212b" text-anchor="middle">1.9719</text>
+<text x="537.000" y="155.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="middle">range 1.949–2.002</text>
+<rect x="614.000" y="88.000" width="146.000" height="100.000" rx="4.000" fill="#e8f2f7" stroke="white" stroke-width="2.000"/>
+<text x="687.000" y="131.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="16.000" font-weight="bold" fill="#17212b" text-anchor="middle">1.9720</text>
+<text x="687.000" y="155.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="middle">range 1.949–2.002</text>
+<text x="144.000" y="248.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="12.000" font-weight="bold" fill="#17212b" text-anchor="end">4</text>
+<rect x="164.000" y="192.000" width="146.000" height="100.000" rx="4.000" fill="#acc1d1" stroke="white" stroke-width="2.000"/>
+<text x="237.000" y="235.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="16.000" font-weight="bold" fill="#17212b" text-anchor="middle">1.9910</text>
+<text x="237.000" y="259.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="middle">range 1.980–2.001</text>
+<rect x="314.000" y="192.000" width="146.000" height="100.000" rx="4.000" fill="#acc1d1" stroke="white" stroke-width="2.000"/>
+<text x="387.000" y="235.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="16.000" font-weight="bold" fill="#17212b" text-anchor="middle">1.9910</text>
+<text x="387.000" y="259.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="middle">range 1.980–2.001</text>
+<rect x="464.000" y="192.000" width="146.000" height="100.000" rx="4.000" fill="#acc1d1" stroke="white" stroke-width="2.000"/>
+<text x="537.000" y="235.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="16.000" font-weight="bold" fill="#17212b" text-anchor="middle">1.9910</text>
+<text x="537.000" y="259.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="middle">range 1.980–2.001</text>
+<rect x="614.000" y="192.000" width="146.000" height="100.000" rx="4.000" fill="#acc1d1" stroke="white" stroke-width="2.000"/>
+<text x="687.000" y="235.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="16.000" font-weight="bold" fill="#17212b" text-anchor="middle">1.9910</text>
+<text x="687.000" y="259.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="middle">range 1.980–2.001</text>
+<text x="144.000" y="352.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="12.000" font-weight="bold" fill="#17212b" text-anchor="end">8</text>
+<rect x="164.000" y="296.000" width="146.000" height="100.000" rx="4.000" fill="#1f4e79" stroke="white" stroke-width="2.000"/>
+<text x="237.000" y="339.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="16.000" font-weight="bold" fill="white" text-anchor="middle">2.0355</text>
+<text x="237.000" y="363.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="white" text-anchor="middle">range 2.026–2.040</text>
+<rect x="314.000" y="296.000" width="146.000" height="100.000" rx="4.000" fill="#1f4e79" stroke="white" stroke-width="2.000"/>
+<text x="387.000" y="339.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="16.000" font-weight="bold" fill="white" text-anchor="middle">2.0355</text>
+<text x="387.000" y="363.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="white" text-anchor="middle">range 2.026–2.040</text>
+<rect x="464.000" y="296.000" width="146.000" height="100.000" rx="4.000" fill="#1f4e79" stroke="white" stroke-width="2.000"/>
+<text x="537.000" y="339.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="16.000" font-weight="bold" fill="white" text-anchor="middle">2.0355</text>
+<text x="537.000" y="363.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="white" text-anchor="middle">range 2.026–2.040</text>
+<rect x="614.000" y="296.000" width="146.000" height="100.000" rx="4.000" fill="#1f4e79" stroke="white" stroke-width="2.000"/>
+<text x="687.000" y="339.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="16.000" font-weight="bold" fill="white" text-anchor="middle">2.0355</text>
+<text x="687.000" y="363.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="white" text-anchor="middle">range 2.026–2.040</text>
+<text x="54.000" y="244.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="12.000" font-weight="normal" fill="#17212b" text-anchor="middle" transform="rotate(-90.000 54.000 244.000)">Sequential updates</text>
+<rect x="798.000" y="293.400" width="18.000" height="2.800" rx="0.000" fill="#e8f2f7" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="290.800" width="18.000" height="2.800" rx="0.000" fill="#e5f0f5" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="288.200" width="18.000" height="2.800" rx="0.000" fill="#e3eef4" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="285.600" width="18.000" height="2.800" rx="0.000" fill="#e0ecf2" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="283.000" width="18.000" height="2.800" rx="0.000" fill="#deeaf1" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="280.400" width="18.000" height="2.800" rx="0.000" fill="#dbe8ef" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="277.800" width="18.000" height="2.800" rx="0.000" fill="#d9e6ed" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="275.200" width="18.000" height="2.800" rx="0.000" fill="#d6e3ec" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="272.600" width="18.000" height="2.800" rx="0.000" fill="#d4e1ea" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="270.000" width="18.000" height="2.800" rx="0.000" fill="#d1dfe9" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="267.400" width="18.000" height="2.800" rx="0.000" fill="#cfdde7" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="264.800" width="18.000" height="2.800" rx="0.000" fill="#ccdbe5" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="262.200" width="18.000" height="2.800" rx="0.000" fill="#c9d9e4" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="259.600" width="18.000" height="2.800" rx="0.000" fill="#c7d7e2" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="257.000" width="18.000" height="2.800" rx="0.000" fill="#c4d5e1" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="254.400" width="18.000" height="2.800" rx="0.000" fill="#c2d3df" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="251.800" width="18.000" height="2.800" rx="0.000" fill="#bfd1dd" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="249.200" width="18.000" height="2.800" rx="0.000" fill="#bdcfdc" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="246.600" width="18.000" height="2.800" rx="0.000" fill="#bacdda" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="244.000" width="18.000" height="2.800" rx="0.000" fill="#b8cbd9" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="241.400" width="18.000" height="2.800" rx="0.000" fill="#b5c8d7" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="238.800" width="18.000" height="2.800" rx="0.000" fill="#b3c6d6" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="236.200" width="18.000" height="2.800" rx="0.000" fill="#b0c4d4" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="233.600" width="18.000" height="2.800" rx="0.000" fill="#adc2d2" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="231.000" width="18.000" height="2.800" rx="0.000" fill="#abc0d1" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="228.400" width="18.000" height="2.800" rx="0.000" fill="#a8becf" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="225.800" width="18.000" height="2.800" rx="0.000" fill="#a6bcce" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="223.200" width="18.000" height="2.800" rx="0.000" fill="#a3bacc" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="220.600" width="18.000" height="2.800" rx="0.000" fill="#a1b8ca" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="218.000" width="18.000" height="2.800" rx="0.000" fill="#9eb6c9" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="215.400" width="18.000" height="2.800" rx="0.000" fill="#9cb4c7" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="212.800" width="18.000" height="2.800" rx="0.000" fill="#99b2c6" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="210.200" width="18.000" height="2.800" rx="0.000" fill="#97b0c4" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="207.600" width="18.000" height="2.800" rx="0.000" fill="#94adc2" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="205.000" width="18.000" height="2.800" rx="0.000" fill="#91abc1" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="202.400" width="18.000" height="2.800" rx="0.000" fill="#8fa9bf" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="199.800" width="18.000" height="2.800" rx="0.000" fill="#8ca7be" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="197.200" width="18.000" height="2.800" rx="0.000" fill="#8aa5bc" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="194.600" width="18.000" height="2.800" rx="0.000" fill="#87a3ba" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="192.000" width="18.000" height="2.800" rx="0.000" fill="#85a1b9" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="189.400" width="18.000" height="2.800" rx="0.000" fill="#829fb7" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="186.800" width="18.000" height="2.800" rx="0.000" fill="#809db6" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="184.200" width="18.000" height="2.800" rx="0.000" fill="#7d9bb4" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="181.600" width="18.000" height="2.800" rx="0.000" fill="#7b99b2" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="179.000" width="18.000" height="2.800" rx="0.000" fill="#7897b1" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="176.400" width="18.000" height="2.800" rx="0.000" fill="#7695af" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="173.800" width="18.000" height="2.800" rx="0.000" fill="#7393ae" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="171.200" width="18.000" height="2.800" rx="0.000" fill="#7090ac" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="168.600" width="18.000" height="2.800" rx="0.000" fill="#6e8eaa" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="166.000" width="18.000" height="2.800" rx="0.000" fill="#6b8ca9" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="163.400" width="18.000" height="2.800" rx="0.000" fill="#698aa7" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="160.800" width="18.000" height="2.800" rx="0.000" fill="#6688a6" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="158.200" width="18.000" height="2.800" rx="0.000" fill="#6486a4" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="155.600" width="18.000" height="2.800" rx="0.000" fill="#6184a2" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="153.000" width="18.000" height="2.800" rx="0.000" fill="#5f82a1" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="150.400" width="18.000" height="2.800" rx="0.000" fill="#5c809f" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="147.800" width="18.000" height="2.800" rx="0.000" fill="#5a7e9e" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="145.200" width="18.000" height="2.800" rx="0.000" fill="#577c9c" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="142.600" width="18.000" height="2.800" rx="0.000" fill="#547a9a" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="140.000" width="18.000" height="2.800" rx="0.000" fill="#527899" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="137.400" width="18.000" height="2.800" rx="0.000" fill="#4f7597" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="134.800" width="18.000" height="2.800" rx="0.000" fill="#4d7396" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="132.200" width="18.000" height="2.800" rx="0.000" fill="#4a7194" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="129.600" width="18.000" height="2.800" rx="0.000" fill="#486f93" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="127.000" width="18.000" height="2.800" rx="0.000" fill="#456d91" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="124.400" width="18.000" height="2.800" rx="0.000" fill="#436b8f" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="121.800" width="18.000" height="2.800" rx="0.000" fill="#40698e" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="119.200" width="18.000" height="2.800" rx="0.000" fill="#3e678c" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="116.600" width="18.000" height="2.800" rx="0.000" fill="#3b658b" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="114.000" width="18.000" height="2.800" rx="0.000" fill="#386389" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="111.400" width="18.000" height="2.800" rx="0.000" fill="#366187" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="108.800" width="18.000" height="2.800" rx="0.000" fill="#335f86" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="106.200" width="18.000" height="2.800" rx="0.000" fill="#315d84" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="103.600" width="18.000" height="2.800" rx="0.000" fill="#2e5a83" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="101.000" width="18.000" height="2.800" rx="0.000" fill="#2c5881" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="98.400" width="18.000" height="2.800" rx="0.000" fill="#29567f" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="95.800" width="18.000" height="2.800" rx="0.000" fill="#27547e" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="93.200" width="18.000" height="2.800" rx="0.000" fill="#24527c" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="90.600" width="18.000" height="2.800" rx="0.000" fill="#22507b" stroke="none" stroke-width="0.000"/>
+<rect x="798.000" y="88.000" width="18.000" height="2.800" rx="0.000" fill="#1f4e79" stroke="none" stroke-width="0.000"/>
+<text x="825.000" y="96.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="start">2.0355</text>
+<text x="825.000" y="296.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="start">1.9719</text>
+<text x="807.000" y="322.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="middle" transform="rotate(-90.000 807.000 322.000)">gain ×10⁻³</text>
+<text x="464.000" y="438.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="11.000" font-weight="normal" fill="#6b7280" text-anchor="middle">Overall mean=1.9995×10⁻³; registered stress mean=2.0355×10⁻³</text>
+<text x="460.000" y="515.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#6b7280" text-anchor="middle">Cell labels are five-seed means of tied − dual affected MSE; ranges show the seed extrema.</text>
+</svg>

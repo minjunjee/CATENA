@@ -1,0 +1,42 @@
+experiment_id: e10b_floor_aware_rank_scaling
+protocol:
+  amendment_id: prospective_checkpoint_only_pre_saturation_monotonicity
+  lock_path: docs/E10B_FLOOR_AWARE_RANK_SCALING_LOCK.json
+  original_e10_status: NOT_OPENED
+  original_e10_reason: STRICT_ALL_PAIR_MONOTONICITY_FAILED_AT_NUMERICAL_SATURATION
+  original_test_rows_reused: false
+  checkpoints_retrained: false
+source_e10:
+  experiment_id: e10_learned_rank_scaling
+  run_id: 20260727T184326.484361Z
+  run_dir: /data/minjun_dev/CATENA/artifacts/e10_learned_rank_scaling/20260727T184326.484361Z
+  report_sha256: 1c04ee78b184934ff233c2ef1786005557020c8b48f47169449088dbd51dc562
+  run_manifest_sha256: f358ae8d8cbe4c55cbf1e2f230dcf00c54f064aeeeec8b8114dcbab4e960136b
+  metrics_sha256: 2d396f7edcfe4d2d00d569536edccf394022a07422a9b40fe96fad25f2e20333
+  resolved_config_sha256: 31fb309a7af5c103e0bd90fd0c9fbfc09a484b2989fb5f077270eeb9354a2b2c
+  checkpoint_count: 240
+  checkpoint_index_sha256: fbba074717be7572c8558b2efe9974f5d9272524b087c0167727782f84344e3b
+seeds: [101, 211, 307, 401, 503, 601, 701, 809]
+data:
+  dimension: 64
+  descriptor_dim: 16
+  intrinsic_ranks: [1, 2, 4, 8, 16]
+  fresh_test_count: 2048
+  fresh_test_namespace:
+    id: e10b_fresh_descriptor_test_v1
+    seed_offset: 62000000
+    seed_multiplier: 10000
+    formula: seed_offset + seed_multiplier * source_training_seed + intrinsic_rank
+model:
+  learned_ranks: [1, 2, 4, 8, 16, 32]
+  hidden_dim: 256
+evaluation:
+  batch_size: 512
+statistics:
+  alpha: 0.05
+  statistical_unit: frozen_training_seed
+claim_gate:
+  oracle_normalized_recovery: 0.95
+  max_rank_factor: 2.0
+  minimum_rank_match_fraction: 0.8
+  eligible_pre_saturation_monotonic_fraction: 1.0

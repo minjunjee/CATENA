@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e10b_floor_aware_rank_scaling",
+  "frozen_at_utc": "2026-07-27T19:07:31Z",
+  "evaluation_started": false,
+  "amendment": {
+    "id": "prospective_checkpoint_only_pre_saturation_monotonicity",
+    "source_e10_remains_immutable": true,
+    "source_e10_claim_status": "NOT_OPENED",
+    "source_e10_failure_reason": "STRICT_ALL_PAIR_MONOTONICITY_FAILED_AT_NUMERICAL_SATURATION",
+    "only_replaced_gate": "strict_all_pair_monotonicity_to_pre_saturation_monotonicity",
+    "new_error_tolerance_added": false,
+    "checkpoints_retrained_or_selected": false,
+    "original_test_rows_reused": false
+  },
+  "source_freeze": {
+    "run_id": "20260727T184326.484361Z",
+    "report_sha256": "1c04ee78b184934ff233c2ef1786005557020c8b48f47169449088dbd51dc562",
+    "run_manifest_sha256": "f358ae8d8cbe4c55cbf1e2f230dcf00c54f064aeeeec8b8114dcbab4e960136b",
+    "metrics_sha256": "2d396f7edcfe4d2d00d569536edccf394022a07422a9b40fe96fad25f2e20333",
+    "resolved_config_sha256": "31fb309a7af5c103e0bd90fd0c9fbfc09a484b2989fb5f077270eeb9354a2b2c",
+    "checkpoint_count": 240,
+    "checkpoint_index_sha256": "fbba074717be7572c8558b2efe9974f5d9272524b087c0167727782f84344e3b"
+  },
+  "preserved_design": {
+    "exact_target_recovery_threshold": 0.95,
+    "intrinsic_ranks": [1, 2, 4, 8, 16],
+    "learned_ranks": [1, 2, 4, 8, 16, 32],
+    "max_rank_factor": 2.0,
+    "minimum_rank_match_fraction": 0.8,
+    "independent_seed_count": 8,
+    "statistical_unit": "frozen_training_seed",
+    "sign_flip_alpha": 0.05
+  },
+  "prospective_gate": {
+    "eligible_pair_definition": "lower_rank_fresh_exact_target_recovery < 0.95",
+    "eligible_pair_requirement": "upper_rank_error <= lower_rank_error",
+    "required_eligible_pair_fraction": 1.0,
+    "saturated_pair_definition": "lower_rank_fresh_exact_target_recovery >= 0.95",
+    "saturated_pair_disposition": "record_but_exclude_from_monotonicity_denominator"
+  },
+  "fresh_test_namespace": {
+    "id": "e10b_fresh_descriptor_test_v1",
+    "seed_formula": "62000000 + 10000 * source_training_seed + intrinsic_rank",
+    "descriptors_per_cell": 2048
+  },
+  "files": {
+    "configs/e10b_floor_aware_rank_scaling.yaml": "d632e47bc56967fbe10a6f60e553c87bf861093aa0ad77fffd722017cd1dd7e3",
+    "docs/E10B_FLOOR_AWARE_RANK_SCALING_PREREGISTRATION_KO.md": "c23b9005a712088b80c986eb559ef4dd650798088dadfb887a2a5f4f9256e2c2",
+    "experiments/e10b_floor_aware_rank_scaling.py": "841b85be58c95553d63ac7f69550764769a48c4b35078b9e3089f9f48fe23b51",
+    "src/catena/eval/rank_saturation.py": "e6cee4eed5da0c207ce0e626064c79a5f3d02aa7395e1559caae0271b3652300",
+    "src/catena/data/learned_rank.py": "21fb27389f5b56c862e4371b7c2a4fde121cc592c3016f9fa0a5a03640454820",
+    "src/catena/eval/rank_scaling.py": "e07e63f9515bcd3926ec39d0f94300b4c22e718d21a66fe902d490a2cae990a9",
+    "src/catena/eval/postcore_metrics.py": "6b30a24d73ae8f437f0af98706f0d4486678bea9f61e074b9faae8d057905ef9",
+    "src/catena/models/operator_controllers.py": "11aff4df33bf0d1cd31def5d824f0e4f2ab5200750f0b52c67e86a6bf6c07b9a",
+    "src/catena/training/postcore.py": "e14cbead25125a67c2fa9d99437736fb643613ed2983cba40a428ed9b0d4097c",
+    "experiments/common.py": "3249c01b79139e51d1cdd1632485d18a57a38993c40ae6b51bb0328f19926053",
+    "tests/test_e10b_floor_aware_rank_scaling.py": "af8a6e407f50fb979089c8b9720f5554172f82d8d1dcfd9f426556dd92d05249"
+  },
+  "claim_boundary": {
+    "evidence_tier": "CONTROLLED_REFERENCE",
+    "official_backend_claim_eligible": false,
+    "pretrained_language_model_claim_eligible": false,
+    "natural_language_transaction_claim_eligible": false
+  }
+}

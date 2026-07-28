@@ -1,0 +1,81 @@
+experiment_family: E21
+source_experiment_id: e21a_structured_sequence_localization_transfer
+aggregate_experiment_id: e21b_structured_sequence_localization_aggregate
+protocol:
+  protocol_id: prospective_structured_sequence_localization_transfer_v1
+  evidence_tier: CONTROLLED_REFERENCE
+  structured_identifiers_only: true
+  explicit_demand_fields: true
+  semantic_operation_label_provided: false
+  algebraic_demand_code_provided: true
+  oracle_demand_control: true
+  old_candidate_in_event_features: false
+  update_mask_in_model_input: false
+  novel_identifier_generalization_claim: false
+seeds: [113, 223, 331, 449, 557]
+development:
+  seed: 99121
+  claim_eligible: false
+namespaces:
+  identifier_schema_seed: 21001
+  train: e21-train-v1
+  evaluation: e21-evaluation-v1
+  distractor: e21-distractor-v1
+conditions:
+  - A_oracle_address_oracle_candidate
+  - B_learned_address_oracle_candidate
+  - C_oracle_address_state_read_candidate
+  - D_learned_address_state_read_candidate
+demand_families:
+  - magnitude_factorization
+  - value_granularity
+  - address_decoupling
+  - state_conditioning
+data:
+  slots: 32
+  value_dim: 32
+  identifier_code_dim: 32
+  state_scale: 0.5
+model:
+  variants:
+    - base
+    - separate_address
+    - state_aware
+    - full
+  hidden_dim: 256
+  address_temperature: 0.2
+  common_maximal_surface: true
+training:
+  steps: 3000
+  batch_size: 128
+  updates: 4
+  gap_events: 128
+  learning_rate: 0.0005
+  address_loss_weight: 0.25
+  candidate_loss_weight: 1.0
+  activity_loss_weight: 0.25
+  retention_weight: 1.0
+  optimizer: AdamW
+  condition_family_order: registered_round_robin
+evaluation:
+  updates: [1, 4, 8]
+  gap_events: [0, 128, 512, 2048]
+  batches: 8
+  batch_size: 128
+  stress:
+    updates: 8
+    gap_events: 2048
+statistics:
+  alpha: 0.05
+claim_gate:
+  selective_gain: 0.001
+  maximum_nontarget_degradation: 0.0005
+  retention_noninferiority: 0.0005
+  minimum_seed_direction_fraction: 1.0
+  minimum_address_accuracy: 0.95
+  maximum_candidate_recovery_mse: 0.001
+  maximum_capable_affected_mse: 0.001
+  maximum_oracle_floor_mse: 0.001
+  minimum_verified_activity: 0.95
+  maximum_distractor_activity: 0.05
+  require_complete_paired_grid: true

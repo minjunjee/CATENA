@@ -1,0 +1,399 @@
+experiment_id: e17_postcore_evidence_freeze
+
+evidence:
+  e10_original:
+    experiment_id: e10_learned_rank_scaling
+    run_id: 20260727T184326.484361Z
+    exact_run_path: e10_learned_rank_scaling/20260727T184326.484361Z
+    record_role: ORIGINAL
+    claim_disposition: NOT_OPENED
+    evidence_tier: CONTROLLED_REFERENCE
+    scope_flags:
+      controlled_claim_eligible: false
+      structured_sequence_claim_eligible: false
+      official_operator_claim_eligible: false
+      language_model_claim_eligible: false
+      agent_claim_eligible: false
+    files:
+      report.json: 1c04ee78b184934ff233c2ef1786005557020c8b48f47169449088dbd51dc562
+      run_manifest.json: f358ae8d8cbe4c55cbf1e2f230dcf00c54f064aeeeec8b8114dcbab4e960136b
+    expected_report_fields:
+      status: PASS
+      claim_gate.supported: false
+      claim_gate.conditions.learned_rank_error_monotonicity_passed: false
+    expected_manifest_fields:
+      schema_version: 2
+      experiment_id: e10_learned_rank_scaling
+      run_id: 20260727T184326.484361Z
+      run_mode: MAIN
+      report_sha256: 1c04ee78b184934ff233c2ef1786005557020c8b48f47169449088dbd51dc562
+    anchors:
+      - path: E10_POSTCORE_ARTIFACT_FREEZE_V1.json
+        sha256: c0d1daf5a7615eb82e2fde2a48ed07754969467b8c8d9abfc75a7982966e2533
+        expected_fields:
+          experiment_id: e10_learned_rank_scaling
+          run_id: 20260727T184326.484361Z
+          execution_status: PASS
+          claim_status: NOT_OPENED
+          immutable: true
+
+  e10b_prospective_repair:
+    experiment_id: e10b_floor_aware_rank_scaling
+    run_id: 20260727T190906.272784Z
+    exact_run_path: e10b_floor_aware_rank_scaling/20260727T190906.272784Z
+    record_role: PROSPECTIVE_REPAIR
+    claim_disposition: SUPPORTED
+    evidence_tier: CONTROLLED_REFERENCE
+    scope_flags:
+      controlled_claim_eligible: true
+      structured_sequence_claim_eligible: false
+      official_operator_claim_eligible: false
+      language_model_claim_eligible: false
+      agent_claim_eligible: false
+    files:
+      report.json: 30f2f781bcc8528964602e0c66e1b61bb9d71a6ca5f964b833b2551c93b72484
+      run_manifest.json: 758580489f2e88969fe03d1c5841735feeba1294107d1f36976ad125adf7bd83
+    expected_report_fields:
+      status: PASS
+      scientific_evidence: false
+      claim_gate.supported: true
+      claim_gate.controlled_geometry_claim_eligible: true
+      claim_gate.official_backend_claim_eligible: false
+      claim_gate.pretrained_language_model_claim_eligible: false
+    expected_manifest_fields:
+      schema_version: 2
+      experiment_id: e10b_floor_aware_rank_scaling
+      run_id: 20260727T190906.272784Z
+      run_mode: MAIN
+      report_sha256: 30f2f781bcc8528964602e0c66e1b61bb9d71a6ca5f964b833b2551c93b72484
+    anchors:
+      - path: E10B_POSTCORE_ARTIFACT_FREEZE_V1.json
+        sha256: d0dc495349f33a29629539e41af8f45da65583e2465f715b2a3005e1f966e3eb
+        expected_fields:
+          experiment_id: e10b_floor_aware_rank_scaling
+          run_id: 20260727T190906.272784Z
+          execution_status: PASS
+          claim_status: SUPPORTED
+          original_e10_claim_status: NOT_OPENED
+          immutable: true
+
+  e11_original:
+    experiment_id: e11_representation_control_coadaptation
+    run_id: 20260727T180703.763554Z
+    exact_run_path: e11_representation_control_coadaptation/20260727T180703.763554Z
+    record_role: ORIGINAL
+    claim_disposition: NOT_OPENED_SCALE_RESTRICTION
+    evidence_tier: CONTROLLED_REFERENCE
+    scope_flags:
+      controlled_claim_eligible: false
+      structured_sequence_claim_eligible: false
+      official_operator_claim_eligible: false
+      language_model_claim_eligible: false
+      agent_claim_eligible: false
+    files:
+      report.json: 5e80e6997ba93089fa96a0726ad84f8010037e1ad90b80e538a696fac5f9b681
+      run_manifest.json: a4e391d1406758c651666040f0ace23afd6cbee54da049e834ab37d296d6cb68
+    expected_report_fields:
+      status: PASS
+      claim_gate.supported: false
+    expected_manifest_fields:
+      experiment_id: e11_representation_control_coadaptation
+    anchors:
+      - path: E11_POSTCORE_ARTIFACT_FREEZE_V1.json
+        sha256: 61dc139a6f94914785b032440370530755e7906ae4d403b1fdf4ea17305120ff
+        expected_fields:
+          original_e11.run_id: 20260727T180703.763554Z
+          original_e11.execution_status: PASS
+          original_e11.claim_disposition: NOT_OPENED_SCALE_RESTRICTION
+          e11b_prospective_repair.claim_disposition: SUPPORTED
+
+  e11b_prospective_repair:
+    experiment_id: e11b_scale_normalized_coadaptation
+    run_id: 20260727T183004.928280Z
+    exact_run_path: e11b_scale_normalized_coadaptation/20260727T183004.928280Z
+    record_role: PROSPECTIVE_REPAIR
+    claim_disposition: SUPPORTED
+    evidence_tier: CONTROLLED_REFERENCE
+    scope_flags:
+      controlled_claim_eligible: true
+      structured_sequence_claim_eligible: false
+      official_operator_claim_eligible: false
+      language_model_claim_eligible: false
+      agent_claim_eligible: false
+    files:
+      report.json: 54015400029b3eae0367a1c12cb1dd717dee5a0568906f7d8e972c45bc4301b3
+      run_manifest.json: cf19f6dd5b7fafd80cf1c3cc46fde357e88ada26c4916e12d7e374b51826fe00
+    expected_report_fields:
+      status: PASS
+      claim_gate.supported: true
+    expected_manifest_fields:
+      experiment_id: e11b_scale_normalized_coadaptation
+    anchors:
+      - path: E11_POSTCORE_ARTIFACT_FREEZE_V1.json
+        sha256: 61dc139a6f94914785b032440370530755e7906ae4d403b1fdf4ea17305120ff
+        expected_fields:
+          original_e11.claim_disposition: NOT_OPENED_SCALE_RESTRICTION
+          e11b_prospective_repair.run_id: 20260727T183004.928280Z
+          e11b_prospective_repair.execution_status: PASS
+          e11b_prospective_repair.claim_disposition: SUPPORTED
+
+  e12_canonical:
+    experiment_id: e12_control_algebra_lattice
+    run_id: 20260727T184511.437394Z
+    exact_run_path: e12_control_algebra_lattice/20260727T184511.437394Z
+    record_role: CANONICAL_ARTIFACT_COMPLETE
+    claim_disposition: SUPPORTED
+    evidence_tier: CONTROLLED_REFERENCE
+    scope_flags:
+      controlled_claim_eligible: true
+      structured_sequence_claim_eligible: false
+      official_operator_claim_eligible: false
+      language_model_claim_eligible: false
+      agent_claim_eligible: false
+    files:
+      report.json: 5d300ea84fbe004370a2a44854637b2d60a0a0ccf5c63fc2ee2a24bce8fa2562
+      run_manifest.json: 6af5002065a2d53af6bc445ee89c3457aaf4b0828e36fbb30d0080209eb1207d
+    expected_report_fields:
+      status: PASS
+      claim_gate.supported: true
+    expected_manifest_fields:
+      schema_version: 2
+      experiment_id: e12_control_algebra_lattice
+      run_id: 20260727T184511.437394Z
+      run_mode: MAIN
+      report_sha256: 5d300ea84fbe004370a2a44854637b2d60a0a0ccf5c63fc2ee2a24bce8fa2562
+    anchors:
+      - path: E12_POSTCORE_ARTIFACT_FREEZE_V1.json
+        sha256: a507e84eaf4773e1b9d2ace8839f4634bde696bf359132eb90ee960b51d25078
+        expected_fields:
+          experiment_id: e12_control_algebra_lattice
+          run_id: 20260727T184511.437394Z
+          execution_status: PASS
+          claim_status: SUPPORTED
+          immutable: true
+
+  e13a_original:
+    experiment_id: e13a_sequence_floor_throughput
+    run_id: 20260727T180703.836996Z
+    exact_run_path: e13a_sequence_floor_throughput/20260727T180703.836996Z
+    record_role: ORIGINAL_CALIBRATION_PILOT
+    claim_disposition: CALIBRATION_PILOT_ONLY
+    evidence_tier: CONTROLLED_REFERENCE
+    scope_flags:
+      controlled_claim_eligible: false
+      structured_sequence_claim_eligible: false
+      official_operator_claim_eligible: false
+      language_model_claim_eligible: false
+      agent_claim_eligible: false
+    files:
+      report.json: dc45ccb753501c36185b41dea386f121148db8905aa7b667453f9008c1982530
+      run_manifest.json: 9405e07fc7ed38173e1bd6431061d339648574253c88e9ee5fc46942025e58c7
+    expected_report_fields:
+      status: PASS
+      claim_gate.go_for_e13b: true
+    expected_manifest_fields:
+      experiment_id: e13a_sequence_floor_throughput
+    anchors:
+      - path: E13A_R1_RESULT_STATUS_AMENDMENT_FREEZE_V1.json
+        sha256: fe82ebf8792baaa74d92da673d89c55c766fc279580037d9fa68c807f08a03be
+        expected_fields:
+          original_artifacts_immutable: true
+          e13a_r1.repaired_e13b_dependency_eligible: false
+          repaired_dependency.exclusive_for_repaired_e13b_r1: true
+          immutable: true
+    repo_anchors:
+      - path: docs/E13A_R1_SEQUENCE_CALIBRATION_LOCK.json
+        sha256: 5a589d6a51d0b1150429c22633355b5a4b99121d06f325e58ab47b7f7d542935
+        expected_fields:
+          original_e13a.run_id: 20260727T180703.836996Z
+          original_e13a.disposition: CALIBRATION_PILOT_ONLY
+          original_e13a.used_as_e13b_dependency: false
+          claim_boundary.sequence_claim_eligible: false
+
+  e13a_r1:
+    experiment_id: e13a_r1_sequence_floor_throughput
+    run_id: 20260727T183609.755945Z
+    exact_run_path: e13a_r1_sequence_floor_throughput/20260727T183609.755945Z
+    record_role: PROSPECTIVE_R1_LEGACY_PIPELINE
+    claim_disposition: GO_FOR_ORIGINAL_HARD_MASKED_PIPELINE_ONLY
+    evidence_tier: CONTROLLED_REFERENCE
+    scope_flags:
+      controlled_claim_eligible: false
+      structured_sequence_claim_eligible: false
+      official_operator_claim_eligible: false
+      language_model_claim_eligible: false
+      agent_claim_eligible: false
+    files:
+      report.json: ba5eb2df15d409b01cfde1194d21e52ef3bc16d4d2ceee15af5f7a0573b72fe3
+      run_manifest.json: 376378a8393ab2a129b4eead1e940f39439040cb8f8b28c00e171ac26aabb058
+    expected_report_fields:
+      status: PASS
+      claim_gate.go_for_e13b: true
+    expected_manifest_fields:
+      schema_version: 2
+      experiment_id: e13a_r1_sequence_floor_throughput
+      run_id: 20260727T183609.755945Z
+      run_mode: MAIN
+      report_sha256: ba5eb2df15d409b01cfde1194d21e52ef3bc16d4d2ceee15af5f7a0573b72fe3
+    anchors:
+      - path: E13A_R1_POSTCORE_ARTIFACT_FREEZE_V1.json
+        sha256: 7a8dbcdc789c327fbc9b339bc316880bd79815e8a39cc1832e661a7f35d8341e
+        expected_fields:
+          experiment_id: e13a_r1_sequence_floor_throughput
+          run_id: 20260727T183609.755945Z
+          execution_status: PASS
+          calibration_status: GO_FOR_ORIGINAL_HARD_MASKED_PIPELINE_ONLY
+          repaired_e13b_dependency_eligible: false
+          immutable: true
+
+  e13a_r2:
+    experiment_id: e13a_r2_sequence_floor_throughput
+    run_id: 20260727T190642.222102Z
+    exact_run_path: e13a_r2_sequence_floor_throughput/20260727T190642.222102Z
+    record_role: PROSPECTIVE_R2_REPAIRED_DEPENDENCY
+    claim_disposition: GO_FOR_E13B_R1_CALIBRATION_ONLY
+    evidence_tier: CONTROLLED_REFERENCE
+    scope_flags:
+      controlled_claim_eligible: true
+      structured_sequence_claim_eligible: false
+      official_operator_claim_eligible: false
+      language_model_claim_eligible: false
+      agent_claim_eligible: false
+    files:
+      report.json: 9071aee334da3170d79e23b5b2cbf57cffe041bb640a157c400687ddd2565218
+      run_manifest.json: 36a4a6a03d6dc14287ee7e6ef58b68dc7ba7e07817803dc50e89f81c76c12d43
+    expected_report_fields:
+      status: PASS
+      claim_gate.go_for_e13b: false
+      claim_gate.go_for_e13b_r1: true
+    expected_manifest_fields:
+      schema_version: 2
+      experiment_id: e13a_r2_sequence_floor_throughput
+      run_id: 20260727T190642.222102Z
+      run_mode: MAIN
+      report_sha256: 9071aee334da3170d79e23b5b2cbf57cffe041bb640a157c400687ddd2565218
+    anchors:
+      - path: E13A_R2_POSTCORE_ARTIFACT_FREEZE_V1.json
+        sha256: bd71c4900360a78727927004dd87701ee593a3f2526af3b9e726d8015cd127cb
+        expected_fields:
+          experiment_id: e13a_r2_sequence_floor_throughput
+          run_id: 20260727T190642.222102Z
+          execution_status: PASS
+          calibration_status: GO_FOR_E13B_R1
+          sequence_claim_status: NOT_OPENED_CALIBRATION_ONLY
+          immutable: true
+
+  e13c_r1:
+    experiment_id: e13c_r1_transactional_sequence_aggregate
+    run_id: 20260727T214126.954177Z
+    exact_run_path: e13c_r1_transactional_sequence_aggregate/20260727T214126.954177Z
+    record_role: CANONICAL_SEQUENCE_AGGREGATE
+    claim_disposition: SUPPORTED
+    evidence_tier: CONTROLLED_REFERENCE
+    scope_flags:
+      controlled_claim_eligible: true
+      structured_sequence_claim_eligible: true
+      official_operator_claim_eligible: false
+      language_model_claim_eligible: false
+      agent_claim_eligible: false
+    files:
+      report.json: 78121aa5dc7bd423065d8aef0fab908fc9fcd9e2412a49d9f0601a4f722e6a30
+      run_manifest.json: cc94ec353d216d434f131fbdfe4366aa221f0e93ac5c95f5ee5b1db8fca6eeac
+    expected_report_fields:
+      status: PASS
+      scientific_evidence: false
+      evidence_tier: CONTROLLED_REFERENCE
+      claim_gate.supported: true
+      claim_gate.conditions.calibration_hash_chain_passed: true
+      claim_gate.conditions.active_path_assay_passed: true
+    expected_manifest_fields:
+      schema_version: 2
+      experiment_id: e13c_r1_transactional_sequence_aggregate
+      run_id: 20260727T214126.954177Z
+      run_mode: MAIN
+      report_sha256: 78121aa5dc7bd423065d8aef0fab908fc9fcd9e2412a49d9f0601a4f722e6a30
+    anchors:
+      - path: E13BC_R1_POSTCORE_ARTIFACT_FREEZE_V1.json
+        sha256: 0a14049789e6778882605980d62ac4e7389d337b0ec2d0954ea04861fb1378b3
+        expected_fields:
+          execution_status: PASS
+          claim_status: SUPPORTED
+          aggregate.run_id: 20260727T214126.954177Z
+          calibration_dependency.run_id: 20260727T190642.222102Z
+          immutable: true
+
+  e14_canonical:
+    experiment_id: e14_plan_continuation
+    run_id: 20260727T214143.455051Z
+    exact_run_path: e14_plan_continuation/20260727T214143.455051Z
+    record_role: CANONICAL_STRUCTURED_PROXY
+    claim_disposition: SUPPORTED_STRUCTURED_PROXY_ONLY
+    evidence_tier: CONTROLLED_REFERENCE
+    scope_flags:
+      controlled_claim_eligible: true
+      structured_sequence_claim_eligible: false
+      official_operator_claim_eligible: false
+      language_model_claim_eligible: false
+      agent_claim_eligible: false
+    files:
+      report.json: 2a236624136f71b10d4c48ced011d677da47b41800fb974487878db3b3d9566e
+      run_manifest.json: 963ed0960e9da74459eead4e59c583b0837c7d96dd20b464bc8790e8ca006741
+    expected_report_fields:
+      status: PASS
+      claim_gate.supported: true
+      claim_gate.primary_estimand: affected_plan_correction_gain
+      claim_gate.whole_table_plan_correction_gain_is_descriptive: true
+    expected_manifest_fields:
+      schema_version: 2
+      experiment_id: e14_plan_continuation
+      run_id: 20260727T214143.455051Z
+      run_mode: MAIN
+      report_sha256: 2a236624136f71b10d4c48ced011d677da47b41800fb974487878db3b3d9566e
+    anchors:
+      - path: E14_POSTCORE_ARTIFACT_FREEZE_V1.json
+        sha256: e203b1a7b16efad20a393d579b6cdc3d02c810b7e6400498c40fc2e34ca4181a
+        expected_fields:
+          experiment_id: e14_plan_continuation
+          run_id: 20260727T214143.455051Z
+          execution_status: PASS
+          claim_status: SUPPORTED_STRUCTURED_PROXY_ONLY
+          proxy_scope: STRUCTURED_SYNTHETIC_ENTITY_VALUE
+          dependency.run_id: 20260727T214126.954177Z
+          immutable: true
+
+  e15_canonical_dry_gate:
+    experiment_id: e15_official_backend_gate
+    run_id: 20260727T184517.578907Z
+    exact_run_path: e15_official_backend_gate/20260727T184517.578907Z
+    record_role: CANONICAL_DRY_GATE
+    claim_disposition: NOT_CONFIGURED_DRY_GATE
+    evidence_tier: OPERATIONAL_DRY_GATE
+    scope_flags:
+      controlled_claim_eligible: false
+      structured_sequence_claim_eligible: false
+      official_operator_claim_eligible: false
+      language_model_claim_eligible: false
+      agent_claim_eligible: false
+    files:
+      report.json: 6d5de4ec722d7b3250a4173964028376a7f236ee6ad733d3a7392f5a45db85ad
+      run_manifest.json: 31c216f8d62448a94510ee42c9931463168eed03b7ec4ce5101b8c568a93d8a4
+    expected_report_fields:
+      status: DRY_RUN
+      claim_gate.official_backend_ready: false
+    expected_manifest_fields:
+      schema_version: 2
+      experiment_id: e15_official_backend_gate
+      run_id: 20260727T184517.578907Z
+      run_mode: DRY_RUN
+      report_sha256: 6d5de4ec722d7b3250a4173964028376a7f236ee6ad733d3a7392f5a45db85ad
+    anchors:
+      - path: E15_DRY_GATE_ARTIFACT_FREEZE_V1.json
+        sha256: 3d5977f655e53a3afed6fccf95abaef86c5e12c456dbead9fe71077ec7269fff
+        expected_fields:
+          experiment_id: e15_official_backend_gate
+          run_id: 20260727T184517.578907Z
+          execution_status: DRY_RUN
+          official_backend_ready: false
+          reference_fallback_used: false
+          scientific_evidence: false
+          immutable: true

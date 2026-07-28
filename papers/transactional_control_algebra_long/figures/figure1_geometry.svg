@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="440" viewBox="0 0 1440 440" role="img" aria-labelledby="title desc">
+<title id="title">Geometry predicts minimal control architecture</title>
+<desc id="desc">Generated from hash-verified canonical CATENA artifacts.</desc>
+<rect width="100%" height="100%" fill="white"/>
+<text x="20.000" y="24.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="18.000" font-weight="bold" fill="#17212b" text-anchor="start">A</text>
+<text x="46.000" y="24.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="16.000" font-weight="bold" fill="#17212b" text-anchor="start">Behavioral reachability</text>
+<line x1="78.000" y1="338.000" x2="428.000" y2="338.000" stroke="#17212b" stroke-width="1.200"/>
+<line x1="78.000" y1="58.000" x2="78.000" y2="338.000" stroke="#17212b" stroke-width="1.200"/>
+<line x1="78.000" y1="338.000" x2="428.000" y2="338.000" stroke="#e5e7eb" stroke-width="1.000"/>
+<text x="70.000" y="342.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="end">0.960</text>
+<line x1="78.000" y1="198.000" x2="428.000" y2="198.000" stroke="#e5e7eb" stroke-width="1.000"/>
+<text x="70.000" y="202.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="end">0.980</text>
+<line x1="78.000" y1="58.000" x2="428.000" y2="58.000" stroke="#e5e7eb" stroke-width="1.000"/>
+<text x="70.000" y="62.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="end">1.000</text>
+<rect x="100.333" y="74.692" width="72.000" height="263.308" rx="2.000" fill="#1f4e79" stroke="none" stroke-width="0.000"/>
+<text x="136.333" y="66.692" font-family="Arial, DejaVu Sans, sans-serif" font-size="11.000" font-weight="normal" fill="#17212b" text-anchor="middle">0.9976</text>
+<text x="136.333" y="358.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="middle">Behavioral</text>
+<rect x="217.000" y="216.960" width="72.000" height="121.040" rx="2.000" fill="#d55e00" stroke="none" stroke-width="0.000"/>
+<text x="253.000" y="208.960" font-family="Arial, DejaVu Sans, sans-serif" font-size="11.000" font-weight="normal" fill="#17212b" text-anchor="middle">0.9773</text>
+<text x="253.000" y="358.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="middle">State feasible</text>
+<rect x="333.667" y="229.934" width="72.000" height="108.066" rx="2.000" fill="#6b7280" stroke="none" stroke-width="0.000"/>
+<text x="369.667" y="221.934" font-family="Arial, DejaVu Sans, sans-serif" font-size="11.000" font-weight="normal" fill="#17212b" text-anchor="middle">0.9754</text>
+<text x="369.667" y="358.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="middle">State span</text>
+<text x="253.000" y="386.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#6b7280" text-anchor="middle">unseen-geometry conditional R²; calibration slope=1.0070</text>
+<text x="500.000" y="24.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="18.000" font-weight="bold" fill="#17212b" text-anchor="start">B</text>
+<text x="526.000" y="24.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="16.000" font-weight="bold" fill="#17212b" text-anchor="start">Learned control-rank scaling</text>
+<line x1="558.000" y1="338.000" x2="908.000" y2="338.000" stroke="#17212b" stroke-width="1.200"/>
+<line x1="558.000" y1="58.000" x2="558.000" y2="338.000" stroke="#17212b" stroke-width="1.200"/>
+<line x1="558.000" y1="338.000" x2="908.000" y2="58.000" stroke="#6b7280" stroke-width="1.000" stroke-dasharray="5,4"/>
+<circle cx="553.800" cy="338.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="641.300" cy="268.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="728.800" cy="198.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="816.300" cy="128.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="903.800" cy="58.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="555.000" cy="338.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="642.500" cy="268.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="730.000" cy="198.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="817.500" cy="128.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="905.000" cy="58.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="556.200" cy="338.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="643.700" cy="268.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="731.200" cy="198.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="818.700" cy="128.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="906.200" cy="58.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="557.400" cy="338.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="644.900" cy="268.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="732.400" cy="198.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="819.900" cy="128.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="907.400" cy="58.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="558.600" cy="338.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="646.100" cy="268.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="733.600" cy="198.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="821.100" cy="128.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="908.600" cy="58.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="559.800" cy="338.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="647.300" cy="268.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="734.800" cy="198.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="822.300" cy="128.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="909.800" cy="58.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="561.000" cy="338.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="648.500" cy="268.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="736.000" cy="198.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="823.500" cy="128.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="911.000" cy="58.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="562.200" cy="338.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="649.700" cy="268.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="737.200" cy="198.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="824.700" cy="128.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="912.200" cy="58.000" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<text x="558.000" y="357.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="middle">1</text>
+<text x="550.000" y="342.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="end">1</text>
+<text x="645.500" y="357.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="middle">2</text>
+<text x="550.000" y="272.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="end">2</text>
+<text x="733.000" y="357.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="middle">4</text>
+<text x="550.000" y="202.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="end">4</text>
+<text x="820.500" y="357.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="middle">8</text>
+<text x="550.000" y="132.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="end">8</text>
+<text x="908.000" y="357.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="middle">16</text>
+<text x="550.000" y="62.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="end">16</text>
+<text x="733.000" y="380.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="11.000" font-weight="normal" fill="#17212b" text-anchor="middle">Intrinsic rank</text>
+<text x="515.000" y="198.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="11.000" font-weight="normal" fill="#17212b" text-anchor="middle" transform="rotate(-90.000 515.000 198.000)">Minimum learned rank</text>
+<text x="733.000" y="74.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#6b7280" text-anchor="middle">match fraction=1.000; seeds=8</text>
+<text x="980.000" y="24.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="18.000" font-weight="bold" fill="#17212b" text-anchor="start">C</text>
+<text x="1006.000" y="24.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="16.000" font-weight="bold" fill="#17212b" text-anchor="start">Joint-diagonalization calibration</text>
+<line x1="1042.000" y1="338.000" x2="1382.000" y2="338.000" stroke="#17212b" stroke-width="1.200"/>
+<line x1="1042.000" y1="58.000" x2="1042.000" y2="338.000" stroke="#17212b" stroke-width="1.200"/>
+<line x1="1042.000" y1="338.000" x2="1382.000" y2="58.000" stroke="#6b7280" stroke-width="1.000" stroke-dasharray="5,4"/>
+<circle cx="1049.961" cy="331.433" r="4.200" fill="#1f4e79" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1050.120" cy="331.303" r="4.200" fill="#1f4e79" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1050.267" cy="331.202" r="4.200" fill="#1f4e79" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1050.442" cy="331.047" r="4.200" fill="#1f4e79" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1050.663" cy="330.858" r="4.200" fill="#1f4e79" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1050.664" cy="330.858" r="4.200" fill="#1f4e79" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1050.999" cy="330.573" r="4.200" fill="#1f4e79" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1051.016" cy="330.583" r="4.200" fill="#1f4e79" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1073.219" cy="312.266" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1075.333" cy="310.518" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1075.596" cy="310.365" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1075.661" cy="310.331" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1075.692" cy="310.144" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1075.836" cy="310.139" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1076.233" cy="309.818" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1076.733" cy="309.388" r="4.200" fill="#0072b2" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1107.573" cy="284.022" r="4.200" fill="#009e73" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1109.875" cy="282.175" r="4.200" fill="#009e73" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1110.726" cy="281.310" r="4.200" fill="#009e73" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1110.866" cy="281.293" r="4.200" fill="#009e73" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1111.366" cy="280.864" r="4.200" fill="#009e73" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1113.783" cy="278.951" r="4.200" fill="#009e73" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1113.841" cy="278.745" r="4.200" fill="#009e73" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1115.601" cy="277.362" r="4.200" fill="#009e73" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1165.372" cy="236.177" r="4.200" fill="#d55e00" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1167.844" cy="234.384" r="4.200" fill="#d55e00" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1168.777" cy="233.326" r="4.200" fill="#d55e00" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1169.012" cy="233.329" r="4.200" fill="#d55e00" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1169.634" cy="232.748" r="4.200" fill="#d55e00" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1170.205" cy="232.308" r="4.200" fill="#d55e00" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1176.448" cy="227.203" r="4.200" fill="#d55e00" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1177.448" cy="226.657" r="4.200" fill="#d55e00" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1276.276" cy="145.216" r="4.200" fill="#6a51a3" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1276.741" cy="144.943" r="4.200" fill="#6a51a3" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1276.780" cy="144.073" r="4.200" fill="#6a51a3" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1277.649" cy="143.776" r="4.200" fill="#6a51a3" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1278.596" cy="143.193" r="4.200" fill="#6a51a3" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1281.624" cy="140.603" r="4.200" fill="#6a51a3" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1281.643" cy="140.616" r="4.200" fill="#6a51a3" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1282.589" cy="139.865" r="4.200" fill="#6a51a3" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1361.676" cy="74.739" r="4.200" fill="#6b7280" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1362.746" cy="73.676" r="4.200" fill="#6b7280" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1363.200" cy="73.189" r="4.200" fill="#6b7280" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1363.406" cy="73.218" r="4.200" fill="#6b7280" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1365.466" cy="71.559" r="4.200" fill="#6b7280" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1365.905" cy="71.216" r="4.200" fill="#6b7280" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1366.213" cy="71.108" r="4.200" fill="#6b7280" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<circle cx="1368.883" cy="68.769" r="4.200" fill="#6b7280" stroke="white" stroke-width="0.800" opacity="0.820"/>
+<text x="1042.000" y="357.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="middle">0.000</text>
+<text x="1034.000" y="341.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="end">0.000</text>
+<text x="1155.333" y="357.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="middle">0.002</text>
+<text x="1034.000" y="247.667" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="end">0.002</text>
+<text x="1268.667" y="357.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="middle">0.004</text>
+<text x="1034.000" y="154.333" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="end">0.004</text>
+<text x="1382.000" y="357.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="middle">0.006</text>
+<text x="1034.000" y="61.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="end">0.006</text>
+<text x="1212.000" y="380.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="11.000" font-weight="normal" fill="#17212b" text-anchor="middle">Analytic JD regret</text>
+<text x="996.000" y="198.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="11.000" font-weight="normal" fill="#17212b" text-anchor="middle" transform="rotate(-90.000 996.000 198.000)">Application error</text>
+<text x="1212.000" y="74.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#6b7280" text-anchor="middle">R²=0.999998; slope=1.00026</text>
+<text x="720.000" y="425.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#6b7280" text-anchor="middle">Dashed lines denote identity; every plotted value is read from a hash-pinned artifact.</text>
+</svg>

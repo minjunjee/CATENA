@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e12_control_algebra_lattice",
+  "frozen_at_utc": "2026-07-27T18:43:54Z",
+  "evaluation_started": false,
+  "amendment_type": "PROSPECTIVE_ARTIFACT_COMPLETION_REPLICATION",
+  "immutable_prior_supported_run": {
+    "run_id": "20260727T182449.721061Z",
+    "disposition": "SUPPORTED_IMMUTABLE_ARTIFACT_INCOMPLETE",
+    "claim_gate_supported": true,
+    "report_sha256": "5d300ea84fbe004370a2a44854637b2d60a0a0ccf5c63fc2ee2a24bce8fa2562",
+    "run_manifest_sha256": "f1545c0cbe8753bcc4b7e390a4586ec0bcd9f555b340f5c7e9beb248717dc1a0",
+    "metrics_sha256": "a2019187f0b6cebf45f1350964d8594357b259823e7a058e67912a583ae99058",
+    "checkpoint_artifacts_present": false,
+    "modified_or_reclassified": false
+  },
+  "protocol_invariants": {
+    "config_changed": false,
+    "data_changed": false,
+    "seeds_changed": false,
+    "model_grid_changed": false,
+    "training_changed": false,
+    "evaluation_changed": false,
+    "metric_definitions_changed": false,
+    "statistics_changed": false,
+    "claim_gates_changed": false,
+    "claim_wording_changed": false,
+    "prior_metric_rows_reused": false
+  },
+  "artifact_completion_only": {
+    "expected_checkpoint_count": 40,
+    "checkpoint_unit": "seed_x_controller_freedom",
+    "metric_rows_include_checkpoint_absolute_path": true,
+    "metric_rows_include_checkpoint_sha256": true,
+    "config_resolved_yaml": true,
+    "environment_json": true,
+    "run_manifest_schema_version": 2,
+    "run_mode": "MAIN"
+  },
+  "files": {
+    "configs/e12_control_algebra_lattice.yaml": "74ad53a909742e6ecee86a5bbc84fe168704f73bfa89643bf81c42ca6b31c357",
+    "docs/E12_CONTROL_ALGEBRA_LATTICE_KO.md": "8baa65bd8add622ea4d3e9dfb3007ad0bc9e08542bf987732061944d06af2da6",
+    "experiments/common.py": "3249c01b79139e51d1cdd1632485d18a57a38993c40ae6b51bb0328f19926053",
+    "experiments/e12_control_algebra_lattice.py": "f6710448c390f8677d3805dbebe9ae2665ab00cf11f60035b677d9aa4f80d48c",
+    "src/catena/core/config.py": "834d5d1d64a88a31b81b49715255fb9ce032e0e747f90d21996c362b3271d6a6",
+    "src/catena/core/io.py": "317316040b6a330a6daffe26a102e1886d689b2fca9329280bf1005cca879a1b",
+    "src/catena/core/provenance_v61.py": "4d4366febfc21e3fbe5e2f6931a7e298ca13cb2cd8cf4e32447cd67ffb8a9c24",
+    "src/catena/data/control_lattice.py": "e35d44e44e8f97f438f34947480adace62cb1b23b95fa9d9b3f4e79064bbd5a9",
+    "src/catena/eval/postcore_metrics.py": "6b30a24d73ae8f437f0af98706f0d4486678bea9f61e074b9faae8d057905ef9",
+    "src/catena/models/lattice_controllers.py": "53f1c7cd7a0cd85c15b24d862ac47d8af06026f8149a72f955ce448331477c03",
+    "src/catena/systems/device.py": "c45a657f2869851a1e43f022a3293e1b9ae735bfd8ec733eca2364d867052b73",
+    "src/catena/training/lattice_training.py": "62ea4b84c57223b87140dce9ac548a0641307bc3a6f7e6f774ae1cd91d79edcf",
+    "tests/test_control_lattice_postcore.py": "94e47b54db31831d8123cb9fb3947efdc1cdfb854b63e037b44ff81d7f63bc83",
+    "tests/test_postcore_common_provenance.py": "1d1c08c81a84825373da1b6998c35c147f7a387f7fe403acde61ce62390f56ed"
+  },
+  "validation_before_lock": {
+    "focused_pytest": "7 passed",
+    "ruff": "PASS",
+    "compileall": "PASS"
+  },
+  "claim_boundary": {
+    "evidence_tier": "CONTROLLED_REFERENCE",
+    "official_backend_claim_eligible": false,
+    "pretrained_language_model_claim_eligible": false,
+    "runtime_superiority_claim_eligible": false,
+    "universal_architecture_superiority_claim_eligible": false
+  }
+}

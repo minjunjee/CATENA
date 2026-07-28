@@ -1,0 +1,552 @@
+{
+  "e03b": {
+    "intercept": 1.8464322536954395e-07,
+    "points": [
+      {
+        "analytic_regret": 0.00013239430353167262,
+        "bin": "bin_01",
+        "candidate_id": "graded-realization-9fbf1b4f9ca8b9239f1e",
+        "empirical_application_error": 0.0001326263217416579
+      },
+      {
+        "analytic_regret": 0.00013504173391025727,
+        "bin": "bin_01",
+        "candidate_id": "graded-realization-966e390c41f44d9fbc21",
+        "empirical_application_error": 0.00013523565813148945
+      },
+      {
+        "analytic_regret": 0.00013748728746789508,
+        "bin": "bin_01",
+        "candidate_id": "graded-realization-0fc67c6bcc121b923fca",
+        "empirical_application_error": 0.00013728807978748787
+      },
+      {
+        "analytic_regret": 0.00014039395810155469,
+        "bin": "bin_01",
+        "candidate_id": "graded-realization-e0d9e395aba1b2f04fb3",
+        "empirical_application_error": 0.00014040425046410096
+      },
+      {
+        "analytic_regret": 0.00014407002250322248,
+        "bin": "bin_01",
+        "candidate_id": "graded-realization-069f3f45e398b4fe771e",
+        "empirical_application_error": 0.0001442202466726322
+      },
+      {
+        "analytic_regret": 0.000144091175514613,
+        "bin": "bin_01",
+        "candidate_id": "graded-realization-108580005960dbb93f01",
+        "empirical_application_error": 0.00014422816481350907
+      },
+      {
+        "analytic_regret": 0.00014966597922938318,
+        "bin": "bin_01",
+        "candidate_id": "graded-realization-d1e063a6e19d9ba3e51d",
+        "empirical_application_error": 0.00014997637813890443
+      },
+      {
+        "analytic_regret": 0.00014994503720556257,
+        "bin": "bin_01",
+        "candidate_id": "graded-realization-154adb5da6ce7fc99daa",
+        "empirical_application_error": 0.00014978171125178512
+      },
+      {
+        "analytic_regret": 0.0005191988472416848,
+        "bin": "bin_02",
+        "candidate_id": "graded-realization-231aa1e91d65a301e25f",
+        "empirical_application_error": 0.000519690759913014
+      },
+      {
+        "analytic_regret": 0.0005543525316314059,
+        "bin": "bin_02",
+        "candidate_id": "graded-realization-91d7bbd459b494b71dce",
+        "empirical_application_error": 0.0005549742272096877
+      },
+      {
+        "analytic_regret": 0.0005587291763535174,
+        "bin": "bin_02",
+        "candidate_id": "graded-realization-b1617ef7883d7c9309bf",
+        "empirical_application_error": 0.0005580619509930867
+      },
+      {
+        "analytic_regret": 0.0005598114265984696,
+        "bin": "bin_02",
+        "candidate_id": "graded-realization-bdf5570ca8eecf2335b2",
+        "empirical_application_error": 0.0005587521715503241
+      },
+      {
+        "analytic_regret": 0.0005603144179535013,
+        "bin": "bin_02",
+        "candidate_id": "graded-realization-3684936703e7e8fb91b3",
+        "empirical_application_error": 0.00056253542285981
+      },
+      {
+        "analytic_regret": 0.0005627171554787614,
+        "bin": "bin_02",
+        "candidate_id": "graded-realization-c7e043cb6691c6966598",
+        "empirical_application_error": 0.00056262833254473
+      },
+      {
+        "analytic_regret": 0.0005693225132246294,
+        "bin": "bin_02",
+        "candidate_id": "graded-realization-e3904c596587af23549e",
+        "empirical_application_error": 0.0005691220038688185
+      },
+      {
+        "analytic_regret": 0.0005776316138038746,
+        "bin": "bin_02",
+        "candidate_id": "graded-realization-33105df1e0af2bead4f4",
+        "empirical_application_error": 0.0005777986164803095
+      },
+      {
+        "analytic_regret": 0.0010905167307617319,
+        "bin": "bin_03",
+        "candidate_id": "graded-realization-9ea48b8002dcc2f904cc",
+        "empirical_application_error": 0.0010900421546813964
+      },
+      {
+        "analytic_regret": 0.0011287997940332536,
+        "bin": "bin_03",
+        "candidate_id": "graded-realization-9042c5d679d825a4ad03",
+        "empirical_application_error": 0.0011273445326532069
+      },
+      {
+        "analytic_regret": 0.0011429636763152637,
+        "bin": "bin_03",
+        "candidate_id": "graded-realization-06b316d2ab7b667caaca",
+        "empirical_application_error": 0.0011448254267760554
+      },
+      {
+        "analytic_regret": 0.0011452867050155127,
+        "bin": "bin_03",
+        "candidate_id": "graded-realization-236df67872ec88f8e72f",
+        "empirical_application_error": 0.0011451522732437483
+      },
+      {
+        "analytic_regret": 0.0011536072127342895,
+        "bin": "bin_03",
+        "candidate_id": "graded-realization-91dc66f160bfbbf80032",
+        "empirical_application_error": 0.0011538209090042923
+      },
+      {
+        "analytic_regret": 0.001193794744534694,
+        "bin": "bin_03",
+        "candidate_id": "graded-realization-9f2f136fb04fa46ecb2e",
+        "empirical_application_error": 0.0011924568501776645
+      },
+      {
+        "analytic_regret": 0.0011947703868388977,
+        "bin": "bin_03",
+        "candidate_id": "graded-realization-6c9fff3e0f112e32ebfe",
+        "empirical_application_error": 0.0011966098082873446
+      },
+      {
+        "analytic_regret": 0.001224026564787185,
+        "bin": "bin_03",
+        "candidate_id": "graded-realization-4f335c57795347bab518",
+        "empirical_application_error": 0.0012245523761987265
+      },
+      {
+        "analytic_regret": 0.0020517587556501174,
+        "bin": "bin_04",
+        "candidate_id": "graded-realization-c7175299a5702651abd3",
+        "empirical_application_error": 0.0020562562230781144
+      },
+      {
+        "analytic_regret": 0.0020928755706762147,
+        "bin": "bin_04",
+        "candidate_id": "graded-realization-3684f06eb7c098b29aaa",
+        "empirical_application_error": 0.002092453400206324
+      },
+      {
+        "analytic_regret": 0.002108377395640828,
+        "bin": "bin_04",
+        "candidate_id": "graded-realization-8c05f8ba0a15bb27727f",
+        "empirical_application_error": 0.0021138296624571007
+      },
+      {
+        "analytic_regret": 0.0021122972793400424,
+        "bin": "bin_04",
+        "candidate_id": "graded-realization-1f8440d988b28f2b9e11",
+        "empirical_application_error": 0.0021137625233944666
+      },
+      {
+        "analytic_regret": 0.0021226449495408274,
+        "bin": "bin_04",
+        "candidate_id": "graded-realization-f406a60a5eea75255cee",
+        "empirical_application_error": 0.002125495672859093
+      },
+      {
+        "analytic_regret": 0.00213214001899042,
+        "bin": "bin_04",
+        "candidate_id": "graded-realization-20020629efa1616c0050",
+        "empirical_application_error": 0.002134387557374374
+      },
+      {
+        "analytic_regret": 0.0022359578165795807,
+        "bin": "bin_04",
+        "candidate_id": "graded-realization-bb9e18a1207d5d58aaeb",
+        "empirical_application_error": 0.002237480763105771
+      },
+      {
+        "analytic_regret": 0.002252591369894536,
+        "bin": "bin_04",
+        "candidate_id": "graded-realization-d97354b776a6d81bc4b4",
+        "empirical_application_error": 0.002248492730630123
+      },
+      {
+        "analytic_regret": 0.003896163348209242,
+        "bin": "bin_05",
+        "candidate_id": "graded-realization-bf7e16ddde1dc9e7e21a",
+        "empirical_application_error": 0.0038931549832868124
+      },
+      {
+        "analytic_regret": 0.0039039013563873784,
+        "bin": "bin_05",
+        "candidate_id": "graded-realization-044195a9c12fd002eccc",
+        "empirical_application_error": 0.0038986686616498817
+      },
+      {
+        "analytic_regret": 0.003904552361962742,
+        "bin": "bin_05",
+        "candidate_id": "graded-realization-268fb40c65753d5b261b",
+        "empirical_application_error": 0.003916230766459918
+      },
+      {
+        "analytic_regret": 0.003919003031667702,
+        "bin": "bin_05",
+        "candidate_id": "graded-realization-74335d6f00c427075468",
+        "empirical_application_error": 0.003922223764258457
+      },
+      {
+        "analytic_regret": 0.003934745940881857,
+        "bin": "bin_05",
+        "candidate_id": "graded-realization-6de495ebf27e6ba081a3",
+        "empirical_application_error": 0.003934012789413599
+      },
+      {
+        "analytic_regret": 0.003985100322352779,
+        "bin": "bin_05",
+        "candidate_id": "graded-realization-2cdfcb06296aca83c5b3",
+        "empirical_application_error": 0.003986314598626447
+      },
+      {
+        "analytic_regret": 0.003985416609727339,
+        "bin": "bin_05",
+        "candidate_id": "graded-realization-283368468a94b3722338",
+        "empirical_application_error": 0.003986038993904618
+      },
+      {
+        "analytic_regret": 0.0040011517478783926,
+        "bin": "bin_05",
+        "candidate_id": "graded-realization-fb3f4e1bd5d89be0b081",
+        "empirical_application_error": 0.004001203271233511
+      },
+      {
+        "analytic_regret": 0.005316427750308307,
+        "bin": "bin_06",
+        "candidate_id": "graded-realization-61def1ee178e11f14275",
+        "empirical_application_error": 0.005316392751929867
+      },
+      {
+        "analytic_regret": 0.005334214024539983,
+        "bin": "bin_06",
+        "candidate_id": "graded-realization-08a257c3e40f3adb69c9",
+        "empirical_application_error": 0.005337863141455795
+      },
+      {
+        "analytic_regret": 0.005341758730209256,
+        "bin": "bin_06",
+        "candidate_id": "graded-realization-ffc75e7ddf3f38aa614b",
+        "empirical_application_error": 0.005347685613908462
+      },
+      {
+        "analytic_regret": 0.005345196550576671,
+        "bin": "bin_06",
+        "candidate_id": "graded-realization-d958800613d47a8dcb4e",
+        "empirical_application_error": 0.0053470991439608494
+      },
+      {
+        "analytic_regret": 0.005379459494075563,
+        "bin": "bin_06",
+        "candidate_id": "graded-realization-6611d893585f5f424843",
+        "empirical_application_error": 0.005380609492991319
+      },
+      {
+        "analytic_regret": 0.005386748826573122,
+        "bin": "bin_06",
+        "candidate_id": "graded-realization-8ed7bf780dd20af6789a",
+        "empirical_application_error": 0.005387530901072262
+      },
+      {
+        "analytic_regret": 0.0053918673242115776,
+        "bin": "bin_06",
+        "candidate_id": "graded-realization-7e70a1497e13dcc23104",
+        "empirical_application_error": 0.005389720592494036
+      },
+      {
+        "analytic_regret": 0.005436275890174213,
+        "bin": "bin_06",
+        "candidate_id": "graded-realization-6f15d1bfaaf3fe73e5cf",
+        "empirical_application_error": 0.005436945159472051
+      }
+    ],
+    "r2": 0.9999981686387072,
+    "slope": 1.0002589211301642
+  },
+  "e10b": {
+    "points": [
+      {
+        "intrinsic_rank": 1,
+        "matched": true,
+        "minimum_qualifying_rank": 1,
+        "seed": 101
+      },
+      {
+        "intrinsic_rank": 2,
+        "matched": true,
+        "minimum_qualifying_rank": 2,
+        "seed": 101
+      },
+      {
+        "intrinsic_rank": 4,
+        "matched": true,
+        "minimum_qualifying_rank": 4,
+        "seed": 101
+      },
+      {
+        "intrinsic_rank": 8,
+        "matched": true,
+        "minimum_qualifying_rank": 8,
+        "seed": 101
+      },
+      {
+        "intrinsic_rank": 16,
+        "matched": true,
+        "minimum_qualifying_rank": 16,
+        "seed": 101
+      },
+      {
+        "intrinsic_rank": 1,
+        "matched": true,
+        "minimum_qualifying_rank": 1,
+        "seed": 211
+      },
+      {
+        "intrinsic_rank": 2,
+        "matched": true,
+        "minimum_qualifying_rank": 2,
+        "seed": 211
+      },
+      {
+        "intrinsic_rank": 4,
+        "matched": true,
+        "minimum_qualifying_rank": 4,
+        "seed": 211
+      },
+      {
+        "intrinsic_rank": 8,
+        "matched": true,
+        "minimum_qualifying_rank": 8,
+        "seed": 211
+      },
+      {
+        "intrinsic_rank": 16,
+        "matched": true,
+        "minimum_qualifying_rank": 16,
+        "seed": 211
+      },
+      {
+        "intrinsic_rank": 1,
+        "matched": true,
+        "minimum_qualifying_rank": 1,
+        "seed": 307
+      },
+      {
+        "intrinsic_rank": 2,
+        "matched": true,
+        "minimum_qualifying_rank": 2,
+        "seed": 307
+      },
+      {
+        "intrinsic_rank": 4,
+        "matched": true,
+        "minimum_qualifying_rank": 4,
+        "seed": 307
+      },
+      {
+        "intrinsic_rank": 8,
+        "matched": true,
+        "minimum_qualifying_rank": 8,
+        "seed": 307
+      },
+      {
+        "intrinsic_rank": 16,
+        "matched": true,
+        "minimum_qualifying_rank": 16,
+        "seed": 307
+      },
+      {
+        "intrinsic_rank": 1,
+        "matched": true,
+        "minimum_qualifying_rank": 1,
+        "seed": 401
+      },
+      {
+        "intrinsic_rank": 2,
+        "matched": true,
+        "minimum_qualifying_rank": 2,
+        "seed": 401
+      },
+      {
+        "intrinsic_rank": 4,
+        "matched": true,
+        "minimum_qualifying_rank": 4,
+        "seed": 401
+      },
+      {
+        "intrinsic_rank": 8,
+        "matched": true,
+        "minimum_qualifying_rank": 8,
+        "seed": 401
+      },
+      {
+        "intrinsic_rank": 16,
+        "matched": true,
+        "minimum_qualifying_rank": 16,
+        "seed": 401
+      },
+      {
+        "intrinsic_rank": 1,
+        "matched": true,
+        "minimum_qualifying_rank": 1,
+        "seed": 503
+      },
+      {
+        "intrinsic_rank": 2,
+        "matched": true,
+        "minimum_qualifying_rank": 2,
+        "seed": 503
+      },
+      {
+        "intrinsic_rank": 4,
+        "matched": true,
+        "minimum_qualifying_rank": 4,
+        "seed": 503
+      },
+      {
+        "intrinsic_rank": 8,
+        "matched": true,
+        "minimum_qualifying_rank": 8,
+        "seed": 503
+      },
+      {
+        "intrinsic_rank": 16,
+        "matched": true,
+        "minimum_qualifying_rank": 16,
+        "seed": 503
+      },
+      {
+        "intrinsic_rank": 1,
+        "matched": true,
+        "minimum_qualifying_rank": 1,
+        "seed": 601
+      },
+      {
+        "intrinsic_rank": 2,
+        "matched": true,
+        "minimum_qualifying_rank": 2,
+        "seed": 601
+      },
+      {
+        "intrinsic_rank": 4,
+        "matched": true,
+        "minimum_qualifying_rank": 4,
+        "seed": 601
+      },
+      {
+        "intrinsic_rank": 8,
+        "matched": true,
+        "minimum_qualifying_rank": 8,
+        "seed": 601
+      },
+      {
+        "intrinsic_rank": 16,
+        "matched": true,
+        "minimum_qualifying_rank": 16,
+        "seed": 601
+      },
+      {
+        "intrinsic_rank": 1,
+        "matched": true,
+        "minimum_qualifying_rank": 1,
+        "seed": 701
+      },
+      {
+        "intrinsic_rank": 2,
+        "matched": true,
+        "minimum_qualifying_rank": 2,
+        "seed": 701
+      },
+      {
+        "intrinsic_rank": 4,
+        "matched": true,
+        "minimum_qualifying_rank": 4,
+        "seed": 701
+      },
+      {
+        "intrinsic_rank": 8,
+        "matched": true,
+        "minimum_qualifying_rank": 8,
+        "seed": 701
+      },
+      {
+        "intrinsic_rank": 16,
+        "matched": true,
+        "minimum_qualifying_rank": 16,
+        "seed": 701
+      },
+      {
+        "intrinsic_rank": 1,
+        "matched": true,
+        "minimum_qualifying_rank": 1,
+        "seed": 809
+      },
+      {
+        "intrinsic_rank": 2,
+        "matched": true,
+        "minimum_qualifying_rank": 2,
+        "seed": 809
+      },
+      {
+        "intrinsic_rank": 4,
+        "matched": true,
+        "minimum_qualifying_rank": 4,
+        "seed": 809
+      },
+      {
+        "intrinsic_rank": 8,
+        "matched": true,
+        "minimum_qualifying_rank": 8,
+        "seed": 809
+      },
+      {
+        "intrinsic_rank": 16,
+        "matched": true,
+        "minimum_qualifying_rank": 16,
+        "seed": 809
+      }
+    ],
+    "rank_match_fraction": 1.0,
+    "seed_count": 8
+  },
+  "h1": {
+    "calibration_slope": 1.0070425554120974,
+    "operation_adjusted_slope": 1.0086329002422438,
+    "predictor_conditional_oos_r2": {
+      "behavioral feasible regret": 0.9976154443311922,
+      "state feasible regret": 0.9772914532654532,
+      "state span regret": 0.9754379351457975
+    }
+  }
+}

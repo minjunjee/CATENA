@@ -1,0 +1,57 @@
+\section{Transactional Control Algebra}
+\label{sec:algebra}
+
+\subsection{Reachable updates}
+
+Let $S$ be the current state, $\tau$ a transaction, and
+$\Delta S^\star(S,\tau)$ its target update.  A controller class
+$\mathcal{C}$ induces a reachable set
+$\mathcal{R}_{\mathcal{C}}(S,\tau)$.  State-space regret measures distance to
+that set, whereas behavioral regret evaluates the best reachable update after
+the task readout $\rho$:
+\begin{align}
+R_{\mathrm{state}}
+  &= \min_{\Delta S\in\mathcal{R}_{\mathcal{C}}}
+     \lVert\Delta S-\Delta S^\star\rVert^2,\\
+R_{\mathrm{beh}}
+  &= \min_{\Delta S\in\mathcal{R}_{\mathcal{C}}}
+     \lVert\rho(S+\Delta S)-\rho(S+\Delta S^\star)\rVert^2.
+\end{align}
+The distinction matters whenever state components differ in behavioral
+relevance.
+
+\subsection{Control rank}
+
+For descriptor-conditioned target operators $A(z)$, a rank-$r$ controller can
+only reach a rank-constrained family.  We separate intrinsic target rank,
+learned controller rank, the per-example best-rank floor, and learned
+excess-over-floor.  The prospective E10b rule asks for the smallest learned
+rank that satisfies a floor-aware quality condition; it does not equate an
+oracle upper bound with learned recovery.
+
+\subsection{Shared bases and demand algebra}
+
+A shared diagonal controller represents a demand family as
+\begin{equation}
+  A_\tau = Q\,\mathrm{Diag}(c_\tau)\,Q^\top
+\end{equation}
+for one shared basis $Q$.  Axis-aligned and common-rotated commuting families
+admit this form.  Transaction-dependent noncommuting families need not.
+Representation learning can absorb a common rotation, but one shared basis
+does not thereby represent arbitrary noncommutativity.  This connects the
+controller class to simultaneous diagonalization
+\citep{bunsegerstner1993simultaneous,cardoso1996jacobi,glashoff2013almost}.
+
+\subsection{Nested control freedoms}
+
+The controlled lattice is
+\begin{equation}
+\text{tied scalar}
+\subset \text{dual scalar}
+\subset \text{diagonal value}
+\subset \text{separate address}
+\subset \text{state-aware}.
+\end{equation}
+Each inclusion adds a named freedom.  Our tests ask whether an adjacent
+inclusion helps on the matched demand while satisfying registered
+simpler-demand and unaffected-retention guardrails.

@@ -1,0 +1,43 @@
+experiment_id: e11b_scale_normalized_coadaptation
+protocol:
+  predecessor_experiment_id: e11_representation_control_coadaptation
+  predecessor_run_id: 20260727T180703.763554Z
+  predecessor_status: NOT_OPENED_SCALE_RESTRICTION
+  original_rows_reused: false
+  original_seeds: [101, 211, 307, 401, 503, 601, 701, 809]
+seeds: [907, 1009, 1103, 1201, 1301, 1409, 1511, 1601]
+data:
+  dimension: 32
+  active_rank: 8
+  descriptor_dim: 12
+  rotation_scale: 0.45
+  train_count: 4096
+  test_count: 2048
+  families:
+    - axis_commuting
+    - common_rotated_commuting
+    - noncommuting
+model:
+  controllers:
+    - fixed_diagonal
+    - learned_basis_diagonal
+    - low_rank
+  low_rank: 8
+  hidden_dim: 192
+training:
+  steps: 3500
+  batch_size: 256
+  learning_rate: 0.001
+  weight_decay: 0.0001
+evaluation:
+  batch_size: 512
+statistics:
+  alpha: 0.05
+claim_gate:
+  axis_equivalence_fraction: 0.01
+  minimum_common_rotation_recovery_fraction: 0.95
+  maximum_common_shared_residual_fraction: 0.01
+  minimum_noncommuting_gap_fraction: 0.10
+  minimum_noncommuting_shared_residual_fraction: 0.10
+  minimum_low_rank_recovery_fraction: 0.90
+  maximum_low_rank_residual_fraction: 0.01

@@ -1,0 +1,20 @@
+experiment_id: e15b_official_kveraser_gate
+backend:
+  name: kveraser_official
+  repo_path: ${CATENA_KVERASER_REPO}
+  expected_commit: ${CATENA_KVERASER_COMMIT}
+  plugin_module: catena_official_plugins.kveraser_gate
+  checks:
+    full_recompute_agreement:
+      metric_key: full_recompute_top1_agreement
+      comparison: ge
+      threshold: 0.999
+    backward_finite:
+      metric_key: backward_all_finite
+      comparison: eq
+      expected: true
+    state_carry_clone_restore:
+      metric_key: state_carry_clone_restore
+      comparison: eq
+      expected: true
+

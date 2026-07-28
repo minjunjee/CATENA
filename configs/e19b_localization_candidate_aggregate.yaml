@@ -1,0 +1,26 @@
+experiment_id: e19b_localization_candidate_aggregate
+source:
+  experiment_id: e19a_localization_candidate_decomposition
+  config_path: configs/e19a_localization_candidate_decomposition.yaml
+  required_seeds: [101, 211, 307, 401, 503]
+  required_variants:
+    - base
+    - separate_address
+    - state_aware
+    - full
+  required_conditions:
+    - A_oracle_address_oracle_candidate
+    - B_learned_address_oracle_candidate
+    - C_oracle_address_state_read_candidate
+    - D_learned_address_state_read_candidate
+statistics:
+  alpha: 0.05
+claim_gate:
+  selective_gain: 0.001
+  retention_noninferiority: 0.0005
+  minimum_seed_direction_fraction: 1.0
+  minimum_address_accuracy: 0.95
+  maximum_candidate_recovery_mse: 0.001
+  maximum_capable_affected_mse: 0.001
+  maximum_oracle_floor_mse: 0.000001
+

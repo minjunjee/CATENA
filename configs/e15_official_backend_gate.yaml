@@ -1,0 +1,16 @@
+experiment_id: e15_official_backend_gate
+backends:
+  - name: gdn2_official
+    repo_path: ${CATENA_GDN2_REPO}
+    expected_commit: ${CATENA_GDN2_COMMIT}
+    plugin_module: catena_official_plugins.gdn2_gate
+    tolerances:
+      fp32_relative_l2: 1.0e-5
+      bf16_relative_l2: 5.0e-3
+      tied_kda_relative_l2: 5.0e-3
+  - name: kveraser_official
+    repo_path: ${CATENA_KVERASER_REPO}
+    expected_commit: ${CATENA_KVERASER_COMMIT}
+    plugin_module: catena_official_plugins.kveraser_gate
+    tolerances:
+      full_recompute_top1_agreement: 0.999

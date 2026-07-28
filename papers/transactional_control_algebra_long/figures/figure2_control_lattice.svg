@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="560" viewBox="0 0 1440 560" role="img" aria-labelledby="title desc">
+<title id="title">Static and sequence architecture-demand control lattice</title>
+<desc id="desc">Generated from hash-verified canonical CATENA artifacts.</desc>
+<rect width="100%" height="100%" fill="white"/>
+<text x="24.000" y="28.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="18.000" font-weight="bold" fill="#17212b" text-anchor="start">A</text>
+<text x="51.000" y="28.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="15.000" font-weight="bold" fill="#17212b" text-anchor="start">Static controlled lattice (E12)</text>
+<line x1="82.000" y1="396.000" x2="652.000" y2="396.000" stroke="#17212b" stroke-width="1.200"/>
+<line x1="82.000" y1="66.000" x2="82.000" y2="396.000" stroke="#17212b" stroke-width="1.200"/>
+<line x1="82.000" y1="396.000" x2="652.000" y2="396.000" stroke="#e5e7eb" stroke-width="1.000"/>
+<text x="74.000" y="400.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="end">0.000</text>
+<line x1="82.000" y1="313.500" x2="652.000" y2="313.500" stroke="#e5e7eb" stroke-width="1.000"/>
+<text x="74.000" y="317.500" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="end">0.005</text>
+<line x1="82.000" y1="231.000" x2="652.000" y2="231.000" stroke="#e5e7eb" stroke-width="1.000"/>
+<text x="74.000" y="235.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="end">0.010</text>
+<line x1="82.000" y1="148.500" x2="652.000" y2="148.500" stroke="#e5e7eb" stroke-width="1.000"/>
+<text x="74.000" y="152.500" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="end">0.015</text>
+<line x1="82.000" y1="66.000" x2="652.000" y2="66.000" stroke="#e5e7eb" stroke-width="1.000"/>
+<text x="74.000" y="70.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="end">0.019</text>
+<rect x="119.050" y="284.921" width="68.400" height="111.079" rx="3.000" fill="#1f4e79" stroke="none" stroke-width="0.000"/>
+<circle cx="137.500" cy="284.758" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="142.000" cy="286.943" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="146.500" cy="286.640" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="151.000" cy="284.129" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="155.500" cy="283.879" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="160.000" cy="282.572" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="164.500" cy="286.631" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="169.000" cy="283.812" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<text x="153.250" y="275.921" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="middle">0.00654</text>
+<text x="153.250" y="418.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="bold" fill="#17212b" text-anchor="middle">Magnitude</text>
+<text x="153.250" y="436.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">tied_scalar →</text>
+<text x="153.250" y="450.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">dual_scalar</text>
+<text x="153.250" y="468.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">simpler Δ≤0.0e+00</text>
+<rect x="261.550" y="248.506" width="68.400" height="147.494" rx="3.000" fill="#0072b2" stroke="none" stroke-width="0.000"/>
+<circle cx="280.000" cy="249.137" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="284.500" cy="248.655" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="289.000" cy="249.505" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="293.500" cy="248.623" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="298.000" cy="247.212" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="302.500" cy="247.400" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="307.000" cy="247.560" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="311.500" cy="249.953" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<text x="295.750" y="239.506" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="middle">0.00868</text>
+<text x="295.750" y="418.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="bold" fill="#17212b" text-anchor="middle">Value channels</text>
+<text x="295.750" y="436.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">dual_scalar →</text>
+<text x="295.750" y="450.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">diagonal_value</text>
+<text x="295.750" y="468.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">simpler Δ≤-2.1e-07</text>
+<rect x="404.050" y="130.520" width="68.400" height="265.480" rx="3.000" fill="#009e73" stroke="none" stroke-width="0.000"/>
+<circle cx="422.500" cy="130.520" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="427.000" cy="130.520" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="431.500" cy="130.519" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="436.000" cy="130.519" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="440.500" cy="130.520" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="445.000" cy="130.520" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="449.500" cy="130.520" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="454.000" cy="130.519" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<text x="438.250" y="121.520" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="middle">0.01563</text>
+<text x="438.250" y="418.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="bold" fill="#17212b" text-anchor="middle">Address</text>
+<text x="438.250" y="436.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">diagonal_value →</text>
+<text x="438.250" y="450.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">separate_address</text>
+<text x="438.250" y="468.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">simpler Δ≤1.2e-07</text>
+<rect x="546.550" y="173.001" width="68.400" height="222.999" rx="3.000" fill="#d55e00" stroke="none" stroke-width="0.000"/>
+<circle cx="565.000" cy="172.655" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="569.500" cy="176.735" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="574.000" cy="173.778" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="578.500" cy="171.309" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="583.000" cy="172.698" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="587.500" cy="173.281" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="592.000" cy="172.087" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="596.500" cy="171.466" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<text x="580.750" y="164.001" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="middle">0.01312</text>
+<text x="580.750" y="418.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="bold" fill="#17212b" text-anchor="middle">State-aware</text>
+<text x="580.750" y="436.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">separate_address →</text>
+<text x="580.750" y="450.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">state_aware</text>
+<text x="580.750" y="468.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">simpler Δ≤5.7e-05</text>
+<text x="367.000" y="498.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#6b7280" text-anchor="middle">Dots: paired E12 seeds; bars: frozen seed means.</text>
+<text x="734.000" y="28.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="18.000" font-weight="bold" fill="#17212b" text-anchor="start">B</text>
+<text x="761.000" y="28.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="15.000" font-weight="bold" fill="#17212b" text-anchor="start">Repeated structured sequences (E18b)</text>
+<line x1="792.000" y1="396.000" x2="1362.000" y2="396.000" stroke="#17212b" stroke-width="1.200"/>
+<line x1="792.000" y1="66.000" x2="792.000" y2="396.000" stroke="#17212b" stroke-width="1.200"/>
+<line x1="792.000" y1="396.000" x2="1362.000" y2="396.000" stroke="#e5e7eb" stroke-width="1.000"/>
+<text x="784.000" y="400.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="end">0.000</text>
+<line x1="792.000" y1="313.500" x2="1362.000" y2="313.500" stroke="#e5e7eb" stroke-width="1.000"/>
+<text x="784.000" y="317.500" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="end">0.005</text>
+<line x1="792.000" y1="231.000" x2="1362.000" y2="231.000" stroke="#e5e7eb" stroke-width="1.000"/>
+<text x="784.000" y="235.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="end">0.010</text>
+<line x1="792.000" y1="148.500" x2="1362.000" y2="148.500" stroke="#e5e7eb" stroke-width="1.000"/>
+<text x="784.000" y="152.500" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="end">0.015</text>
+<line x1="792.000" y1="66.000" x2="1362.000" y2="66.000" stroke="#e5e7eb" stroke-width="1.000"/>
+<text x="784.000" y="70.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#17212b" text-anchor="end">0.019</text>
+<rect x="829.050" y="281.842" width="68.400" height="114.158" rx="3.000" fill="#1f4e79" stroke="none" stroke-width="0.000"/>
+<circle cx="854.250" cy="283.391" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="858.750" cy="281.697" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="863.250" cy="283.603" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="867.750" cy="281.402" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="872.250" cy="279.115" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<text x="863.250" y="272.842" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="middle">0.00672</text>
+<text x="863.250" y="418.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="bold" fill="#17212b" text-anchor="middle">Magnitude</text>
+<text x="863.250" y="436.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">tied_scalar →</text>
+<text x="863.250" y="450.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">dual_scalar</text>
+<text x="863.250" y="468.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">simpler Δ≤0.0e+00</text>
+<rect x="971.550" y="240.404" width="68.400" height="155.596" rx="3.000" fill="#0072b2" stroke="none" stroke-width="0.000"/>
+<circle cx="996.750" cy="238.910" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="1001.250" cy="241.225" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="1005.750" cy="240.320" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="1010.250" cy="240.960" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="1014.750" cy="240.603" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<text x="1005.750" y="231.404" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="middle">0.00916</text>
+<text x="1005.750" y="418.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="bold" fill="#17212b" text-anchor="middle">Value channels</text>
+<text x="1005.750" y="436.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">dual_scalar →</text>
+<text x="1005.750" y="450.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">diagonal_value</text>
+<text x="1005.750" y="468.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">simpler Δ≤3.7e-06</text>
+<rect x="1114.050" y="116.339" width="68.400" height="279.661" rx="3.000" fill="#009e73" stroke="none" stroke-width="0.000"/>
+<circle cx="1139.250" cy="116.563" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="1143.750" cy="117.140" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="1148.250" cy="116.329" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="1152.750" cy="115.319" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="1157.250" cy="116.343" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<text x="1148.250" y="107.339" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="middle">0.01646</text>
+<text x="1148.250" y="418.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="bold" fill="#17212b" text-anchor="middle">Address</text>
+<text x="1148.250" y="436.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">diagonal_value →</text>
+<text x="1148.250" y="450.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">separate_address</text>
+<text x="1148.250" y="468.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">simpler Δ≤2.6e-04</text>
+<rect x="1256.550" y="205.849" width="68.400" height="190.151" rx="3.000" fill="#d55e00" stroke="none" stroke-width="0.000"/>
+<circle cx="1281.750" cy="208.809" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="1286.250" cy="204.513" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="1290.750" cy="202.920" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="1295.250" cy="207.840" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<circle cx="1299.750" cy="205.164" r="3.000" fill="#17212b" stroke="white" stroke-width="0.800" opacity="0.720"/>
+<text x="1290.750" y="196.849" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#17212b" text-anchor="middle">0.01119</text>
+<text x="1290.750" y="418.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="bold" fill="#17212b" text-anchor="middle">State-aware</text>
+<text x="1290.750" y="436.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">separate_address →</text>
+<text x="1290.750" y="450.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">state_aware</text>
+<text x="1290.750" y="468.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="8.000" font-weight="normal" fill="#6b7280" text-anchor="middle">simpler Δ≤1.7e-04</text>
+<text x="1077.000" y="498.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="9.000" font-weight="normal" fill="#6b7280" text-anchor="middle">Dots: paired E18 seeds; stress direction is a report-level guardrail without a separate SESOI.</text>
+<text x="20.000" y="245.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="12.000" font-weight="normal" fill="#17212b" text-anchor="middle" transform="rotate(-90.000 20.000 245.000)">Affected-MSE gain (simpler − richer)</text>
+<text x="720.000" y="548.000" font-family="Arial, DejaVu Sans, sans-serif" font-size="10.000" font-weight="normal" fill="#6b7280" text-anchor="middle">Panels share one y-axis scale. E18 supplies oracle address/candidate/demand descriptors and a model-visible verified-event bit.</text>
+</svg>

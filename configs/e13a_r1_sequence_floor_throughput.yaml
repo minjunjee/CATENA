@@ -1,0 +1,40 @@
+experiment_id: e13a_r1_sequence_floor_throughput
+seed: 101
+data:
+  num_entities: 32
+  value_vocab: 64
+  updates: 4
+  gap_events: 64
+model:
+  variants: [tied, dual]
+  embedding_dim: 64
+  hidden_dim: 256
+training:
+  steps: 2000
+  batch_size: 128
+  learning_rate: 0.001
+  retention_weight: 1.0
+evaluation:
+  batches: 32
+  batch_size: 256
+  seed: 10101
+timing:
+  warmup_repeats: 10
+  measured_repeats: 30
+  batch_size: 256
+  seed: 10102
+feasibility:
+  source_config_path: configs/e13b_transactional_sequence_memory.yaml
+  seed: 10103
+  warmup_training_steps: 2
+  measured_training_steps: 8
+  maximum_projected_seconds_per_run: 43200
+  maximum_projected_seconds_per_wave: 43200
+  maximum_projected_seconds_all_waves: 129600
+  planned_wave_jobs: [4, 4, 2]
+claim_gate:
+  minimum_dual_affected_exact_match: 0.95
+  maximum_dual_affected_mse: 0.001
+  minimum_affected_gain: 0.001
+  max_retention_mse: 0.001
+  minimum_examples_per_second: 100.0

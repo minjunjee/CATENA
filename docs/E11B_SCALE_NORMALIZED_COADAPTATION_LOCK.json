@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e11b_scale_normalized_coadaptation",
+  "frozen_at_utc": "2026-07-27T18:29:22Z",
+  "evaluation_started": false,
+  "original_e11_run": "20260727T180703.763554Z",
+  "original_e11_status": "NOT_OPENED_SCALE_RESTRICTION",
+  "original_rows_reused": false,
+  "files": {
+    "configs/e11b_scale_normalized_coadaptation.yaml": "74898120808bbab82f8e9c10c81e7e2743e229746dfa62745bef4803a593b5b2",
+    "docs/E11B_SCALE_NORMALIZED_COADAPTATION_PREREGISTRATION_KO.md": "4ca5de45765d419e62acbc49ee1c0a8740c94717331e0956d8a30cc8c863c79e",
+    "experiments/e11b_scale_normalized_coadaptation.py": "9995cf578df9a378c2c508225c07f56bca23fc533ffaa6637bba6159c11b2ea1",
+    "src/catena/data/representation_dynamics.py": "309435e0d6bb819e0d11d7a2b02716b674afe4900f0a50df625e9577b44b6da6",
+    "src/catena/eval/postcore_metrics.py": "6b30a24d73ae8f437f0af98706f0d4486678bea9f61e074b9faae8d057905ef9",
+    "src/catena/models/coadaptation.py": "d8cd4752b97976c7b7da513147dc7972821c1232e46ea49399bcb68def61b187",
+    "src/catena/models/operator_controllers.py": "11aff4df33bf0d1cd31def5d824f0e4f2ab5200750f0b52c67e86a6bf6c07b9a",
+    "src/catena/training/postcore.py": "e14cbead25125a67c2fa9d99437736fb643613ed2983cba40a428ed9b0d4097c"
+  },
+  "claim_boundary": {
+    "evidence_tier": "CONTROLLED_REFERENCE",
+    "original_e11_reclassified_as_supported": false,
+    "language_model_claim_eligible": false,
+    "official_backend_claim_eligible": false
+  }
+}

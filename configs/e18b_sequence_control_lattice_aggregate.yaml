@@ -1,0 +1,26 @@
+experiment_id: e18b_sequence_control_lattice_aggregate
+source:
+  experiment_id: e18a_sequence_control_lattice
+  config_path: configs/e18a_sequence_control_lattice.yaml
+  required_seeds: [101, 211, 307, 401, 503]
+  required_variants:
+    - tied_scalar
+    - dual_scalar
+    - diagonal_value
+    - separate_address
+    - state_aware
+  required_demands:
+    - magnitude_factorization
+    - value_granularity
+    - address_decoupling
+    - state_conditioning
+  required_updates: [1, 4, 8]
+  required_gap_events: [0, 128, 512, 2048]
+statistics:
+  alpha: 0.05
+claim_gate:
+  minimum_corresponding_demand_gain: 0.001
+  maximum_simpler_demand_degradation: 0.0005
+  maximum_retention_degradation: 0.0005
+  stress_positive_seed_fraction: 1.0
+  minimum_active_path_retention_harm: 0.001

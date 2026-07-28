@@ -1,0 +1,76 @@
+\documentclass[11pt]{article}
+
+% The build wrapper pins TEXINPUTS to vendor/acl.  Review mode is mandatory
+% for the anonymous REALM submission scaffold.
+\usepackage[review]{acl}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{inconsolata}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\input{generated/results_macros}
+
+\newcommand{\paperfigure}[2]{%
+  \IfFileExists{generated/figures/#1.pdf}{%
+    \includegraphics[width=#2]{generated/figures/#1.pdf}%
+  }{%
+    \fbox{\parbox[c][3.0cm][c]{0.96#2}{\centering
+      Vector figure not prepared.\\
+      Run \texttt{scripts/prepare\_figures.py}.}}%
+  }%
+}
+
+\title{Transactional Control Algebra: Matching Memory-Control Architecture
+to Update-Demand Geometry}
+
+% acl.sty replaces this field with ``Anonymous ACL submission'' in review
+% mode.  Keeping an anonymous literal here prevents accidental identity
+% leakage if a local tool drops the review option.
+\author{Anonymous submission}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Memory systems must transform a current state in response to transactions, but
+controller design is usually justified by architecture precedent rather than
+the geometry of the required updates. We study a controlled transactional
+algebra in which reachable update sets, operator rank, basis sharing, and
+operation-specific control freedoms can be measured directly. Bounded
+behavioral reachability predicts unseen update error; prospectively graded
+families show that learned rank and joint diagonalizability determine which
+operator classes are sufficient. An architecture-demand lattice then isolates
+when erase/write factorization, value-channel granularity, address
+decoupling, and state conditioning are selectively necessary. Paired
+structured-sequence experiments test whether the tied-versus-dual distinction
+persists across repeated updates and long distractor gaps, and a fixed-codebook
+decomposition isolates learned address selection from current-state
+erase-candidate recovery. Together these results support a controlled design
+rule: the geometry and algebra of update demands determine the minimal
+memory-control architecture. The evidence is controlled-reference and
+structured-sequence evidence; semantic factorization is closed for this
+submission, and the preregistered official-operator gate did not pass.
+\end{abstract}
+
+\input{sections/01_introduction}
+\input{sections/02_control_algebra}
+\input{sections/03_experimental_design}
+\input{sections/04_geometry}
+\input{sections/05_lattice}
+\input{sections/06_sequence}
+\input{sections/07_boundaries}
+\input{sections/08_related_conclusion}
+
+\bibliographystyle{acl_natbib}
+\bibliography{../references}
+
+\appendix
+\input{sections/appendix}
+
+\end{document}

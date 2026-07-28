@@ -1,0 +1,23 @@
+experiment_id: e05_semantic_demand_inference
+seeds: [11, 22, 33]
+tamp:
+  num_associations: 16
+  key_dim: 32
+  value_dim: 32
+  key_correlation: 0.20
+data:
+  train_count: 3600
+  test_count: 600
+  train_domains: [api, access]
+  heldout_domain: workflow
+  train_styles: [structured, indirect]
+  hide_old_value: true
+  audit_export_size: 300
+  audit_seed: 2026
+model:
+  bow_dim: 512
+  hidden_dim: 96
+  include_state_read: true
+training:
+  steps: 6000
+  learning_rate: 0.002

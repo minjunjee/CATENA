@@ -1,0 +1,91 @@
+experiment_id: e02b_prospective_absolute_supersede
+seeds: [11, 22, 33, 44, 55, 66, 77, 88]
+
+protocol:
+  geometry_design: frozen-controller unseen norm/angle OOD heldout extension
+  repair_scope: prospective absolute-SUPERSEDE repair plus OOD geometry extension
+
+source_e02:
+  experiment_id: e02_magnitude_factorization
+  run_id: 20260726T153504.455509Z
+  manifest_sha256: 1ea4ad867ffbc86bca3f4ee8f3eceb698089f973db250920a0eeb3dc39641d4c
+  report_sha256: f3df03e231598d6eda11ebf71825ab418cc9a59ac9a96a299caff617291e4211
+  episode_metrics_sha256: 9a1f85d4c18366f062caceec47b83d16763dffcbdeaef305b3ecc2010878c5fd
+  config_sha256: b3629fd646057a87c85fc4e3d305c9c80b4a40fc74f1f4567e74eb94b7229191
+  config_file_sha256: 3594de2d53173785784f4424a567c26b233219eeeeb5e08b1d3ed09176307609
+  source_fingerprint_sha256: 9a9730217cd02e55498f901477372563035fa9ca187fd83a5a28da67bf098356
+  source_fingerprint_files: 109
+  strict_checkpoint_contract_sha256: 211792700b7ed37c45519c88c73bb4a083898b8113cc44392bf5000789666982
+  inherited_tuning_gate_sha256: 72e3b5b28e4db9a232a0ee879b8f3c5f45f804ecdf4ec23d4ad5269c213ce89f
+
+data:
+  count_per_operation: 512
+  num_associations: 16
+  key_dim: 32
+  value_dim: 32
+  key_correlation: 0.15
+
+geometry_grid:
+  norm_pairs:
+    - [0.75, 0.90]
+    - [0.90, 1.25]
+    - [1.10, 0.80]
+    - [1.25, 1.10]
+  angles_degrees: [45.0, 75.0, 105.0, 135.0]
+  repeats_per_cell: 32
+  dry_run_cell_ids: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  dry_run_repeats_per_cell: 1
+  excluded_original:
+    old_scale: 1.0
+    new_scale: 1.0
+    angle_degrees: 90.0
+
+seed_namespace:
+  block_size: 100000
+  prospective_holdout_offset: 62500
+  dry_run_offset: 90000
+  excluded_ranges:
+    - {name: e02_train, start: 0, end: 2047}
+    - {name: e02_validation, start: 25000, end: 26023}
+    - {name: e02_test, start: 50000, end: 52047}
+    - {name: e04_heldout, start: 75000, end: 75127}
+
+model:
+  input_dim: 10
+  hidden_dim: 64
+
+statistics:
+  alpha: 0.05
+  bootstrap_samples: 5000
+  bootstrap_confidence: 0.95
+  minimum_tied_oracle_headroom: 0.000001
+  asymmetric_normalized_gain_sesoi: 0.10
+  preserve_absolute_equivalence_margin: 0.0005
+  supersede_absolute_equivalence_margin: 0.0005
+  retention_noninferiority_margin: 0.0005
+  bootstrap_seeds:
+    asymmetric_gain: 201
+    preserve_equivalence: 202
+    supersede_equivalence: 203
+    retention_noninferiority: 204
+    operation_interaction: 206
+
+claim:
+  allowed_if_supported: >-
+    Within the frozen CATENA controlled-reference checkpoints, on the
+    prospectively registered frozen-controller unseen norm/angle OOD heldout
+    extension, five freshly evaluated gates plus one preregistered inherited
+    E02 tuning-direction fact jointly satisfied the six-gate E02b repair
+    criterion for the prospective absolute-SUPERSEDE repair plus OOD geometry
+    extension, including raw absolute SUPERSEDE equivalence.
+  forbidden:
+    - The original E02 result was confirmatory or supported.
+    - This controlled-reference result establishes an official-backend or language-model claim.
+    - Tuned checkpoints were replayed on the prospective holdout.
+
+evidence_scope:
+  evidence_tier: CONTROLLED_REFERENCE
+  scientific_evidence: false
+  official_backend_claim_eligible: false
+  language_model_claim_eligible: false
+  architecture_transfer_claim_eligible: false

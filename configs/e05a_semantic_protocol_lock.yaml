@@ -1,0 +1,201 @@
+experiment_id: e05a_semantic_protocol_lock
+protocol:
+  version: 1
+  design: prospective semantic protocol, leakage, and control-validity lock
+  legacy_e05_reused: false
+  e05_runs_before_lock: 0
+  evidence_role: design_validity_not_claim_evidence
+
+source_e04:
+  freeze_id: E04_ARTIFACT_FREEZE_V1
+  freeze_filename: E04_ARTIFACT_FREEZE_V1.json
+  freeze_sha256: 6d225b673da998cef9131af0b2d49fc699f89af2159f40c302898144c2765b30
+  experiment_id: e04_functional_mediation
+  run_id: 20260727T054917.678326Z
+  manifest_sha256: 7ae767b8fb7226588fd770194783308ff89a24b52b6f67389c55dab0e044ff7d
+  report_sha256: 7111e23ab70558a5130dff6937a3264c3ec6e4b5ea342183e52ea28f1bb36444
+  full_h4_claim_open: true
+
+pilot:
+  seeds: [101, 202, 303, 404]
+  dry_seed: 9101
+  train_count_per_cell: 300
+  validation_count_per_cell: 128
+  dry_train_count_per_cell: 24
+  dry_validation_count_per_cell: 16
+  operations: [preserve, add, invalidate]
+  control_gate_operations: [add, invalidate]
+  seen_domains: [api, access]
+  seen_templates: [record, ledger]
+
+memory:
+  num_associations: 16
+  key_dim: 32
+  value_dim: 32
+  orthonormal_keys: true
+  candidate_source: visible_state_read_at_visible_address
+  dtype: float32
+
+semantic_schema:
+  hidden_old_lexical_value: true
+  oracle_address: true
+  forbidden_model_fields:
+    - operation
+    - operation_features
+    - erase
+    - write
+    - demand
+    - target
+    - target_state
+    - exact_mask
+    - affected_index
+    - erase_candidate
+    - write_candidate
+    - old_value
+    - old_value_token
+    - split
+    - namespace
+  allowed_structured_fields:
+    - entity_description
+    - domain
+    - current_relation
+    - incoming_evidence
+    - prior_version
+    - evidence_version
+    - observation_day
+    - evidence_timestamp_day
+    - prior_valid_from_day
+    - prior_valid_to_day
+    - evidence_valid_from_day
+    - evidence_valid_to_day
+    - scope
+    - source
+    - provenance
+    - incoming_value_token
+    - template_surface
+  banned_surface_cues:
+    - add
+    - delete
+    - revoke
+    - invalidate
+    - replace
+    - supersede
+
+feature_encoder:
+  categorical_fields:
+    - entity_description
+    - domain
+    - current_relation
+    - incoming_evidence
+    - scope
+    - source
+    - provenance
+    - incoming_value_token
+    - template_surface
+  categorical_bins_per_field: 8
+  numeric_fields:
+    - prior_version
+    - evidence_version
+    - observation_day
+    - evidence_timestamp_day
+    - prior_valid_from_day
+    - prior_valid_to_day
+    - evidence_valid_from_day
+    - evidence_valid_to_day
+  version_scale: 16.0
+  day_scale: 256.0
+  include_address_resolved_state_read: true
+  frozen: true
+
+model:
+  path_hidden_dim: 64
+  hidden_layers: 2
+  activation: gelu
+  gate_activation: sigmoid
+  factorized_route: identity
+  shared_route: rank_one_average
+  identical_parameter_tensors: true
+  identical_dense_compute_graph: true
+  common_initialization: true
+
+training:
+  steps: 2400
+  dry_steps: 160
+  batch_size: 128
+  learning_rate: 0.002
+  weight_decay: 0.0
+  gradient_clip_norm: 1.0
+  affected_read_weight: 1.0
+  unaffected_retention_weight: 1.0
+  target_state_weight: 0.0
+  checkpoint_selection: fixed_final_step
+
+controls:
+  shuffled_fields: domain_template_stratified_operation_changing_derangement
+  wrong_address: deterministic_next_address_candidate_norm_matched
+  wrong_address_norm_tolerance: 0.000001
+  transaction_only: zero_visible_state_and_state_derived_erase_candidate
+  state_only: zero_semantic_fields_and_transaction_derived_write_candidate
+  wrong_semantics: coherent_other_demand_same_entity_address_and_new_value
+  mappings_use_outcomes: false
+
+namespace:
+  integer_root: 5000000000000
+  split_stride: 100000000
+  seed_stride: 100000
+  dry_split_offsets:
+    pilot_train: 1
+    pilot_validation: 2
+  main_split_offsets:
+    pilot_train: 11
+    pilot_validation: 12
+    e05b_train: 21
+    e05b_validation: 22
+    e05b_primary: 23
+    e05b_paraphrase: 24
+    e05b_domain: 25
+    e05b_combined: 26
+  forbid_overlap_with_prior_numeric_seed_max: 100000000
+
+statistics:
+  alpha: 0.05
+  bootstrap_samples: 5000
+  bootstrap_confidence: 0.95
+  positive_effect_sesoi: 0.001
+  equivalence_margin: 0.0005
+  oracle_absolute_ceiling: 0.00000001
+  bootstrap_seeds:
+    oracle_affected: 5101
+    oracle_retention: 5102
+    factorized_excess_affected: 5103
+    factorized_excess_retention: 5104
+    shared_excess_affected: 5105
+    shared_excess_retention: 5106
+    seen_model_parity: 5107
+    shuffled_degradation: 5108
+    wrong_address_degradation: 5109
+    transaction_only_degradation: 5110
+    state_only_degradation: 5111
+    wrong_semantics_degradation: 5112
+
+e05b_registry:
+  config_path: configs/e05b_semantic_anchor.yaml
+  generate_only_after_full_pilot_go: true
+  generate_in_dry_run: false
+  main_files_remain_sealed_until_validation_pass: true
+  audit_items_per_split: 75
+  audit_total: 300
+
+claim:
+  dry_status: NOT_EVALUATED_DRY_RUN
+  go_status: GO
+  no_go_status: NO_GO
+  e05a_opens_h5_claim: false
+  any_gate_failure_blocks_e05b: true
+
+evidence_scope:
+  evidence_tier: CONTROLLED_REFERENCE
+  scientific_evidence: false
+  official_backend_claim_eligible: false
+  language_model_claim_eligible: false
+  architecture_transfer_claim_eligible: false

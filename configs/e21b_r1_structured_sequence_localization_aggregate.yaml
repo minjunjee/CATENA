@@ -1,0 +1,63 @@
+experiment_family: E21
+experiment_id: e21b_r1_structured_sequence_localization_aggregate
+protocol:
+  protocol_id: prospective_e21b_active_guardrail_repair_v1
+  evidence_tier: CONTROLLED_REFERENCE
+  original_e21b_disposition: INCONCLUSIVE_GATE_IMPLEMENTATION
+  aggregate_only: true
+source_contract:
+  experiment_id: e21a_structured_sequence_localization_transfer
+  config_path: configs/e21_structured_sequence_localization_transfer.yaml
+  protocol_lock_path: docs/E21_STRUCTURED_SEQUENCE_LOCALIZATION_TRANSFER_LOCK.json
+  required_run_mode: MAIN
+  required_status: PASS
+  explicit_source_runs_only: true
+seeds: [113, 223, 331, 449, 557]
+conditions:
+  - A_oracle_address_oracle_candidate
+  - B_learned_address_oracle_candidate
+  - C_oracle_address_state_read_candidate
+  - D_learned_address_state_read_candidate
+demand_families:
+  - magnitude_factorization
+  - value_granularity
+  - address_decoupling
+  - state_conditioning
+variants:
+  - base
+  - separate_address
+  - state_aware
+  - full
+evaluation:
+  updates: [1, 4, 8]
+  gap_events: [0, 128, 512, 2048]
+  batches: 8
+  batch_size: 128
+  stress:
+    updates: 8
+    gap_events: 2048
+statistics:
+  alpha: 0.05
+claim_gate:
+  selective_gain: 0.001
+  maximum_nontarget_degradation: 0.0005
+  retention_noninferiority: 0.0005
+  minimum_seed_direction_fraction: 1.0
+  minimum_address_accuracy: 0.95
+  maximum_candidate_recovery_mse: 0.001
+  maximum_capable_affected_mse: 0.001
+  maximum_oracle_floor_mse: 0.001
+  minimum_verified_activity: 0.95
+  maximum_distractor_activity: 0.05
+  require_complete_paired_grid: true
+repair:
+  primary_estimands_unchanged: true
+  active_separate_address_conditions: [B_learned_address_oracle_candidate, D_learned_address_state_read_candidate]
+  active_state_read_conditions: [C_oracle_address_state_read_candidate, D_learned_address_state_read_candidate]
+  identifying_targets:
+    - [B_learned_address_oracle_candidate, address_decoupling, separate_address]
+    - [C_oracle_address_state_read_candidate, state_conditioning, state_read]
+    - [D_learned_address_state_read_candidate, address_decoupling, full_only]
+  nontarget_rule: cellwise_maximum_treatment_minus_comparison
+  retention_rule: cellwise_maximum_on_primary_contexts
+  source_rows_reused_without_retraining_or_selection: true

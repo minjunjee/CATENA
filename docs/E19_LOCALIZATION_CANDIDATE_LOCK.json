@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "experiment_family": "E19",
+  "frozen_at_utc": "2026-07-28T05:55:13Z",
+  "amendment_type": "PROSPECTIVE_INITIAL_PROTOCOL",
+  "main_evaluation_started": false,
+  "main_artifact_existed_at_lock": false,
+  "gpu_main_executed": false,
+  "cpu_development_seed": 99001,
+  "cpu_development_seed_claim_eligible": false,
+  "registered_design": {
+    "seeds": [
+      101,
+      211,
+      307,
+      401,
+      503
+    ],
+    "variants": [
+      "base",
+      "separate_address",
+      "state_aware",
+      "full"
+    ],
+    "conditions": [
+      "A_oracle_address_oracle_candidate",
+      "B_learned_address_oracle_candidate",
+      "C_oracle_address_state_read_candidate",
+      "D_learned_address_state_read_candidate"
+    ],
+    "same_encoder_and_maximal_surface": true,
+    "paired_initialization_within_seed": true,
+    "paired_training_stream_within_seed": true,
+    "paired_evaluation_stream_within_seed": true,
+    "minimum_main_seed_count": 5,
+    "statistical_unit": "training_seed"
+  },
+  "registered_estimands": {
+    "b_separate_address_recovery": "mean(no-separate affected MSE) - mean(separate-capable affected MSE)",
+    "c_state_read_recovery": "mean(no-state-read affected MSE) - mean(state-read-capable affected MSE)",
+    "d_full_only_maintenance": "minimum incomplete-architecture affected MSE - full affected MSE",
+    "retention_noninferiority": "treatment retention MSE - comparison retention MSE",
+    "architecture_extra_error": "variant affected MSE - full affected MSE in the same seed and condition"
+  },
+  "registered_thresholds": {
+    "selective_gain": 0.001,
+    "retention_noninferiority": 0.0005,
+    "minimum_seed_direction_fraction": 1.0,
+    "exact_sign_flip_alpha": 0.05,
+    "minimum_address_accuracy": 0.95,
+    "maximum_candidate_recovery_mse": 0.001,
+    "maximum_capable_affected_mse": 0.001,
+    "maximum_oracle_floor_mse": 0.000001
+  },
+  "files": {
+    "configs/e19a_localization_candidate_decomposition.yaml": "ca427e645f4f687a7a3b19fc927537f8b84423eb5b2a5b97c9761c8e74116ce6",
+    "configs/e19b_localization_candidate_aggregate.yaml": "5f19a5c654d030de4fa0ac295eb2ee5005ba5eeddd7dca99d97f317b9a81ee13",
+    "docs/E19_LOCALIZATION_CANDIDATE_DECOMPOSITION_PROTOCOL_KO.md": "d9e5a2daa0ae8095cb4d4f126ec1f908976f1b366fe3659246625c035f7fd97b",
+    "experiments/e19a_localization_candidate_decomposition.py": "eb7a7ad262f5d1cfda0c599d433c77a1927fadaf4948e0fb1901ad9b43d3d3ac",
+    "experiments/e19b_localization_candidate_aggregate.py": "8581929cdb72ef3aae2247867a606d86dce6d0694a5cd8b1ca573ffdbeae2808",
+    "src/catena/data/localization_candidate.py": "63e40fdf01525fcbcc69917a9c4f093d357173c29b9c0b6a0839fda37141c6cc",
+    "src/catena/models/localization_candidate.py": "18e31075a8b09c5838675723da74803b8e4c5674451a2d4dd6371a039efa4bdd",
+    "src/catena/training/localization_candidate.py": "94f6eb4815efa48f352808542f81932d3f73b1a2a6e6d19c9abf4e28f5f01f90",
+    "tests/test_e19_localization_candidate.py": "ff7c1839d0e9e8ba4f8f274690c02e4e63b09efa1b8fec512ae4b014f0d8f872"
+  },
+  "technical_amendments_before_main": [
+    {
+      "timestamp_utc": "2026-07-28T05:55:13Z",
+      "scope": "DIRECT_SCRIPT_IMPORT_BOOTSTRAP_ONLY",
+      "metric_or_gate_changed": false,
+      "main_evaluation_started": false
+    }
+  ],
+  "claim_boundary": {
+    "evidence_tier": "CONTROLLED_REFERENCE",
+    "scientific_evidence": false,
+    "controlled_learned_localization_claim_eligible_after_main_gate": true,
+    "semantic_claim_eligible": false,
+    "natural_language_claim_eligible": false,
+    "novel_entity_generalization_claim_eligible": false,
+    "pretrained_model_claim_eligible": false,
+    "agent_claim_eligible": false,
+    "official_backend_claim_eligible": false,
+    "runtime_superiority_claim_eligible": false
+  }
+}

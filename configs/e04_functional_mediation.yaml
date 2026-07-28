@@ -1,0 +1,125 @@
+experiment_id: e04_functional_mediation
+seeds: [11, 22, 33, 44, 55, 66, 77, 88]
+
+protocol:
+  design: prospective frozen-checkpoint counterfactual functional mediation
+  claim_scope: controlled-reference operation-matched erase-write mediation
+  original_e04_main_runs_before_freeze: 0
+
+source_e02:
+  experiment_id: e02_magnitude_factorization
+  run_id: 20260726T153504.455509Z
+  manifest_sha256: 1ea4ad867ffbc86bca3f4ee8f3eceb698089f973db250920a0eeb3dc39641d4c
+  report_sha256: f3df03e231598d6eda11ebf71825ab418cc9a59ac9a96a299caff617291e4211
+  episode_metrics_sha256: 9a1f85d4c18366f062caceec47b83d16763dffcbdeaef305b3ecc2010878c5fd
+  config_sha256: b3629fd646057a87c85fc4e3d305c9c80b4a40fc74f1f4567e74eb94b7229191
+  config_file_sha256: 3594de2d53173785784f4424a567c26b233219eeeeb5e08b1d3ed09176307609
+  source_fingerprint_sha256: 9a9730217cd02e55498f901477372563035fa9ca187fd83a5a28da67bf098356
+  source_fingerprint_files: 109
+  strict_checkpoint_contract_sha256: 211792700b7ed37c45519c88c73bb4a083898b8113cc44392bf5000789666982
+  inherited_tuning_gate_sha256: 72e3b5b28e4db9a232a0ee879b8f3c5f45f804ecdf4ec23d4ad5269c213ce89f
+
+source_e02b:
+  experiment_id: e02b_prospective_absolute_supersede
+  run_id: 20260726T180207.055493Z
+  manifest_sha256: c6d06a6e174e3162c6cec9ee03048a3a0f725f71de829fa83811527152f8cfdd
+  report_sha256: 032c1b015851b44555ce666ed1d50908332b13f0ad65608355559c000f1d3a52
+  prospective_episode_metrics_sha256: ee544ac88ca632f1412e54a7c3f9e0f8e235ad8721cbc9abffb333b2b6a17171
+  config_sha256: 9b7d299a916003a9d4b5038a8db325d4609d618b3d9919ba7b603cdf8d76f781
+  config_file_sha256: 4e269572652f494977f0370a82c5104bd083ae4e7a4f570635d4685af15fe956
+  source_fingerprint_sha256: 5c25ab0ee5f1aa14f5fe854e74834d633d8a856de8e258463927a795673544e7
+  source_fingerprint_files: 125
+  claim_registry_filename: E02B_CLAIM_STATUS.json
+  claim_registry_sha256: ed065cd52688d63c14fc6d59671aaeddae3841c3dadab7507ffd6938813e54b1
+
+data:
+  base_count: 128
+  dry_run_base_count: 8
+  num_associations: 16
+  key_dim: 32
+  value_dim: 32
+  key_correlation: 0.15
+  old_scale: 1.0
+  new_scale: 1.0
+  old_new_cosine: 0.0
+
+seed_namespace:
+  block_size: 100000
+  main_offset: 75000
+  dry_run_offset: 92500
+  excluded_ranges:
+    - {name: e02_train, start: 0, end: 2047}
+    - {name: e02_validation, start: 25000, end: 26023}
+    - {name: e02_test, start: 50000, end: 52047}
+    - {name: e02b_main, start: 62500, end: 64547}
+    - {name: e04_main, start: 75000, end: 75127}
+    - {name: e02b_dry, start: 90000, end: 90063}
+
+model:
+  input_dim: 10
+  hidden_dim: 64
+
+execution:
+  cpu_threads: 1
+
+interventions:
+  doses: [0.0, 0.25, 0.5, 0.75, 1.0]
+  donor_pairing: adjacent_two_cycle
+  donor_selection_uses_outcomes: false
+  norm_match_tolerance: 0.000001
+  dose_monotonic_tolerance: 0.00000001
+  transplant_operations: [add, invalidate]
+  rescue_operations: [add, invalidate]
+
+statistics:
+  alpha: 0.05
+  bootstrap_samples: 5000
+  bootstrap_confidence: 0.95
+  positive_effect_sesoi: 0.001
+  equivalence_margin: 0.0005
+  minimum_rescue_headroom: 0.001
+  minimum_monotonic_fraction: 0.75
+  minimum_scalarization_fraction: 0.50
+  self_restoration_absolute_tolerance: 0.0000000001
+  bootstrap_seeds:
+    primary_specificity: 401
+    add_write_damage: 402
+    invalidate_erase_damage: 403
+    add_erase_equivalence: 404
+    invalidate_write_equivalence: 405
+    supersede_erase_damage: 406
+    supersede_write_damage: 407
+    preserve_erase_equivalence: 408
+    preserve_write_equivalence: 409
+    transplant_gap: 410
+    transplant_baseline_equivalence: 411
+    rescue_gap: 412
+    rescue_baseline_equivalence: 413
+    oracle_rescue_equivalence: 414
+    rescue_raw_recovery: 421
+    tied_dual_total_effect: 415
+    scalarization_mediated_effect: 416
+    scalarization_fraction: 417
+    symmetric_scalarization_equivalence: 418
+    transplant_retention_noninferiority: 419
+    rescue_retention_noninferiority: 420
+
+claim:
+  allowed_if_supported: >-
+    Within the frozen controlled-reference OracleCandidate probe, the fresh
+    tied-versus-dual asymmetric correction advantage was functionally mediated
+    by operation-matched erase/write components under the prospectively locked
+    dose, transplant, rescue, and post-hoc scalarization tests.
+  forbidden:
+    - The original E02 result was confirmatory or supported.
+    - Functional mediation establishes semantic causal alignment.
+    - This result establishes an official GDN2/KDA backend claim.
+    - This result establishes a pretrained language-model or agent-behavior claim.
+    - The independent-donor result proves a globally identifiable natural mediator.
+
+evidence_scope:
+  evidence_tier: CONTROLLED_REFERENCE
+  scientific_evidence: false
+  official_backend_claim_eligible: false
+  language_model_claim_eligible: false
+  architecture_transfer_claim_eligible: false

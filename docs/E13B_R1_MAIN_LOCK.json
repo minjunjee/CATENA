@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e13b_r1_transactional_sequence_memory",
+  "aggregate_experiment_id": "e13c_r1_transactional_sequence_aggregate",
+  "frozen_at_utc": "2026-07-27T19:11:13Z",
+  "evaluation_started": false,
+  "protocol_id": "prospective_learned_distractor_path_repair",
+  "calibration_dependency": {
+    "experiment_id": "e13a_r2_sequence_floor_throughput",
+    "run_id": "20260727T190642.222102Z",
+    "status": "PASS",
+    "go_for_e13b_r1": true,
+    "report_sha256": "9071aee334da3170d79e23b5b2cbf57cffe041bb640a157c400687ddd2565218",
+    "run_manifest_sha256": "36a4a6a03d6dc14287ee7e6ef58b68dc7ba7e07817803dc50e89f81c76c12d43",
+    "calibration_metrics_sha256": "b4c7481eacea1ec226203d657528911ce70a1dc91d25921a0cb7c1c2a6bb5400",
+    "scale_metrics_sha256": "188ea7bc2824506fb07d8f5e05cfd4b11ab588fc8f0f86ea50c651c9d4800278",
+    "tied_checkpoint_sha256": "4b3987b3872921c920e29e5985b06f98bed10008f12ed656587cab743572491b",
+    "dual_checkpoint_sha256": "b991fd404d43d66aae2c605ef5ce5cc2227aabf584dc67c429ae51d1406654b9",
+    "protocol_lock_sha256": "f7fd2b0a893d5bf5099ce4377421f0a744b693159fa2a530546f8eb340101314"
+  },
+  "main_grid": {
+    "paired_seeds": [101, 211, 307, 401, 503],
+    "variants": ["tied", "dual"],
+    "updates": [1, 4, 8],
+    "gap_events": [0, 128, 512, 2048],
+    "training_steps": 30000,
+    "waves": [
+      ["tied:101", "dual:101", "tied:211", "dual:211"],
+      ["tied:307", "dual:307", "tied:401", "dual:401"],
+      ["tied:503", "dual:503"]
+    ]
+  },
+  "claim_gates": {
+    "overall_minimum_asymmetric_gain": 0.001,
+    "overall_retention_noninferiority": 0.0005,
+    "overall_positive_seed_fraction": 1.0,
+    "stress_cell": {"updates": 8, "gap_events": 2048},
+    "stress_minimum_affected_gain": 0.001,
+    "maximum_dual_stress_retention_mse": 0.001,
+    "maximum_dual_gap_degradation": 0.0005,
+    "minimum_active_path_retention_harm": 0.001,
+    "exact_sign_flip_alpha": 0.05,
+    "same_base_transaction_digest_across_gaps_required": true
+  },
+  "files": {
+    "configs/e13b_r1_transactional_sequence_memory.yaml": "514278b573ef838b748be0642b9851376e23d66e7bc24c74988b7e384a198ae1",
+    "configs/e13c_r1_transactional_sequence_aggregate.yaml": "10743062685019a345f31766b1d7e779a1e79664f6234470de4982ac02597693",
+    "docs/E13_R2_LEARNED_DISTRACTOR_PROTOCOL_KO.md": "19c98dde9d91638699783c0c14767bd9ef2a51eded9151f75e95161a393cb217",
+    "docs/E13A_R2_LEARNED_DISTRACTOR_LOCK.json": "f7fd2b0a893d5bf5099ce4377421f0a744b693159fa2a530546f8eb340101314",
+    "experiments/common.py": "3249c01b79139e51d1cdd1632485d18a57a38993c40ae6b51bb0328f19926053",
+    "experiments/e13b_r1_transactional_sequence_memory.py": "f59ad81899fd2679ec6b3492c4518c61d04231c572069263606f10868fefaf37",
+    "experiments/e13c_r1_transactional_sequence_aggregate.py": "cda481984c253370d7907d400ca38873732ba186227525f90c09e6043ae4d361",
+    "src/catena/data/transactional_sequence_v2.py": "8c635d6ec9451258016e83762a90a626576d72ef49b6d49b119712537a588e92",
+    "src/catena/models/sequence_memory_v2.py": "6e059b7f43475be07668c828cfd48ebc2c14342b24cff35b56433a3f47831e92",
+    "src/catena/training/sequence_training_v2.py": "9a0a5717ac73f6053673e8fcc13aac185151e8c27b2f1a367bdd1d124126365e",
+    "scripts/launch_sequence_r1_wave.sh": "8429fb1ae75e6a2c54844ebda54fa54ace6c47f534c9bfd3ce6c3bea98c85b63",
+    "tests/test_e13_r2_pipeline_contract.py": "257f4d781c46c1fca87bdea11196528e362941457383d0ab48767ea7df2b39ea",
+    "tests/test_sequence_memory_v2.py": "d947755fbe8668233fca9fd50a23c564db4f420720d3260ab856be7cd1841260"
+  },
+  "claim_boundary": {
+    "evidence_tier": "CONTROLLED_REFERENCE",
+    "natural_language_claim_eligible": false,
+    "learned_addressing_claim_eligible": false,
+    "recurrent_lm_claim_eligible": false,
+    "agent_claim_eligible": false,
+    "official_backend_claim_eligible": false
+  }
+}

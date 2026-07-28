@@ -1,0 +1,10 @@
+experiment_id: e08_claim_freeze
+freeze:
+  require_raw_episode_outputs: true
+  require_protocol_hash_match: true
+  block_mock_backends: true
+audit:
+  minimum_completed_items: 300
+  minimum_meaning_preserved_rate: 0.95
+  maximum_answer_leakage_rate: 0.02
+  minimum_reviewer_agreement: 0.80

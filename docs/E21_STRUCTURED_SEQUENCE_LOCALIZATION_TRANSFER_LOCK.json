@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "experiment_family": "E21",
+  "source_experiment_id": "e21a_structured_sequence_localization_transfer",
+  "aggregate_experiment_id": "e21b_structured_sequence_localization_aggregate",
+  "protocol_id": "prospective_structured_sequence_localization_transfer_v1",
+  "frozen_at_utc": "2026-07-28T06:57:19.398605Z",
+  "last_amended_at_utc": "2026-07-28T07:00:26.955275Z",
+  "amendment_type": "PROSPECTIVE_INITIAL_PROTOCOL",
+  "protocol_frozen_before_any_e21_evaluation": true,
+  "dry_run_started": true,
+  "main_execution_started": false,
+  "aggregate_execution_started": false,
+  "canonical_e21_artifact_exists": false,
+  "authorized_current_execution": "CPU_DRY_ONLY_IN_NONCANONICAL_TEMP_NAMESPACE",
+  "main_execution_requires_explicit_user_instruction": true,
+  "h5_reopened": false,
+  "parent_lock_provenance": {
+    "docs/E18_SEQUENCE_CONTROL_LATTICE_LOCK.json": "7c465ceb60b6979e717d85599533bd7c0dd884f10b191fa29c42771ccc9c9989",
+    "docs/E19_LOCALIZATION_CANDIDATE_LOCK.json": "8550fef23f938d84e35f584f16fd625cdb36c8422a6eefacf86f198f614dd3ec"
+  },
+  "registered_design": {
+    "main_seeds": [
+      113,
+      223,
+      331,
+      449,
+      557
+    ],
+    "excluded_development_seed": 99121,
+    "development_seed_claim_eligible": false,
+    "conditions": [
+      "A_oracle_address_oracle_candidate",
+      "B_learned_address_oracle_candidate",
+      "C_oracle_address_state_read_candidate",
+      "D_learned_address_state_read_candidate"
+    ],
+    "demand_families": [
+      "magnitude_factorization",
+      "value_granularity",
+      "address_decoupling",
+      "state_conditioning"
+    ],
+    "variants": [
+      "base",
+      "separate_address",
+      "state_aware",
+      "full"
+    ],
+    "training_grid": {
+      "updates": 4,
+      "gap_events": 128,
+      "steps": 3000,
+      "batch_size": 128,
+      "optimizer": "AdamW"
+    },
+    "evaluation_grid": {
+      "updates": [
+        1,
+        4,
+        8
+      ],
+      "gap_events": [
+        0,
+        128,
+        512,
+        2048
+      ],
+      "rows_per_source": 768,
+      "source_runs": 5,
+      "total_rows": 3840
+    },
+    "statistical_unit": "paired_training_seed",
+    "same_maximal_parameter_surface": true,
+    "paired_initialization_within_seed": true,
+    "paired_training_and_evaluation_streams": true,
+    "explicit_source_runs_required_for_aggregate": true
+  },
+  "registered_estimands": {
+    "b_separate_address_recovery": "B x address_decoupling: mean(no-separate affected MSE) - mean(separate-capable affected MSE)",
+    "c_state_read_recovery": "C x state_conditioning: mean(no-state-read affected MSE) - mean(state-read-capable affected MSE)",
+    "d_full_only_recovery": "D x address_decoupling: minimum incomplete-controller affected MSE - full affected MSE",
+    "stress_cell": "updates=8, gap_events=2048",
+    "retention_noninferiority": "treatment retention MSE - paired comparison retention MSE",
+    "nontarget_noninferiority": "added-freedom affected MSE - paired comparison affected MSE outside its identifying demand/information condition"
+  },
+  "registered_thresholds": {
+    "selective_gain": 0.001,
+    "maximum_nontarget_degradation": 0.0005,
+    "retention_noninferiority": 0.0005,
+    "minimum_seed_direction_fraction": 1.0,
+    "exact_sign_flip_alpha": 0.05,
+    "minimum_address_accuracy": 0.95,
+    "maximum_candidate_recovery_mse": 0.001,
+    "maximum_capable_affected_mse": 0.001,
+    "maximum_oracle_floor_mse": 0.001,
+    "minimum_verified_activity": 0.95,
+    "maximum_distractor_activity": 0.05,
+    "complete_paired_grid_and_provenance_required": true
+  },
+  "input_boundary": {
+    "fixed_structured_identifier_codebook": true,
+    "semantic_operation_label_provided": false,
+    "algebraic_demand_code_provided": true,
+    "old_candidate_in_event_features": false,
+    "integer_slot_in_event_features": false,
+    "update_mask_in_model_input": false,
+    "verified_provenance_bit_model_visible": true,
+    "novel_identifier_generalization_tested": false
+  },
+  "results_summary_contract": {
+    "required_filename": "RESULTS_SUMMARY_KO.md",
+    "maximum_lines": 55,
+    "source_main_disposition": "PENDING_AGGREGATE",
+    "aggregate_is_only_final_claim_gate": true,
+    "dry_run_must_be_marked_non_evidence": true
+  },
+  "claim_boundary": {
+    "evidence_tier": "CONTROLLED_REFERENCE",
+    "scientific_evidence": false,
+    "controlled_structured_sequence_claim_eligible_after_main_gate": true,
+    "h5_semantic_factorization_claim_eligible": false,
+    "natural_language_claim_eligible": false,
+    "novel_identifier_generalization_claim_eligible": false,
+    "pretrained_or_recurrent_lm_claim_eligible": false,
+    "agent_or_planning_claim_eligible": false,
+    "official_backend_claim_eligible": false,
+    "runtime_superiority_claim_eligible": false,
+    "allowed_claim": "In controlled repeated structured-event sequences with a fixed identifier schema and explicit demand fields, learned separate localization and current-state erase-candidate reads selectively recover the update demands that require them across the registered sequence lengths and distractor gaps.",
+    "forbidden_claim": "H5 semantic factorization, natural-language, novel-identifier, pretrained/recurrent-LM, agent/planning, official-backend, or runtime-superiority transfer."
+  },
+  "technical_amendments_before_main": [
+    {
+      "timestamp_utc": "2026-07-28T07:00:26.955275Z",
+      "scope": "STATIC_TYPING_CAST_ONLY_AFTER_NONCLAIM_TEMP_DRY",
+      "reason": "Torch arithmetic stubs exposed Any under strict mypy.",
+      "runtime_tensor_values_changed": false,
+      "data_schema_changed": false,
+      "metric_or_gate_changed": false,
+      "main_seed_or_main_artifact_observed": false,
+      "canonical_artifact_created": false,
+      "main_execution_started": false
+    }
+  ],
+  "files": {
+    "configs/e21_structured_sequence_localization_transfer.yaml": "9363d70a7cda51b9c9d92f895e970865a365a75ffb9a156162a0be496b2e1922",
+    "docs/E21_STRUCTURED_SEQUENCE_LOCALIZATION_TRANSFER_PROTOCOL_KO.md": "3698d2903ae26e46960b1842b5b93ad29ef3751f7f9eb31a4b7e20c8a344bed8",
+    "experiments/e21_structured_sequence_localization_transfer.py": "b38e778e4b28a319cce3a744048a02a10dc85c28c48ed7b2bb17133b1bed8d8d",
+    "src/catena/data/structured_sequence_localization.py": "d95e694d027119f4fab69857c025854cea821c17244db6230dfd0a9e879e23a4",
+    "src/catena/eval/structured_sequence_localization.py": "fecb2f1caa74aa66bde77ca004775f94b7ce354ddaf1c691d3c67ca4eb93d7d4",
+    "src/catena/models/structured_sequence_localization.py": "4934f47c2642507b113fcd2f154823620f86b48b452b1aae3abbfbc5c6fd0769",
+    "src/catena/training/structured_sequence_localization.py": "3af1317d96019a834c36f6960f29f10f43cd6308610d840b3ff8a72a1ce0984a",
+    "tests/test_e21_structured_sequence_localization.py": "4eef83bc2f6e12d3dd4d095af69803e5475c7f392f6c9f3c3091a7084937213c"
+  }
+}

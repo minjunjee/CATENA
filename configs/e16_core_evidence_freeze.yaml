@@ -1,0 +1,171 @@
+experiment_id: e16_core_evidence_freeze
+evidence:
+  h1_behavioral_reachability:
+    experiment_id: e01b_constrained_behavioral_reachability
+    run_id: 20260726T152354.081239Z
+    claim_disposition: SUPPORTED
+    evidence_tier: CONTROLLED_REFERENCE
+    files:
+      report.json: 8e1d16ca7763cec1e4e5b13d2b0f163f4015c8058ed7764871a6fbb5fa5ea6d6
+      run_manifest.json: 31e6651e187058fe7e26a791bd14c6d0f5a4d613101a107c809514ac53b23847
+    expected_report_fields:
+      status: PASS
+      claim_gate.supported: true
+      scientific_evidence: false
+
+  h2_original:
+    experiment_id: e02_magnitude_factorization
+    run_id: 20260726T153504.455509Z
+    claim_disposition: INCONCLUSIVE
+    evidence_tier: CONTROLLED_REFERENCE
+    files:
+      report.json: f3df03e231598d6eda11ebf71825ab418cc9a59ac9a96a299caff617291e4211
+      run_manifest.json: 1ea4ad867ffbc86bca3f4ee8f3eceb698089f973db250920a0eeb3dc39641d4c
+    expected_report_fields:
+      status: PASS
+      claim_gate.supported: false
+      claim_gate.confirmatory_run_eligible: false
+      scientific_evidence: false
+    anchors:
+      - path: E02B_CLAIM_STATUS.json
+        sha256: ed065cd52688d63c14fc6d59671aaeddae3841c3dadab7507ffd6938813e54b1
+        expected_fields:
+          original_e02.confirmatory_status: INCONCLUSIVE
+          original_e02.h2_claim_open: false
+
+  h2_prospective_repair:
+    experiment_id: e02b_prospective_absolute_supersede
+    run_id: 20260726T180207.055493Z
+    claim_disposition: SUPPORTED
+    evidence_tier: CONTROLLED_REFERENCE
+    files:
+      report.json: 032c1b015851b44555ce666ed1d50908332b13f0ad65608355559c000f1d3a52
+      run_manifest.json: c6d06a6e174e3162c6cec9ee03048a3a0f725f71de829fa83811527152f8cfdd
+    expected_report_fields:
+      status: PASS
+      claim_gate.original_e02_remains_inconclusive: true
+      claim_gate.repair_status: SUPPORTED
+      claim_gate.supported: true
+      scientific_evidence: false
+    anchors:
+      - path: E02B_CLAIM_STATUS.json
+        sha256: ed065cd52688d63c14fc6d59671aaeddae3841c3dadab7507ffd6938813e54b1
+        expected_fields:
+          e02b_repair.status: SUPPORTED
+          e02b_repair.prospective_repair_claim_open: true
+
+  h3_original:
+    experiment_id: e03_granularity_orientation
+    run_id: 20260726T161535.271015Z
+    claim_disposition: CATEGORICAL_SUPPORTED_QUANTITATIVE_FAILED
+    evidence_tier: CONTROLLED_REFERENCE
+    files:
+      report.json: ee0114f45d5facbc3ccdd0e3a0235531e1de078f29fd7a949420df0899fa98c0
+      run_manifest.json: be56f91b5fc3a5992a02dc2b13b70f82b0b6bd6c5a7e1231f0e0ddee6987f327
+    expected_report_fields:
+      status: PASS
+      claim_gate.four_preregistered_contrasts_passed: true
+      claim_gate.empirical_regret_prediction_passed: false
+      claim_gate.supported: false
+      scientific_evidence: false
+    anchors:
+      - path: E03_CLAIM_STATUS.json
+        sha256: fb53ae74d4702aefad4a5503129552cfe34a0f75079bc0bbb9fd9b4a2deb26f6
+        expected_fields:
+          h3_categorical_geometry.status: SUPPORTED
+          h3_quantitative_calibration.status: FAILED
+          h3_full_claim_open: false
+
+  h3_prospective_calibration:
+    experiment_id: e03b_graded_jd_calibration
+    run_id: 20260726T180514.626996Z
+    claim_disposition: SUPPORTED
+    evidence_tier: CONTROLLED_REFERENCE
+    files:
+      report.json: fc88dd3923bbcfb63b99953a9f839b25cbee956f155ce1dd4c397ea82a71772c
+      run_manifest.json: 6174f6d7a73735db6cf6136c0218f46adb51d2312f7931d7f982d9993eb5facb
+    expected_report_fields:
+      status: PASS
+      claim_gate.status: SUPPORTED
+      claim_gate.supported: true
+      scientific_evidence: false
+    anchors:
+      - path: E03B_CLAIM_STATUS.json
+        sha256: ac796ad02d0dca72671f00aa28c2aa0ab704253290920d28abe78b3f67e967be
+        expected_fields:
+          e03b_quantitative_calibration.status: SUPPORTED
+          e03b_quantitative_calibration.prospective_calibration_claim_open: true
+
+  h4_functional_mediation:
+    experiment_id: e04_functional_mediation
+    run_id: 20260727T054917.678326Z
+    claim_disposition: SUPPORTED
+    evidence_tier: CONTROLLED_REFERENCE
+    files:
+      report.json: 7111e23ab70558a5130dff6937a3264c3ec6e4b5ea342183e52ea28f1bb36444
+      run_manifest.json: 7ae767b8fb7226588fd770194783308ff89a24b52b6f67389c55dab0e044ff7d
+    expected_report_fields:
+      status: PASS
+      claim_gate.full_h4_claim_open: true
+      claim_gate.status: SUPPORTED
+      claim_gate.supported: true
+      scientific_evidence: false
+    anchors:
+      - path: E04_ARTIFACT_FREEZE_V1.json
+        sha256: 6d225b673da998cef9131af0b2d49fc699f89af2159f40c302898144c2765b30
+        expected_fields:
+          execution_status: PASS
+          claim_status.full_h4_claim_open: true
+
+  h5_original_protocol:
+    experiment_id: e05a_semantic_protocol_lock
+    run_id: 20260727T081532.073522Z
+    claim_disposition: NO_GO
+    evidence_tier: CONTROLLED_REFERENCE
+    files:
+      report.json: 34bab0288d5bbe82e1debcfa81e51493f4fa280475b86f0d097cb2a4aff8057c
+      run_manifest.json: c2571fa8c4ec184068dff3bb002dc08be1c503c147348bb19ada1fd1199b5e2b
+    expected_report_fields:
+      status: PASS
+      e05a_design_status: NO_GO
+      full_h5_lite_claim_open: false
+      scientific_evidence: false
+    anchors:
+      - path: E05A_ARTIFACT_FREEZE_V1.json
+        sha256: f6e6edebd303fb1b6d48cff9630516a8864dc317386778202da58a2a6c189122
+        expected_fields:
+          e05a_design_status: NO_GO
+          h5_lite_claim_open: false
+      - path: E05A_CLAIM_STATUS.json
+        sha256: f1c1e1585829048c47ac725ce03ffaa3293bfe67c10a23a1b205aaa4af432ec3
+        expected_fields:
+          e05a_design_status: NO_GO
+          h5_claim_open: false
+
+  h5_r1_final_boundary:
+    experiment_id: e05a_r1_semantic_design_repair
+    run_id: 20260727T142609.591935Z
+    claim_disposition: NO_GO_H5_CLOSED
+    evidence_tier: CONTROLLED_REFERENCE
+    files:
+      report.json: fdb1a397ccc526f9546b473d63e2ab3351529f184879baaefb3f686b505f6bb3
+      run_manifest.json: e8c75ef56a78c64169aa5c03e46b0267d1805b20b3dc4fc8dc48d588f2f0e2fd
+    expected_report_fields:
+      status: PASS
+      e05a_r1_design_status: NO_GO
+      h5_claim_open: false
+      h5_status: TERMINATED_NOT_REFUTED
+      scientific_evidence: false
+    anchors:
+      - path: E05A_R1_ARTIFACT_FREEZE_V1.json
+        sha256: b5cdf6036d25060d2bb05d77cd712769c141bf8a8ced0e6944ad78c95ed12aad
+        expected_fields:
+          e05a_r1_design_status: NO_GO
+          h5_claim_open: false
+          h5_status: TERMINATED_NOT_REFUTED
+      - path: E05A_R1_CLAIM_STATUS.json
+        sha256: 6847805450e30d08c5b6216865a0ea9c0459b8f7a7c485f3973604b84829b238
+        expected_fields:
+          e05a_r1_design_status: NO_GO
+          h5_claim_open: false
+          h5_status: TERMINATED_NOT_REFUTED

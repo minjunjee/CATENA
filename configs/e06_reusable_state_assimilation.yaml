@@ -1,0 +1,30 @@
+experiment_id: e06_reusable_state_assimilation
+seed: 2026
+tamp:
+  num_associations: 16
+  key_dim: 32
+  value_dim: 32
+  key_correlation: 0.20
+data:
+  chain_count: 600
+  chain_lengths: [2, 4, 8]
+  query_counts: [1, 2, 4, 8, 16]
+  include_rollback: true
+model:
+  checkpoint_seed: 11
+  bow_dim: 512
+  hidden_dim: 96
+  include_state_read: true
+baselines:
+  compact_snapshot_noise: 0.01
+cost_model:
+  assimilation_update_ms: 1.0
+  assimilation_query_ms: 0.15
+  external_retrieve_ms: 1.5
+  external_query_ms: 0.30
+  full_refresh_ms: 12.0
+  snapshot_encode_ms: 0.8
+  snapshot_query_ms: 0.18
+quality_constraints:
+  correction_mse_threshold: 0.01
+  retention_mse_threshold: 0.01

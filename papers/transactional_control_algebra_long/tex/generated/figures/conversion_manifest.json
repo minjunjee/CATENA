@@ -1,0 +1,26 @@
+{
+  "claim": "format-only vector conversion; scientific source is unchanged",
+  "converter": "cairosvg",
+  "converter_version": "2.8.2",
+  "figures": {
+    "figure1_geometry": {
+      "output_pdf": "generated/figures/figure1_geometry.pdf",
+      "output_pdf_sha256": "36eb87eafb982a8c05b37c56e773066349f76ad5f83d47e01dedfe27ced20937",
+      "source_svg": "figures/figure1_geometry.svg",
+      "source_svg_sha256": "c53d8b3a2e389cdb57d93ac0987ba68107127debbe3d43f1b81eb027b1080350"
+    },
+    "figure2_control_lattice": {
+      "output_pdf": "generated/figures/figure2_control_lattice.pdf",
+      "output_pdf_sha256": "8ea4f3f44d160ed3419a41ffae936d22807f94966f24a2716f54d9059e9b6bb5",
+      "source_svg": "figures/figure2_control_lattice.svg",
+      "source_svg_sha256": "9fc6ff0e6dd11ca9a9d54634a4be4e61428cc6c90dc1092c232871cbcb840b19"
+    },
+    "figure3_sequence_transfer": {
+      "output_pdf": "generated/figures/figure3_sequence_transfer.pdf",
+      "output_pdf_sha256": "c3a8e9faba5c56b2dbd87a34716cad23600970d268bdba608cb1d27e2b4085b5",
+      "source_svg": "figures/figure3_sequence_transfer.svg",
+      "source_svg_sha256": "4740e192cb740047f5cfff2ad72827fa271061421ccd0dcc4d6fdc6f3cf365a6"
+    }
+  },
+  "schema_version": 1
+}

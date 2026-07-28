@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e13a_r2_sequence_floor_throughput",
+  "frozen_at_utc": "2026-07-27T19:04:29Z",
+  "evaluation_started": false,
+  "repair_id": "prospective_learned_distractor_path_repair",
+  "prior_protocol": {
+    "experiment_id": "e13a_r1_sequence_floor_throughput",
+    "run_id": "20260727T183609.755945Z",
+    "report_sha256": "ba5eb2df15d409b01cfde1194d21e52ef3bc16d4d2ceee15af5f7a0573b72fe3",
+    "disposition": "GO_FOR_ORIGINAL_HARD_MASKED_PIPELINE_ONLY",
+    "repaired_e13b_dependency_eligible": false,
+    "freeze_sha256": "7a8dbcdc789c327fbc9b339bc316880bd79815e8a39cc1832e661a7f35d8341e"
+  },
+  "diagnosis": {
+    "code_verified_updates_preceded_all_distractors": true,
+    "code_verified_gate_was_hard_multiplied": true,
+    "code_update_mask_was_applied_to_state_assignment": true,
+    "full_vs_update_only_max_abs_delta": 0.0,
+    "original_long_gap_claim_identifiable": false
+  },
+  "registered_repair": {
+    "one_total_distractor_block_after_first_update": true,
+    "verified_is_semantic_input_only": true,
+    "update_mask_is_audit_metadata_only": true,
+    "base_transaction_rng_is_gap_independent": true,
+    "r1_numeric_gates_changed": false,
+    "fresh_calibration_seed": 907
+  },
+  "files": {
+    "configs/e13a_r2_sequence_floor_throughput.yaml": "4784daf9fe6321ae0e7608aaa99999abb40cc8c32993bfba4976ad8c347b7e69",
+    "configs/e13b_r1_transactional_sequence_memory.yaml": "514278b573ef838b748be0642b9851376e23d66e7bc24c74988b7e384a198ae1",
+    "docs/E13_R2_LEARNED_DISTRACTOR_PROTOCOL_KO.md": "19c98dde9d91638699783c0c14767bd9ef2a51eded9151f75e95161a393cb217",
+    "experiments/common.py": "3249c01b79139e51d1cdd1632485d18a57a38993c40ae6b51bb0328f19926053",
+    "experiments/e13a_r1_sequence_floor_throughput.py": "fef73ae6841221626a1b258847c5a9c36a12980065eae55289feb62e850a469a",
+    "experiments/e13a_r2_sequence_floor_throughput.py": "9e74d4000bbb26f06edfd99b1a431c9efad7ecea73625e3e76110fc8f21c6ff4",
+    "src/catena/data/transactional_sequence_v2.py": "8c635d6ec9451258016e83762a90a626576d72ef49b6d49b119712537a588e92",
+    "src/catena/models/sequence_memory_v2.py": "6e059b7f43475be07668c828cfd48ebc2c14342b24cff35b56433a3f47831e92",
+    "src/catena/training/sequence_training_v2.py": "9a0a5717ac73f6053673e8fcc13aac185151e8c27b2f1a367bdd1d124126365e",
+    "tests/test_sequence_memory_v2.py": "d947755fbe8668233fca9fd50a23c564db4f420720d3260ab856be7cd1841260"
+  },
+  "claim_boundary": {
+    "gate_role": "E13B_R1_EXECUTION_DEPENDENCY_ONLY",
+    "sequence_claim_eligible": false,
+    "natural_language_claim_eligible": false,
+    "recurrent_lm_claim_eligible": false,
+    "official_backend_claim_eligible": false
+  }
+}

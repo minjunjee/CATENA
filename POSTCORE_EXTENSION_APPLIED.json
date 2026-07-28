@@ -1,0 +1,14 @@
+{
+  "application_stamp": "20260727T180542.858202263Z",
+  "applied_at": "2026-07-27T18:05:44.995345+00:00",
+  "completed_core_artifacts_modified": false,
+  "existing_scientific_code_modified": false,
+  "extension": "6.2.0-postcore",
+  "root_instruction_files_appended": true,
+  "validation": {
+    "compileall": "PASS",
+    "cpu_dry_run": "PACKAGED_VALIDATION_PASS__RUN_MANUALLY_AFTER_INSTALL",
+    "postcore_pytest": "PASS",
+    "shell_syntax": "PASS"
+  }
+}

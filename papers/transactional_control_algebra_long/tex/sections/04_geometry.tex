@@ -1,0 +1,45 @@
+\section{Geometry and Learned Sufficiency}
+\label{sec:geometry}
+
+\begin{figure*}[t]
+  \centering
+  \paperfigure{figure1_geometry}{\textwidth}
+  \caption{\textbf{Transactional control geometry across reachability, rank,
+  and basis families.} (A) Operation-adjusted out-of-sample prediction by
+  three reachability summaries in H1; bounded behavioral feasible regret is
+  the strongest predictor. (B) For every E10b seed and intrinsic-rank
+  condition, the minimum learned rank meeting the prospectively floor-aware
+  criterion is plotted against intrinsic rank. (C) Held-out application error
+  versus analytic joint-diagonalization regret for the prospectively
+  stratified E03b families. These controlled-reference results do not
+  establish official-backend or language-model performance.}
+  \label{fig:geometry}
+\end{figure*}
+
+\subsection{Behavioral reachability}
+
+After adjusting for operation identity, bounded behavioral feasible regret
+predicts held-out error with $R^2=\CATENAResult{H1_BEHAVIORAL_OOS_R2}$ and
+calibration slope $\CATENAResult{H1_CALIBRATION_SLOPE}$.
+Figure~\ref{fig:geometry}A contrasts this quantity with state-only summaries.
+The result supports a reachable-behavior account of the error floor rather
+than a claim about nominal gate count.
+
+\subsection{Learned rank scaling}
+
+E10b prospectively repairs the original floor-definition issue and evaluates a
+learned transaction-conditioned controller.  The minimum learned rank matched
+intrinsic rank in a fraction
+$\CATENAResult{E10B_RANK_MATCH_FRACTION}$ of the registered seed--rank cells
+(Figure~\ref{fig:geometry}B).  This result concerns the prospectively
+floor-aware rule; richer-operator oracle bounds elsewhere are not relabeled as
+learned evidence.
+
+\subsection{Joint-diagonalization calibration}
+
+The original E03 established the categorical commuting/noncommuting boundary
+but did not open its quantitative calibration claim because predictor support
+was too narrow.  The separately frozen, prospectively stratified E03b design
+produces $R^2=\CATENAResult{E03B_JD_R2}$ and slope
+$\CATENAResult{E03B_JD_SLOPE}$ between analytic held-out regret and
+application error (Figure~\ref{fig:geometry}C).

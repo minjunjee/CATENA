@@ -1,0 +1,31 @@
+experiment_id: e01b_constrained_behavioral_reachability
+seeds: [11, 22, 33, 44, 55, 66, 77, 88]
+data:
+  train_count_per_cell: 12
+  test_count_per_cell: 12
+  train_grid:
+    key_dim: [32]
+    value_dim: [32]
+    num_associations: [8, 16]
+    key_correlations: [0.0, 0.25]
+    old_scales: [0.6, 1.0, 1.4]
+    new_scales: [0.6, 1.0, 1.4]
+    old_new_cosines: [-0.5, 0.0, 0.5]
+  test_grid:
+    key_dim: [32]
+    value_dim: [32]
+    num_associations: [12, 24]
+    key_correlations: [0.15, 0.4]
+    old_scales: [0.8, 1.2]
+    new_scales: [0.8, 1.2]
+    old_new_cosines: [-0.25, 0.25, 0.75]
+model:
+  hidden_dim: 64
+training:
+  steps: 4000
+  learning_rate: 0.003
+claim_gate:
+  minimum_oos_r2: 0.15
+  alpha: 0.05
+statistics:
+  bootstrap_samples: 5000

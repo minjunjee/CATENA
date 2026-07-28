@@ -1,0 +1,159 @@
+experiment_id: e05b_semantic_anchor
+protocol:
+  version: 1
+  design: sealed held-out semantic demand composition anchor
+  primary_claim: held-out SUPERSEDE in seen domains and seen templates
+  legacy_e05_reused: false
+
+seeds: [11, 22, 33, 44, 55, 66, 77, 88]
+
+data:
+  train:
+    operations: [preserve, add, invalidate]
+    domains: [api, access]
+    templates: [record, ledger]
+    count_per_cell: 300
+  sealed_validation:
+    operations: [preserve, add, invalidate]
+    domains: [api, access]
+    templates: [record, ledger]
+    count_per_cell: 128
+  primary:
+    operations: [supersede]
+    domains: [api, access]
+    templates: [record, ledger]
+    count_per_cell: 512
+  heldout_paraphrase:
+    operations: [preserve, add, invalidate]
+    domains: [api, access]
+    templates: [paraphrase]
+    count_per_cell: 256
+  heldout_domain:
+    operations: [preserve, add, invalidate]
+    domains: [workflow]
+    templates: [record, ledger]
+    count_per_cell: 256
+  combined_stress:
+    operations: [supersede]
+    domains: [workflow]
+    templates: [paraphrase]
+    count_per_cell: 1024
+  entity_old_new_vocab_intersection_across_splits: empty
+  duplicate_transaction_or_episode_ids: 0
+
+memory:
+  num_associations: 16
+  key_dim: 32
+  value_dim: 32
+  orthonormal_keys: true
+  candidate_source: visible_state_read_at_visible_address
+  dtype: float32
+
+feature_encoder:
+  categorical_bins_per_field: 8
+  version_scale: 16.0
+  day_scale: 256.0
+  include_address_resolved_state_read: true
+  frozen: true
+
+model:
+  path_hidden_dim: 64
+  hidden_layers: 2
+  activation: gelu
+  gate_activation: sigmoid
+  factorized_route: identity
+  shared_route: rank_one_average
+  identical_parameter_tensors: true
+  identical_dense_compute_graph: true
+  common_initialization: true
+
+training:
+  steps: 2400
+  batch_size: 128
+  learning_rate: 0.002
+  weight_decay: 0.0
+  gradient_clip_norm: 1.0
+  affected_read_weight: 1.0
+  unaffected_retention_weight: 1.0
+  target_state_weight: 0.0
+  checkpoint_selection: fixed_final_step
+  validation_retraining_or_selection: forbidden
+
+controls:
+  models:
+    - factorized
+    - shared
+    - oracle_demand
+    - transaction_only
+    - state_only
+    - shuffled_fields
+    - wrong_address
+    - wrong_semantics
+  mappings_are_frozen_in_e05a: true
+  wrong_address_norm_tolerance: 0.000001
+  primary_control_semantic_donors: sealed_validation_preserve_add_invalidate
+
+statistics:
+  alpha: 0.05
+  bootstrap_samples: 5000
+  bootstrap_confidence: 0.95
+  positive_effect_sesoi: 0.001
+  minimum_oracle_headroom: 0.001
+  headroom_fraction_sesoi: 0.10
+  equivalence_margin: 0.0005
+  retention_noninferiority_margin: 0.0005
+  oracle_absolute_ceiling: 0.00000001
+  seed_inference: exact_sign_flip_and_exact_tost
+  seed_weighting: equal
+  episode_bootstrap: fixed_seed_domain_template_stratified_paired
+  bootstrap_seeds:
+    validation_parity: 5201
+    oracle_affected: 5202
+    oracle_retention: 5203
+    shared_headroom: 5204
+    primary_raw_improvement: 5205
+    headroom_closure: 5206
+    retention_noninferiority: 5207
+    absolute_factorized_retention: 5208
+    shuffled_degradation: 5209
+    wrong_address_degradation: 5210
+    transaction_only_degradation: 5211
+    state_only_degradation: 5212
+    wrong_semantics_degradation: 5213
+
+human_audit:
+  required_before_training: true
+  total_items: 300
+  items_per_split: 75
+  independent_reviewers: 2
+  minimum_meaning_preservation: 0.95
+  maximum_answer_leakage: 0.02
+  minimum_raw_agreement_each_label: 0.80
+  adjudication_required_rows: 300
+
+execution:
+  validation_must_pass_before_main_registry_open: true
+  primary_evaluated_once: true
+  secondary_splits_are_not_primary_gate: true
+
+claim:
+  allowed_if_supported: >-
+    In the frozen CONTROLLED_REFERENCE oracle-address structured-record setting,
+    with the old lexical value hidden and the old state content read only at the
+    provided address, the preregistered factorized-control advantage remained on
+    seen-domain/template held-out SUPERSEDE without an operation or oracle-demand
+    label.
+  forbidden:
+    - Natural-language understanding was established.
+    - Hidden-address recovery was established.
+    - Semantic gate alignment was causally identified.
+    - Domain or paraphrase generalization was established by the primary gate.
+    - An official GDN2/KDA or pretrained language-model claim was established.
+    - A runtime or systems advantage was established.
+
+evidence_scope:
+  evidence_tier: CONTROLLED_REFERENCE
+  scientific_evidence: false
+  official_backend_claim_eligible: false
+  language_model_claim_eligible: false
+  architecture_transfer_claim_eligible: false

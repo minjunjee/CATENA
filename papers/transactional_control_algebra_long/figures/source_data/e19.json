@@ -1,0 +1,43 @@
+{
+  "evidence_tier": "CONTROLLED_REFERENCE",
+  "maximum_capable_affected_mse": 8.97798224652746e-09,
+  "maximum_capable_candidate_mse": 4.738318136292274e-12,
+  "maximum_retention_degradation": 0.0,
+  "mean_gains": {
+    "b_separate_address_recovery": 0.05283557115556982,
+    "c_state_read_recovery": 0.12522491663694382,
+    "d_full_only_maintenance": 0.06920669432004636
+  },
+  "minimum_capable_address_accuracy": 1.0,
+  "scientific_evidence": false,
+  "seed_gains": {
+    "b_separate_address_recovery": [
+      0.053355507385403955,
+      0.052653305631997945,
+      0.052517211388828325,
+      0.0529675522562083,
+      0.05268427911541055
+    ],
+    "c_state_read_recovery": [
+      0.12556536216288805,
+      0.1254136855714023,
+      0.12475459091365337,
+      0.1254869527183473,
+      0.12490399181842804
+    ],
+    "d_full_only_maintenance": [
+      0.07017696741237377,
+      0.06864607799008929,
+      0.0686699524451321,
+      0.06915777548442421,
+      0.06938269826821243
+    ]
+  },
+  "seeds": [
+    101,
+    211,
+    307,
+    401,
+    503
+  ]
+}

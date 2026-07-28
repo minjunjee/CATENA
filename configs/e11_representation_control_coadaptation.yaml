@@ -1,0 +1,34 @@
+experiment_id: e11_representation_control_coadaptation
+seeds: [101, 211, 307, 401, 503, 601, 701, 809]
+data:
+  dimension: 32
+  active_rank: 8
+  descriptor_dim: 12
+  rotation_scale: 0.45
+  train_count: 4096
+  test_count: 2048
+  families:
+    - axis_commuting
+    - common_rotated_commuting
+    - noncommuting
+model:
+  controllers:
+    - fixed_diagonal
+    - learned_basis_diagonal
+    - low_rank
+  low_rank: 8
+  hidden_dim: 192
+training:
+  steps: 3500
+  batch_size: 256
+  learning_rate: 0.001
+  weight_decay: 0.0001
+evaluation:
+  batch_size: 512
+statistics:
+  alpha: 0.05
+claim_gate:
+  axis_equivalence_margin: 0.0005
+  common_rotation_recovery: 0.001
+  noncommuting_gap: 0.001
+  low_rank_recovery: 0.001

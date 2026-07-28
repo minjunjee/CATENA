@@ -1,0 +1,49 @@
+experiment_id: e03_granularity_orientation
+
+# Seed 11 was used during implementation profiling and is excluded from the
+# untouched main set. Dry-run seeds are also disjoint from main evaluation.
+seeds: [101, 211, 307, 401, 503, 601, 701, 809]
+dry_run_seeds: [9001, 9002]
+
+data:
+  dimension: 32
+  projector_rank: 8
+  train_operators_per_family: 24
+  test_operators_per_family: 8
+  probes_per_operator: 4096
+
+model:
+  low_rank: 8
+
+optimization:
+  steps: 1000
+  learning_rate: 0.03
+  restarts: 4
+  dry_run_steps: 100
+  dry_run_restarts: 2
+
+runtime:
+  # Small QR/SVD kernels are much slower with the host default of 128 threads.
+  cpu_threads: 4
+
+statistics:
+  alpha: 0.05
+
+  # Practical separation in normalized mean-squared operator-entry error.
+  # This is frozen before any main-seed evaluation.
+  minimum_practical_regret_contrast: 0.001
+
+  # Absolute numerical/construction gates required in addition to contrasts.
+  maximum_commuting_commutator_norm: 1.0e-8
+  maximum_sufficient_regret: 1.0e-8
+  minimum_noncommuting_commutator_norm: 1.0e-3
+  minimum_noncommuting_regret: 1.0e-3
+  maximum_oracle_regret: 1.0e-10
+  maximum_orthogonality_error: 1.0e-10
+
+  # R_JD must predict held-out isotropic operator-application error.
+  empirical_calibration_floor: 1.0e-10
+  minimum_empirical_prediction_r2: 0.99
+  minimum_empirical_calibration_slope: 0.95
+  maximum_empirical_calibration_slope: 1.05
+  maximum_empirical_calibration_intercept: 1.0e-4

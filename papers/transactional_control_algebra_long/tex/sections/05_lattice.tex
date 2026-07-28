@@ -1,0 +1,68 @@
+\section{Architecture--Demand Lattice}
+\label{sec:lattice}
+
+\begin{figure*}[t]
+  \centering
+  \paperfigure{figure2_control_lattice}{\textwidth}
+  \caption{\textbf{Matched adjacent gains in static and repeated controlled
+  probes.} Panel A shows static E12. Panel B shows E18b's registered mean
+  affected-MSE gain over the update-by-gap grid. Bars are frozen seed means
+  and dots are paired seed-level gains. E18b passed its relative cell-mean
+  simpler-demand and retention guards, and the registered stress-cell
+  direction was positive in 5/5 paired seeds. E18 supplies oracle addresses,
+  candidates, demand descriptors, and a model-visible verified-event bit. The
+  result does not establish gain in every cell, stress SESOI, absolute
+  preservation, minimal-controller sufficiency, semantic demand inference, or
+  learned relevance.}
+  \label{fig:lattice}
+\end{figure*}
+
+\subsection{Static controlled lattice}
+
+Table~\ref{tab:lattice} maps each added freedom to the demand constructed to
+require it.  The frozen E12 registered-grid gains are
+$\CATENAResult{E12_MAGNITUDE_GAIN}$,
+$\CATENAResult{E12_VALUE_GAIN}$,
+$\CATENAResult{E12_ADDRESS_GAIN}$, and
+$\CATENAResult{E12_STATE_GAIN}$ for the magnitude, value, address, and
+state-conditioned transitions, respectively.  The inferential point is the
+matched adjacent gain together with the registered guardrails, not raw
+controller size.
+
+\begin{table*}[t]
+  \centering
+  \small
+  \begin{tabular}{llll}
+    \toprule
+    Added freedom & Matched demand & Adjacent contrast & Guardrail scope\\
+    \midrule
+    Erase/write magnitude & asymmetric same address
+      & tied $\rightarrow$ dual & symmetric demands, retention\\
+    Value channels & partial value subspace
+      & dual $\rightarrow$ diagonal & scalar-demand non-inferiority\\
+    Address decoupling & different erase/write addresses
+      & diagonal $\rightarrow$ separate & prior-demand non-inferiority\\
+    State conditioning & state-dependent target
+      & separate $\rightarrow$ state-aware & prior-demand non-inferiority\\
+    \bottomrule
+  \end{tabular}
+  \caption{The registered architecture--demand map. ``Selective'' refers to a
+  matched adjacent gain plus the corresponding simpler-demand and retention
+  guardrails; it does not assert zero benefit on every other harder demand.}
+  \label{tab:lattice}
+\end{table*}
+
+\subsection{Repeated-sequence lattice}
+
+E18 repeats the nested comparison over update-count and distractor-gap cells
+while supplying oracle erase/write addresses, oracle candidates, explicit
+demand descriptors, and a visible verified-event bit.  Its registered-grid
+mean adjacent gains are
+$\CATENAResult{E18_MAGNITUDE_GAIN}$,
+$\CATENAResult{E18_VALUE_GAIN}$,
+$\CATENAResult{E18_ADDRESS_GAIN}$, and
+$\CATENAResult{E18_STATE_GAIN}$.  All four registered adjacent conjunctions
+passed.  Simpler-demand and retention checks are maximum relative cell-mean
+non-inferiority guards, not absolute-accuracy claims.  At the registered
+8-update, 2,048-distractor stress cell, the direction was positive in 5/5
+paired seeds; there was no separate stress SESOI.

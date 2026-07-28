@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e10_learned_rank_scaling",
+  "frozen_at_utc": "2026-07-27T18:35:15Z",
+  "evaluation_started": false,
+  "protocol_repair": "prospective_pre_evaluation_gate_identifiability_repair",
+  "prior_incomplete_runs": [
+    "20260727T180703.792069Z",
+    "20260727T180747.984294Z"
+  ],
+  "prior_incomplete_runs_claim_eligible": false,
+  "files": {
+    "configs/e10_learned_rank_scaling.yaml": "d82ef56f7ebd9e049d39eba896f3b57f42919f306ac6033065734dad593d0faa",
+    "docs/E10_LEARNED_RANK_SCALING_KO.md": "2dec982426054563363cfcacb985728e2593ea9cd760c86e740535dd6d76662f",
+    "experiments/common.py": "3249c01b79139e51d1cdd1632485d18a57a38993c40ae6b51bb0328f19926053",
+    "experiments/e10_learned_rank_scaling.py": "cd01bed9ed00d4a6d0349eb587ca9f0b49df97b0989b1879ee9e31892a4be9d4",
+    "src/catena/data/learned_rank.py": "21fb27389f5b56c862e4371b7c2a4fde121cc592c3016f9fa0a5a03640454820",
+    "src/catena/eval/postcore_metrics.py": "6b30a24d73ae8f437f0af98706f0d4486678bea9f61e074b9faae8d057905ef9",
+    "src/catena/eval/rank_scaling.py": "e07e63f9515bcd3926ec39d0f94300b4c22e718d21a66fe902d490a2cae990a9",
+    "src/catena/models/operator_controllers.py": "11aff4df33bf0d1cd31def5d824f0e4f2ab5200750f0b52c67e86a6bf6c07b9a",
+    "src/catena/training/postcore.py": "e14cbead25125a67c2fa9d99437736fb643613ed2983cba40a428ed9b0d4097c"
+  },
+  "claim_boundary": {
+    "evidence_tier": "CONTROLLED_REFERENCE",
+    "pretrained_language_model_claim_eligible": false,
+    "official_backend_claim_eligible": false
+  }
+}

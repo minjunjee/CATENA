@@ -1,0 +1,58 @@
+{
+  "experiment_id": "e15a_r1_official_gdn2_kda_gate",
+  "frozen_at_utc": "2026-07-28T06:21:47.075395Z",
+  "main_executed_before_lock": false,
+  "parent": {
+    "experiment_id": "e15a_official_gdn2_kda_gate",
+    "run_id": "20260728T061317.967602Z",
+    "status": "FAIL",
+    "evaluable_scientific_gates": 0,
+    "failure": "PINNED_DEPENDENCY_API_COMPATIBILITY",
+    "report_sha256": "78e67d52af213bd5ca9dd34cc1938e3199a42a499309b1667bde9b0b9238aafa",
+    "run_manifest_sha256": "13d1973b2eb80dc16cd8ef4c4a497072b51533c569def364082bccac3b5b5612"
+  },
+  "repair": {
+    "selection_information": [
+      "FLA Git ancestry",
+      "chunk_gla_fwd_o_gk API signature"
+    ],
+    "scientific_metric_observed_for_revision_selection": false,
+    "scientific_gate_changed": false,
+    "source_change": "PIN_LAST_FLA_MAIN_REVISION_BEFORE_INCOMPATIBLE_GLA_API_CHANGE"
+  },
+  "source": {
+    "gdn2": {
+      "commit": "95709fc250357c2dd109361c353192f2aa5913f9",
+      "repo": "/home/minjun_dev/CATENA_official/gdn2_upstream"
+    },
+    "flash_linear_attention": {
+      "commit": "4b02d15d6a68700181b180235be62a9fb95d2a38",
+      "remote": "https://github.com/sustcsonglin/flash-linear-attention.git",
+      "repo": "/data/minjun_dev/CATENA/official_sources/flash-linear-attention_4b02d15_clean",
+      "tracked_files": {
+        "fla/__init__.py": "36b0799195fc4af0b7100073245536ec11e6e07a60d8d0a62a82af3a3c381d05",
+        "fla/ops/gla/chunk.py": "3a4b5855a28b3756723e751ebb2bdd3c5901fb450118c1539a12d7b84f127dd8"
+      }
+    }
+  },
+  "catena_files": {
+    "configs/e15a_r1_official_gdn2_kda_gate.yaml": "4f1d110f3ac61e589e38fd596a99c22e62a5af4336c7102fc528cb60fb47c5f5",
+    "experiments/e15a_r1_official_gdn2_kda_gate.py": "480e5eb27fcc83edb193430f67ed7fb362de1d14d3b2e4a213ef5e41515c2a0b",
+    "src/catena/eval/official_operator_gate.py": "589697ba935ae82761dfddd85db7f841087394b602dd490347665d2b616415ad"
+  },
+  "plugin": {
+    "module": "catena_official_plugins.gdn2_gate",
+    "path": "/home/minjun_dev/CATENA_official/plugins/catena_official_plugins/gdn2_gate.py",
+    "sha256": "e5643656de1a9ba164f78c4bdd46a66b971acedf0f84a8114a7cf3b38ba575a3"
+  },
+  "registered_gates": {
+    "backward_finite": true,
+    "bf16_relative_l2_max": 0.005,
+    "full_chunked_fp32_relative_l2_max": 0.00001,
+    "intervention_hook_confined": true,
+    "state_carry_clone_restore": true,
+    "tied_kda_fp32_relative_l2_max": 0.00001
+  },
+  "reference_or_mock_fallback_allowed": false,
+  "status_at_lock": "READY_FOR_MAIN"
+}

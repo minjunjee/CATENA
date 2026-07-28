@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e18a_sequence_control_lattice",
+  "aggregate_experiment_id": "e18b_sequence_control_lattice_aggregate",
+  "protocol_id": "prospective_sequence_control_lattice_v1",
+  "frozen_at_utc": "2026-07-28T05:59:12Z",
+  "last_amended_at_utc": "2026-07-28T06:24:50.671729Z",
+  "evaluation_started": false,
+  "cpu_dry_run_started": false,
+  "main_gpu_execution_started": false,
+  "protocol_frozen_before_evaluation": true,
+  "main_execution_requires_explicit_user_instruction": true,
+  "controller_lattice": [
+    "tied_scalar",
+    "dual_scalar",
+    "diagonal_value",
+    "separate_address",
+    "state_aware"
+  ],
+  "demand_families": [
+    "magnitude_factorization",
+    "value_granularity",
+    "address_decoupling",
+    "state_conditioning"
+  ],
+  "paired_seeds": [
+    101,
+    211,
+    307,
+    401,
+    503
+  ],
+  "training_grid": {
+    "updates": 4,
+    "gap_events": 128,
+    "steps": 3000,
+    "batch_size": 128,
+    "optimizer": "AdamW",
+    "family_order": "round_robin_registered_order"
+  },
+  "evaluation_grid": {
+    "updates": [
+      1,
+      4,
+      8
+    ],
+    "gap_events": [
+      0,
+      128,
+      512,
+      2048
+    ],
+    "stress_updates": 8,
+    "stress_gap_events": 2048,
+    "source_runs": 25,
+    "rows_per_source_run": 48,
+    "total_rows": 1200
+  },
+  "claim_gates": {
+    "minimum_corresponding_demand_gain": 0.001,
+    "maximum_simpler_demand_degradation": 0.0005,
+    "maximum_retention_degradation": 0.0005,
+    "stress_positive_seed_fraction": 1.0,
+    "exact_sign_flip_alpha": 0.05,
+    "minimum_active_path_retention_harm": 0.001,
+    "minimum_unmasked_path_delta": 1e-08,
+    "full_paired_grid_and_provenance_required": true
+  },
+  "paired_contract": {
+    "same_maximal_parameter_surface": true,
+    "same_encoder_and_state_size": true,
+    "same_data_order": true,
+    "same_optimizer": true,
+    "paired_initialization_within_seed": true,
+    "same_evaluation_seed_and_base_digest_across_variants": true,
+    "same_base_transaction_across_gaps": true
+  },
+  "distractor_contract": {
+    "layout": "one_total_block_after_first_verified_update",
+    "verified_role": "semantic_input_only",
+    "update_mask_role": "audit_metadata_only",
+    "active_path_intervention": "activate_distractor_verified_bit",
+    "target_address_candidate_and_base_digest_unchanged_by_intervention": true,
+    "hard_mask_substitution_forbidden": true
+  },
+  "claim_boundary": {
+    "evidence_tier": "CONTROLLED_REFERENCE",
+    "scientific_evidence": false,
+    "oracle_address": true,
+    "oracle_candidate": true,
+    "allowed_claim": "In controlled structured transaction sequences with oracle addresses and candidates, each added memory-control freedom provides a selective benefit on the registered demand family that requires it, including the 2,048-event stress.",
+    "forbidden_claim": "Natural-language, learned-candidate/address, recurrent-LM, agent, planning, or official-backend transfer."
+  },
+  "technical_amendments_before_main": [
+    {
+      "timestamp_utc": "2026-07-28T05:59:12Z",
+      "scope": "DIRECT_SCRIPT_IMPORT_BOOTSTRAP_AND_EXACT_MASK_VECTORIZATION",
+      "data_values_changed": false,
+      "metric_or_gate_changed": false,
+      "main_gpu_execution_started": false
+    },
+    {
+      "timestamp_utc": "2026-07-28T06:24:50.671729Z",
+      "scope": "EXCLUDED_SEED_DEVELOPMENT_BUDGET_CALIBRATION",
+      "initial_placeholder_steps": 30000,
+      "final_main_steps": 3000,
+      "development_seed": 99001,
+      "main_seed_or_stress_metric_observed": false,
+      "data_values_changed": false,
+      "metric_or_gate_changed": false,
+      "main_gpu_execution_started": false
+    }
+  ],
+  "files": {
+    "configs/e18a_sequence_control_lattice.yaml": "12fab86ea863aec7ec19e7393374d70afbf93aac8e7a4c7d1170ce2f8c3164bf",
+    "configs/e18b_sequence_control_lattice_aggregate.yaml": "a384d50d46c4449ee99cb1f75fde99eac2c875b8a74db88cf31ad994f8b8b2bc",
+    "docs/E18_SEQUENCE_CONTROL_LATTICE_DEVELOPMENT_CALIBRATION.json": "c1c8c480a8a8840ff28016e90f62cbc052a029b625882efc4f909ed416368dba",
+    "docs/E18_SEQUENCE_CONTROL_LATTICE_PROTOCOL_KO.md": "348af4bc83a8c56697e0a6eeaf0aee34cdc9ad7fa733cf07eb5ab5ad061c887c",
+    "experiments/e18a_sequence_control_lattice.py": "8f155c4c2aabf1ef664c19911cab148b1c1224457fd3c0521aa6db471c8f4e77",
+    "experiments/e18b_sequence_control_lattice_aggregate.py": "c75e4c10ffce39ec5bc91f3d99b76a8f64384520082bc87cbd538dee35bd32ae",
+    "src/catena/data/sequence_control_lattice.py": "ae6462348852a0b7af189a60932be9f7403026c610544fde7bdb76dac9dbcc13",
+    "src/catena/models/sequence_control_lattice.py": "91e5603dca66337e610f14ebcb72263a2b411c72a0fb5fe4ce010b7d075c837c",
+    "src/catena/training/sequence_control_lattice.py": "2eff02597373ecf812b37dcfa13c49076be605c728b909a4a73abf0e864f3f7d",
+    "tests/test_e18_sequence_control_lattice.py": "f1b99e8e3198cea2b4d5f3ba464dfdcd277e5a747990ce7095e2ebe1eeb904ee"
+  }
+}

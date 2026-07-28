@@ -1,0 +1,62 @@
+{
+  "experiment_id": "e15a_official_gdn2_kda_gate",
+  "frozen_at_utc": "2026-07-28T06:12:00.901892Z",
+  "main_executed_before_lock": false,
+  "reference_or_mock_fallback_allowed": false,
+  "source": {
+    "gdn2": {
+      "commit": "95709fc250357c2dd109361c353192f2aa5913f9",
+      "repo": "/home/minjun_dev/CATENA_official/gdn2_upstream",
+      "tracked_files": {
+        "lit_gpt/gdn2_ops/chunk_gdn2.py": "51e2037b204dbd2cc9e2b9c9bf301adcb770bb23d4a825dd23032b222a68a1b7",
+        "lit_gpt/gdn2_ops/chunk_kda.py": "de986089ead8dc0111913b8af83c164208ba38bc20e596ec6571319d43bd35a2"
+      }
+    },
+    "flash_linear_attention": {
+      "commit": "19b5a3f411ecea6cdda62c6cc65cdae55ed2dec5",
+      "repo": "/data/minjun_dev/CATENA/official_sources/flash-linear-attention_19b5a3f_clean",
+      "tracked_files": {
+        "fla/__init__.py": "a2fd313c3e9c106e0a69df7c03f17558de6fb804ab90314c24e57deccb107bd0"
+      }
+    }
+  },
+  "catena_files": {
+    "configs/e15a_official_gdn2_kda_gate.yaml": "72d6e29d217c9975312ecc6acb783352357109cb4a0ae1511f90212634689bef",
+    "experiments/e15a_official_gdn2_kda_gate.py": "63fe3a187e3495cae74e6409d3ddf497696ced9090698e67a256023137a20835",
+    "src/catena/eval/official_operator_gate.py": "589697ba935ae82761dfddd85db7f841087394b602dd490347665d2b616415ad"
+  },
+  "plugin": {
+    "module": "catena_official_plugins.gdn2_gate",
+    "path": "/home/minjun_dev/CATENA_official/plugins/catena_official_plugins/gdn2_gate.py",
+    "sha256": "5d9635120d42015b68bffca08321530704efb500480fd36429e1ea6658962b26"
+  },
+  "probe": {
+    "batch": 1,
+    "heads": 1,
+    "key_dim": 16,
+    "probe_seed": 150015,
+    "sequence": 96,
+    "split": 64,
+    "value_dim": 16
+  },
+  "registered_gates": {
+    "backward_finite": true,
+    "bf16_relative_l2_max": 0.005,
+    "full_chunked_fp32_relative_l2_max": 0.00001,
+    "intervention_hook_confined": true,
+    "state_carry_clone_restore": true,
+    "tied_kda_fp32_relative_l2_max": 0.00001
+  },
+  "runtime": {
+    "cuda_runtime": "12.8",
+    "environment": "/data/minjun_dev/CATENA/envs/gdn2_official_95709fc",
+    "gpu_compute_capability": "12.0",
+    "gpu_model": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "nvidia_driver": "580.126.16",
+    "python": "3.11.15",
+    "torch": "2.9.0+cu128",
+    "transformers": "4.57.6",
+    "triton": "3.5.0"
+  },
+  "status_at_lock": "READY_FOR_MAIN"
+}

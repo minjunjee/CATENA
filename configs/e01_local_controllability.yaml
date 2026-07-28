@@ -1,0 +1,16 @@
+experiment_id: e01_local_controllability
+seeds: [11, 22, 33, 44, 55, 66, 77, 88]
+tamp:
+  num_associations: 16
+  key_dim: 32
+  value_dim: 32
+  key_correlation: 0.35
+data:
+  count_per_operation: 80
+model:
+  hidden_dim: 64
+training:
+  steps: 800
+  learning_rate: 0.003
+statistics:
+  bootstrap_samples: 5000
