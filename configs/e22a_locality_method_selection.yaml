@@ -1,0 +1,118 @@
+experiment_family: E22
+experiment_id: e22a_locality_method_selection
+protocol:
+  protocol_id: prospective_active_path_locality_selection_v1
+  phase: development_selection
+  evidence_tier: CONTROLLED_REFERENCE
+  claim_eligible: false
+  parent_threshold_lock_path: docs/E21_STRUCTURED_SEQUENCE_LOCALIZATION_TRANSFER_LOCK.json
+  e21_freeze_required_for_main: true
+  dry_run_temp_only: true
+development_seeds: [1201, 1213, 1229]
+methods:
+  - method_id: mean_retention
+    objective: mean
+    baseline: true
+    selection_eligible: false
+  - method_id: cvar_005
+    objective: cvar
+    tail_fraction: 0.05
+    selection_eligible: true
+  - method_id: cvar_010
+    objective: cvar
+    tail_fraction: 0.10
+    selection_eligible: true
+  - method_id: cvar_020
+    objective: cvar
+    tail_fraction: 0.20
+    selection_eligible: true
+  - method_id: smoothmax_025
+    objective: smoothmax
+    normalized_temperature: 0.25
+    selection_eligible: true
+  - method_id: smoothmax_050
+    objective: smoothmax
+    normalized_temperature: 0.50
+    selection_eligible: true
+  - method_id: smoothmax_100
+    objective: smoothmax
+    normalized_temperature: 1.00
+    selection_eligible: true
+  - method_id: sparse_0125
+    objective: sparse
+    tail_fraction: 0.10
+    active_fraction: 0.125
+    selection_eligible: true
+  - method_id: sparse_0250
+    objective: sparse
+    tail_fraction: 0.10
+    active_fraction: 0.25
+    selection_eligible: true
+  - method_id: sparse_0500
+    objective: sparse
+    tail_fraction: 0.10
+    active_fraction: 0.50
+    selection_eligible: true
+  - method_id: protected_projection_diagnostic
+    objective: protected_projection
+    selection_eligible: false
+conditions:
+  - A_oracle_address_oracle_candidate
+  - B_learned_address_oracle_candidate
+  - C_oracle_address_state_read_candidate
+  - D_learned_address_state_read_candidate
+demand_families:
+  - magnitude_factorization
+  - value_granularity
+  - address_decoupling
+  - state_conditioning
+data:
+  slots: 32
+  value_dim: 32
+  identifier_code_dim: 32
+  state_scale: 0.5
+model:
+  variants: [base, separate_address, state_aware, full]
+  hidden_dim: 256
+  address_temperature: 0.2
+  common_maximal_surface: true
+training:
+  steps: 3000
+  batch_size: 128
+  updates: 4
+  gap_events: 128
+  learning_rate: 0.0005
+  optimizer: AdamW
+  address_loss_weight: 0.25
+  candidate_loss_weight: 1.0
+  activity_loss_weight: 0.25
+  retention_weight: 1.0
+  sparse_route_weight: 0.25
+evaluation:
+  updates: [1, 4, 8]
+  gap_events: [0, 128, 512, 2048]
+  batches: 8
+  batch_size: 128
+  route_weight_threshold: 0.05
+  activity_support_threshold: 0.5
+  stress:
+    updates: 8
+    gap_events: 2048
+namespaces:
+  train: e22a-locality-selection-train-v1
+  evaluation: e22a-locality-selection-eval-v1
+  distractor: e22a-locality-selection-distractor-v1
+  identifier_schema_seed: 22001
+initialization_seed_offset: 220000
+training_seed_offset: 221000
+evaluation_seed_offset: 222000
+selection:
+  protected_diagnostic_selection_eligible: false
+  deterministic_tie_break:
+    - maximum_nontarget_degradation
+    - mean_active_path_support_size
+    - mean_update_compute_units
+    - method_id
+results_summary:
+  filename: RESULTS_SUMMARY_KO.md
+  maximum_lines: 55

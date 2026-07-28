@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "experiment_family": "E22",
+  "experiment_id": "e22b_active_path_locality",
+  "protocol_id": "prospective_active_path_locality_confirmatory_v1",
+  "phase": "confirmatory",
+  "protocol_frozen_before_main": true,
+  "main_execution_started": false,
+  "dry_run_permitted_temp_only": true,
+  "parent_e21_lock_path": "docs/E21_STRUCTURED_SEQUENCE_LOCALIZATION_TRANSFER_LOCK.json",
+  "parent_e21_lock_sha256": "e07139064b6f2cf1ca990f4f595d38c64f295cd7b25ef2fd3a935cbefe498579",
+  "parent_e22a_static_lock_sha256": "1012bea7d097d8b0079273883384f28ad0f31a4a1f41a2164e481f5b9ebf0244",
+  "inherited_thresholds": {
+    "selective_gain": 0.001,
+    "maximum_nontarget_degradation": 0.0005,
+    "retention_noninferiority": 0.0005,
+    "minimum_seed_direction_fraction": 1.0,
+    "exact_sign_flip_alpha": 0.05,
+    "minimum_address_accuracy": 0.95,
+    "maximum_candidate_recovery_mse": 0.001,
+    "maximum_capable_affected_mse": 0.001,
+    "maximum_oracle_floor_mse": 0.001,
+    "minimum_verified_activity": 0.95,
+    "maximum_distractor_activity": 0.05,
+    "complete_paired_grid_and_provenance_required": true
+  },
+  "registered_design": {
+    "paired_seeds": 8,
+    "selected_vs_mean_only": true,
+    "updates": [1, 4, 8],
+    "gap_events": [0, 128, 512, 2048],
+    "explicit_selection_run_required": true,
+    "e22a_main_selection_required_for_main": true
+  },
+  "registered_statuses": [
+    "SUPPORTED_SAFE_LOCALIZED_ASSIMILATION_CONTROLLED",
+    "CAPACITY_SUPPORTED_LOCALITY_NOT_SUPPORTED",
+    "OVERREGULARIZED_LOCALITY_TRADEOFF",
+    "NOT_SUPPORTED"
+  ],
+  "claim_boundary": {
+    "evidence_tier": "CONTROLLED_REFERENCE",
+    "e21_reinterpretation_allowed": false,
+    "semantic_or_language_model_claim_eligible": false,
+    "official_backend_claim_eligible": false
+  },
+  "files": {
+    "configs/e22b_active_path_locality.yaml": "49c719dcf93ae8b6ecd5bd6c5c7b91bf8c855b99eb0348799b86fc5da73d724f",
+    "docs/E22_ACTIVE_PATH_LOCALITY_PROTOCOL_KO.md": "ba8920697bdeda5198e57c170aab53b53163c97b149a5c42966c85caa0aa1493",
+    "experiments/e22b_active_path_locality.py": "d548d6afbcf5aaef1722327884eff970f73dfc97217833346a23e379a3f4ebc8",
+    "src/catena/post_e21/contracts.py": "ad48180e0a6da507b503b614c5487054b5b4ba8a28774fdb1575b4c5e8f337b1",
+    "src/catena/post_e21/locality_data.py": "ee5c48553c766e36d79d6024418dd1f8a1b37370a9d78f0fcc96e072525b1541",
+    "src/catena/post_e21/locality_eval.py": "0312e713fec03364fc66d4b24f4f913498cb3825f5bc11de12b4345c20a3e84d",
+    "src/catena/post_e21/locality_models.py": "7732cd5cf63d89ed60f26096fe7c1ef3ed0f9cd08abf4300c5b567583cc9c52e",
+    "src/catena/post_e21/locality_protocol.py": "286828208ed9d7291a7b33debc31926730ccfe17638fe40697164f18997147b2",
+    "src/catena/post_e21/locality_runner.py": "55d20cd16700b0ced71dc5ca1a9254c8fbd987f49c09219245d5d0f1af7b72e7",
+    "src/catena/post_e21/locality_training.py": "51c1c66f86504c59c6144688f6e931b4245fd149936a8a449a9a9fbc250f80a3",
+    "tests/test_e22_active_path_locality.py": "b022d64389f4a20c245aaef18d3efe0e0acb329be44eb94c6eff019b829369eb",
+    "tests/test_e22_runner_contract.py": "8274329c4c5b575e8a4c0a379585334c2bfcf69dfbe438550bf7895b587012fa"
+  }
+}

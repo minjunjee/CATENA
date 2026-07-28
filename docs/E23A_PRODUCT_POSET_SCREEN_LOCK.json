@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e23a_product_poset_screen",
+  "protocol_frozen_before_main": true,
+  "main_execution_started": false,
+  "dry_run_started_at_freeze": false,
+  "screen_outcomes_observed_at_freeze": false,
+  "claim_eligible": false,
+  "application_implementation": "LEARNED_E18_COMPATIBLE_REPEATED_SEQUENCE_V2",
+  "analytic_reference_outcome_forbidden": true,
+  "adequacy_rule": "ABSOLUTE_THRESHOLDS_THEN_POSET_MINIMAL_V2",
+  "files": {
+    "configs/e22a_locality_method_selection.yaml": "6a40aae4798a2e86c7d4f4ccfe2b50997fc01f27f773a539635b7d27fd7178d4",
+    "configs/e23a_product_poset_screen.yaml": "214e68bdf8aa13056ebab45aad8a9705062fec6273c533efe00088e8582d4782",
+    "docs/E22A_LOCALITY_METHOD_SELECTION_PROTOCOL_LOCK.json": "1012bea7d097d8b0079273883384f28ad0f31a4a1f41a2164e481f5b9ebf0244",
+    "docs/E23_PRODUCT_POSET_PROTOCOL_KO.md": "b0d6c04f47640e04863c8bc793791e42465e3eb28d559afcb947aac2b5928df1",
+    "docs/E23_PRODUCT_POSET_THEORY_LOCK.json": "585cf333678fb8cfba53ee7f2aa0530c236daa38e34648074c07724f5dc29d08",
+    "experiments/e23a_product_poset_screen.py": "1b584f1471ec28fabc34a0aa869580a20b8998024e1b8471311152fc16ec34bd",
+    "src/catena/data/controller_poset.py": "5c81a7bdf3da78c92f133031dd3782f9768c32dcaf7048f8477e57991a441917",
+    "src/catena/data/product_poset_sequence.py": "35d1ddecdc9dfad0d843202213b36c5cc6fd92122af90cc75efaa8fc6a210062",
+    "src/catena/post_e21/locality_data.py": "ee5c48553c766e36d79d6024418dd1f8a1b37370a9d78f0fcc96e072525b1541",
+    "src/catena/post_e21/locality_training.py": "51c1c66f86504c59c6144688f6e931b4245fd149936a8a449a9a9fbc250f80a3",
+    "src/catena/post_e21/product_poset_eval.py": "3c1a013a6597a32bf6e2522358423c37c7a63242ae3524f2a7d233c29e244b57",
+    "src/catena/post_e21/product_poset_model.py": "e46c04edcefc9c6274bc4c937aa5291d5ea8e63ebdf3cf12d394cd83cfccef2f",
+    "src/catena/post_e21/product_poset_runner.py": "e2094dcdb868a67a66cbab43a780a3c3717d455aa1c8fd96e81dba88de39b04e",
+    "src/catena/post_e21/product_poset_training.py": "db03d5fc3a9379771afe8379a448f4422b1d5041edcab0cd04edd9b0a69b7800",
+    "tests/test_e23_controller_poset.py": "5ba283917e9382101cc39a9358d94d16ed876e975ea3233577f1e2c8802c337e",
+    "tests/test_e23_product_poset_contract.py": "e0e27f43d7ded22fda6ffa7e0aca4ef87492f5f90e1454b600f2b2ed0c5c48a2"
+  },
+  "theory_prediction": {
+    "source_path": "docs/E23_PRODUCT_POSET_THEORY_LOCK.json",
+    "source_sha256": "585cf333678fb8cfba53ee7f2aa0530c236daa38e34648074c07724f5dc29d08",
+    "sha256": "ddd9862f55a2df8f6121272d73cd9e773eb8ba2ed35bb978defd414146882795"
+  },
+  "boundary_selection": {
+    "rule": "theory_boundary_only_v1",
+    "result_independent": true,
+    "screen_outcomes_may_change_confirmatory_boundary": false
+  },
+  "dependency_rule": {
+    "experiment_id": "e18b_sequence_control_lattice_aggregate",
+    "main_requires_explicit_supported_freeze": true,
+    "dry_run_without_canonical_read": "SYNTHETIC_NON_EVIDENCE"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e25a_official_gdn2_gate",
+  "protocol_id": "prospective_official_gdn2_kda_operator_gate_v1",
+  "frozen_at_utc": "2026-07-28T12:28:47.702798Z",
+  "protocol_frozen_before_main": true,
+  "main_execution_started": false,
+  "scientific_replication_started": false,
+  "reference_fallback_allowed": false,
+  "files": {
+    "configs/e22b_active_path_locality.yaml": "49c719dcf93ae8b6ecd5bd6c5c7b91bf8c855b99eb0348799b86fc5da73d724f",
+    "configs/e25a_official_gdn2_gate.yaml": "c35bb69c8fa71f667933b6c5f1592bd9deafbf5fd1ad80077ff35b78b144fdd6",
+    "docs/E22B_ACTIVE_PATH_LOCALITY_PROTOCOL_LOCK.json": "e19dfd26018e53d7ab601d1bd1b0e94c3bd922e1849c35cdcffec7ae38474598",
+    "docs/E25A_OFFICIAL_GDN2_PROTOCOL_KO.md": "010092d7f97e9149abea1615f5039d626cf6af49c39a49c294ee579732e83b09",
+    "environments/e25a_official_gdn2_environment.yaml": "585a2acc6598267689c387fdef019955ccd35379bdcc0f9833b59b3f2a1596a4",
+    "environments/e25a_official_gdn2_observed_lock.json": "bb80a50cbc4355c40edce2902d1cddb726e8fb8baa6fbcbb7f576efc537821a3",
+    "experiments/e25a_official_gdn2_gate.py": "d756a820ff6ff9b3a11288e1028ae39fd2390c6c4f01b0796fbd44716d405f01",
+    "src/catena/post_e21/official_gdn2.py": "273547b16608beb572e431e06b3e73fad19c18631b276e8ebfee4ec5817ec291",
+    "src/catena_official_plugins/e25a_replication.py": "d60f98aa215e448a7d4ae75b3d000a8a95e98d561c4f1191be6c1b6ce7c111b7",
+    "tests/test_e25a_official_gdn2_gate.py": "81ed2a2a4c0ec2eb2fc139796db21b0d63dfb2c8d2e26fb539628c4e75981dfe"
+  },
+  "official_source": {
+    "gdn2_commit": "95709fc250357c2dd109361c353192f2aa5913f9",
+    "fla_commit": "4b02d15d6a68700181b180235be62a9fb95d2a38",
+    "adapter_sha256": "e5643656de1a9ba164f78c4bdd46a66b971acedf0f84a8114a7cf3b38ba575a3",
+    "replication_plugin_sha256": "d60f98aa215e448a7d4ae75b3d000a8a95e98d561c4f1191be6c1b6ce7c111b7"
+  },
+  "claim_boundary": {
+    "operator_parity_claim_eligible_after_gate": true,
+    "magnitude_replication_claim_eligible_after_replication": true,
+    "e22_locality_replication_requires_selected_objective_and_route": true,
+    "pretrained_lm_claim_eligible": false,
+    "agent_claim_eligible": false,
+    "transformer_or_kveraser_claim_eligible": false
+  }
+}

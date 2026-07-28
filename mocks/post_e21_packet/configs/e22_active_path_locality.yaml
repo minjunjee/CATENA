@@ -1,0 +1,32 @@
+# Reference-only mock contract; not a live experiment config.
+experiment_id: e22_active_path_locality
+status: mock_contract_only
+inherit_protocol_from: e21b_r1_active_guardrail
+artifact_root: /data/minjun_dev/CATENA/artifacts
+fresh_namespace: true
+phases:
+  selection:
+    seeds: [1201, 1213, 1229]
+    methods:
+      mean_retention: [{}]
+      cvar_retention:
+        - {tail_fraction: 0.05}
+        - {tail_fraction: 0.10}
+        - {tail_fraction: 0.20}
+      smooth_max_retention:
+        - {normalized_temperature: 0.25}
+        - {normalized_temperature: 0.50}
+        - {normalized_temperature: 1.00}
+      sparse_route:
+        - {active_fraction: 0.125, retention: cvar_0.10}
+        - {active_fraction: 0.25, retention: cvar_0.10}
+        - {active_fraction: 0.50, retention: cvar_0.10}
+  confirmatory:
+    seeds: [1301, 1319, 1327, 1361, 1381, 1409, 1423, 1451]
+    updates: [1, 4, 8]
+    gaps: [0, 128, 512, 2048]
+    baseline: mean_retention
+    selected_method_source: selection_lock.json
+thresholds:
+  source: inherited_from_e21b_r1_protocol_lock
+  do_not_override: true

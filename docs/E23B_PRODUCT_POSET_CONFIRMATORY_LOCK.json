@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e23b_product_poset_confirmatory",
+  "protocol_frozen_before_main": true,
+  "main_execution_started": false,
+  "dry_run_started_at_freeze": false,
+  "e23a_screen_outcomes_observed_at_freeze": false,
+  "e23a_outcomes_used": false,
+  "application_implementation": "LEARNED_E18_COMPATIBLE_REPEATED_SEQUENCE_V2",
+  "analytic_reference_outcome_forbidden": true,
+  "adequacy_rule": "ABSOLUTE_THRESHOLDS_THEN_POSET_MINIMAL_V2",
+  "files": {
+    "configs/e22a_locality_method_selection.yaml": "6a40aae4798a2e86c7d4f4ccfe2b50997fc01f27f773a539635b7d27fd7178d4",
+    "configs/e23b_product_poset_confirmatory.yaml": "b2008d2323a7352e8ddc44d6c6eaec27f6752dce08ef6c5a673432903730b0cd",
+    "docs/E22A_LOCALITY_METHOD_SELECTION_PROTOCOL_LOCK.json": "1012bea7d097d8b0079273883384f28ad0f31a4a1f41a2164e481f5b9ebf0244",
+    "docs/E22B_ACTIVE_PATH_LOCALITY_PROTOCOL_LOCK.json": "e19dfd26018e53d7ab601d1bd1b0e94c3bd922e1849c35cdcffec7ae38474598",
+    "docs/E23_PRODUCT_POSET_PROTOCOL_KO.md": "b0d6c04f47640e04863c8bc793791e42465e3eb28d559afcb947aac2b5928df1",
+    "docs/E23_PRODUCT_POSET_THEORY_LOCK.json": "585cf333678fb8cfba53ee7f2aa0530c236daa38e34648074c07724f5dc29d08",
+    "experiments/e23b_product_poset_confirmatory.py": "cb026901f94012bee819b25b79c0ca3d7325a1f4854949dcf47d2be0437e10d3",
+    "src/catena/data/controller_poset.py": "5c81a7bdf3da78c92f133031dd3782f9768c32dcaf7048f8477e57991a441917",
+    "src/catena/data/product_poset_sequence.py": "35d1ddecdc9dfad0d843202213b36c5cc6fd92122af90cc75efaa8fc6a210062",
+    "src/catena/post_e21/locality_data.py": "ee5c48553c766e36d79d6024418dd1f8a1b37370a9d78f0fcc96e072525b1541",
+    "src/catena/post_e21/locality_training.py": "51c1c66f86504c59c6144688f6e931b4245fd149936a8a449a9a9fbc250f80a3",
+    "src/catena/post_e21/product_poset_eval.py": "3c1a013a6597a32bf6e2522358423c37c7a63242ae3524f2a7d233c29e244b57",
+    "src/catena/post_e21/product_poset_model.py": "e46c04edcefc9c6274bc4c937aa5291d5ea8e63ebdf3cf12d394cd83cfccef2f",
+    "src/catena/post_e21/product_poset_runner.py": "e2094dcdb868a67a66cbab43a780a3c3717d455aa1c8fd96e81dba88de39b04e",
+    "src/catena/post_e21/product_poset_training.py": "db03d5fc3a9379771afe8379a448f4422b1d5041edcab0cd04edd9b0a69b7800",
+    "tests/test_e23_controller_poset.py": "5ba283917e9382101cc39a9358d94d16ed876e975ea3233577f1e2c8802c337e",
+    "tests/test_e23_product_poset_contract.py": "e0e27f43d7ded22fda6ffa7e0aca4ef87492f5f90e1454b600f2b2ed0c5c48a2"
+  },
+  "theory_prediction": {
+    "source_path": "docs/E23_PRODUCT_POSET_THEORY_LOCK.json",
+    "source_sha256": "585cf333678fb8cfba53ee7f2aa0530c236daa38e34648074c07724f5dc29d08",
+    "sha256": "ddd9862f55a2df8f6121272d73cd9e773eb8ba2ed35bb978defd414146882795"
+  },
+  "boundary_selection": {
+    "rule": "theory_boundary_only_v1",
+    "result_independent": true,
+    "selected_before_e23_outcomes": true,
+    "e23a_outcomes_used": false
+  },
+  "dependency_rule": {
+    "e18_experiment_id": "e18b_sequence_control_lattice_aggregate",
+    "main_requires_explicit_supported_e18_freeze": true,
+    "e23a_experiment_id": "e23a_product_poset_screen",
+    "main_requires_explicit_completed_e23a_screen": true,
+    "e23a_outcomes_may_change_boundary": false,
+    "e22_experiment_id": "e22b_active_path_locality",
+    "required_e22_protocol_lock_sha256": "e19dfd26018e53d7ab601d1bd1b0e94c3bd922e1849c35cdcffec7ae38474598",
+    "main_requires_explicit_completed_e22_run": true,
+    "missing_or_incomplete": "BLOCKED_DEPENDENCY",
+    "safe_status": "SUPPORTED_SAFE_LOCALIZED_ASSIMILATION_CONTROLLED",
+    "safe_boundary": "safe_minimality",
+    "safe_objectives_implemented": ["mean", "cvar", "smoothmax"],
+    "safe_objectives_fail_closed": ["sparse", "protected_projection"],
+    "completed_non_safe_boundary": "capacity_only",
+    "accepted_non_safe_statuses": [
+      "CAPACITY_SUPPORTED_LOCALITY_NOT_SUPPORTED",
+      "OVERREGULARIZED_LOCALITY_TRADEOFF",
+      "NOT_SUPPORTED"
+    ],
+    "dry_run_without_dependency": "SYNTHETIC_NON_EVIDENCE"
+  }
+}

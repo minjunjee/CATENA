@@ -1,0 +1,113 @@
+experiment_id: e25b_text_transaction_anchor
+protocol:
+  protocol_id: prospective_shared_text_transaction_anchor_v4
+  evidence_tier: CONTROLLED_REFERENCE
+  shared_encoder_across_controllers: true
+  encoder_factorized: false
+  pretrained_language_model: false
+  operation_label_visible: false
+  oracle_gate_visible: false
+  exact_mask_visible: false
+  integer_address_visible: false
+seeds: [4101, 4111, 4127, 4133, 4153]
+namespaces:
+  development: e25b-development-v4
+  train: e25b-train-v4
+  validation: e25b-validation-v4
+  primary: e25b-primary-v4
+  paraphrase: e25b-paraphrase-v4
+  identifier: e25b-identifier-v4
+  domain: e25b-domain-v4
+  combined: e25b-combined-v4
+  seed_root: 25000000000000
+  semantic_value_seed: 25000000990000
+encoder:
+  kind: frozen_hash_ngram
+  output_dim: 96
+  buckets: 2048
+  ngram_min: 1
+  ngram_max: 2
+  seed: 252501
+  trainable: false
+  visible_candidate_decoder:
+    kind: deterministic_policy_token_hash
+    token_pattern: "policy-[0-9]+"
+    semantic_value_seed: 25000000990000
+    shared_across_controllers: true
+    learned_controller_incoming_head: false
+data:
+  slots: 16
+  value_dim: 16
+  train_examples_per_demand: 512
+  validation_examples_per_demand: 128
+  test_examples_per_demand: 256
+  demand_families: [magnitude, value, address, state_conditioning]
+  magnitude_train_operations: [add_anchor, invalidate_anchor]
+  magnitude_primary_operations:
+    [add_anchor, invalidate_anchor, supersede_composition]
+  splits: [primary, paraphrase, identifier, domain, combined]
+  query_bundle: [direct_fact, derived_action, old_rule_probe, unaffected_retention]
+model:
+  variants: [tied, dual, diagonal, separate_address, state_aware]
+  hidden_dim: 128
+  common_maximal_parameter_surface: true
+training:
+  steps: 2500
+  batch_size: 64
+  learning_rate: 0.0005
+  weight_decay: 0.0001
+  affected_weight: 1.0
+  retention_weight: 1.0
+  gradient_clip_norm: 1.0
+evaluation:
+  accuracy_mse_threshold: 0.001
+  controls:
+    [oracle_demand, shuffled_text, wrong_entity, transaction_only_zero_state, state_only]
+  batches: 8
+  batch_size: 128
+statistics:
+  alpha: 0.05
+  selective_gain_sesoi: 0.001
+  asymmetric_magnitude_gain_sesoi: 0.001
+  supersede_absolute_equivalence_margin: 0.0005
+  supersede_tied_floor_ceiling: 0.001
+  supersede_dual_floor_ceiling: 0.001
+  equivalence_bootstrap_samples: 5000
+  equivalence_bootstrap_confidence: 0.95
+  equivalence_bootstrap_seed: 252503
+  retention_noninferiority: 0.0005
+  oracle_floor_ceiling: 0.001
+  shared_encoder_controller_floor_ceiling: 0.001
+  minimum_state_aware_address_accuracy: 0.95
+  minimum_identifiable_oracle_headroom: 1.0e-12
+  minimum_control_degradation: 0.001
+  minimum_seed_direction_fraction: 1.0
+audit:
+  items: 300
+  population_seed: 4101
+  splits: [primary, paraphrase, identifier, domain, combined]
+  items_per_demand_by_split:
+    primary: 16
+    paraphrase: 16
+    identifier: 16
+    domain: 14
+    combined: 13
+  items_filename: E25B_V4_HUMAN_AUDIT_ITEMS_LOCKED.csv
+  review_template_filename: E25B_V4_HUMAN_AUDIT_REVIEW_TEMPLATE.csv
+  review_work_filename: E25B_V4_HUMAN_AUDIT_REVIEW_WORK.csv
+  population_lock_filename: E25B_V4_HUMAN_AUDIT_POPULATION_LOCK.json
+  reviewers: 2
+  minimum_agreement: 0.80
+  minimal_pair_templates_locked: true
+  require_zero_unadjudicated_critical_failures: true
+  lexical_blacklist:
+    [add, delete, revoke, invalidate, replace, supersede, erase, write]
+artifacts:
+  raw_metrics_filename: text_transaction_metrics.jsonl
+  seed_metrics_filename: text_transaction_seed_metrics.jsonl
+claim_boundary:
+  natural_language_generation_claim_eligible: false
+  agent_claim_eligible: false
+  pretrained_lm_claim_eligible: false
+  official_backend_claim_eligible: false
+  production_latency_claim_eligible: false

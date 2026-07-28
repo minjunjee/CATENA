@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "purpose": "READ_ONLY_OBSERVED_ENVIRONMENT_INVENTORY_NOT_A_RECREATION_SPEC",
+  "observed_at_utc": "2026-07-28T12:10:21.192217Z",
+  "mutation_performed": false,
+  "prefix": "/data/minjun_dev/CATENA/envs/gdn2_official_95709fc",
+  "executable": "/data/minjun_dev/CATENA/envs/gdn2_official_95709fc/bin/python",
+  "python": {
+    "version": "3.11.15",
+    "compiler": "GCC 14.3.0"
+  },
+  "runtime": {
+    "torch": "2.9.0+cu128",
+    "torch_distribution": "2.9.0",
+    "torch_cuda": "12.8",
+    "cudnn": 91002,
+    "triton": "3.5.0",
+    "einops": "0.8.2",
+    "ninja": "1.13.0",
+    "numpy": "2.4.6",
+    "flash_linear_attention_distribution": "0.5.2",
+    "cuda_available_at_audit": true,
+    "visible_device_count_at_audit": 4
+  },
+  "ambient_fla_install": {
+    "editable_project_location": "/data/minjun_dev/CATENA/official_sources/flash-linear-attention_9c8e42e",
+    "scientific_source_eligible": false,
+    "reason": "The ambient editable source is not the E25a pinned FLA revision."
+  },
+  "scientific_source_boundary": {
+    "gdn2_path": "/home/minjun_dev/CATENA_official/gdn2_upstream",
+    "gdn2_commit": "95709fc250357c2dd109361c353192f2aa5913f9",
+    "fla_path": "/data/minjun_dev/CATENA/official_sources/flash-linear-attention_4b02d15_clean",
+    "fla_commit": "4b02d15d6a68700181b180235be62a9fb95d2a38",
+    "ambient_imports_allowed": false,
+    "runtime_origin_validation_required": true
+  }
+}

@@ -1,0 +1,28 @@
+# Reference-only mock contract; not a live experiment config.
+experiment_id: e23_product_poset_sequence
+status: mock_contract_only
+artifact_root: /data/minjun_dev/CATENA/artifacts
+controller_axes:
+  magnitude: [tied, independent]
+  value: [scalar, diagonal]
+  address: [shared, separate]
+  conditioning: [blind, state_aware]
+demand_families:
+  single_axis: [magnitude, value, address, conditioning]
+  pairwise: [magnitude_value, magnitude_address, magnitude_conditioning, value_address, value_conditioning, address_conditioning]
+  guardrail: [preserve]
+intensity: [0.25, 0.5, 1.0]
+sequence_grid:
+  updates: [1, 4, 8]
+  gaps: [0, 512, 2048]
+phases:
+  screening:
+    seeds: [2301, 2311, 2333]
+    controllers: all_16
+  confirmatory:
+    seeds: [2401, 2411, 2423, 2437, 2441, 2459, 2473, 2477]
+    selection_rule: theory_boundary_only
+adequacy:
+  target_margin_source: protocol_lock
+  locality_margin_source: e22_if_supported_else_capacity_only
+  retention_margin_source: protocol_lock

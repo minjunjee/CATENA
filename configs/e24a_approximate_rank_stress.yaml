@@ -1,0 +1,147 @@
+experiment_id: e24a_approximate_rank_stress
+protocol:
+  version: E24_PREMAIN_V1
+  lock_path: docs/E24A_APPROXIMATE_RANK_STRESS_LOCK.json
+  protocol_frozen_before_main: true
+  main_execution_started: false
+  main_authorized_by_default: false
+  main_requires_explicit_allow_main: true
+evidence:
+  tier: CONTROLLED_THEORY_STRESS
+  dry_run_claim_eligible: false
+  official_backend_claim_eligible: false
+  pretrained_language_model_claim_eligible: false
+dependencies:
+  canonical_artifact_root: /data/minjun_dev/CATENA/artifacts
+  dry_run_policy: EXPECTATIONS_ONLY_DO_NOT_READ_CANONICAL_ARTIFACTS
+  main_requires_all: true
+  main_failure_status: BLOCKED_DEPENDENCY
+  required:
+    - anchor_id: h1_behavioral_reachability
+      experiment_id: e01b_constrained_behavioral_reachability
+      relative_report_path: e01b_constrained_behavioral_reachability/20260726T152354.081239Z/report.json
+      report_sha256: 8e1d16ca7763cec1e4e5b13d2b0f163f4015c8058ed7764871a6fbb5fa5ea6d6
+      expected_status: PASS
+      expected_claim_disposition: SUPPORTED
+      expected_fields:
+        status: PASS
+        claim_gate.supported: true
+    - anchor_id: e10b_floor_aware_rank_scaling
+      experiment_id: e10b_floor_aware_rank_scaling
+      relative_report_path: e10b_floor_aware_rank_scaling/20260727T190906.272784Z/report.json
+      report_sha256: 30f2f781bcc8528964602e0c66e1b61bb9d71a6ca5f964b833b2551c93b72484
+      expected_status: PASS
+      expected_claim_disposition: SUPPORTED
+      expected_fields:
+        status: PASS
+        claim_gate.supported: true
+    - anchor_id: e11b_scale_normalized_coadaptation
+      experiment_id: e11b_scale_normalized_coadaptation
+      relative_report_path: e11b_scale_normalized_coadaptation/20260727T183004.928280Z/report.json
+      report_sha256: 54015400029b3eae0367a1c12cb1dd717dee5a0568906f7d8e972c45bc4301b3
+      expected_status: PASS
+      expected_claim_disposition: SUPPORTED
+      expected_fields:
+        status: PASS
+        claim_gate.supported: true
+seeds: [3101, 3119, 3137, 3163, 3181, 3203, 3221, 3251]
+design:
+  dimension: 64
+  controller_ranks: [1, 2, 4, 8, 16, 32]
+  spectra:
+    exponential_tau: [1.5, 3.0, 6.0, 12.0]
+    power_law_exponent: [0.75, 1.0, 1.5, 2.0]
+    low_rank_plus_noise:
+      base_ranks: [2, 8, 16]
+      tail_noise: [0.0, 0.01, 0.05, 0.10]
+  spectrum_family_transfer:
+    families: [exponential, power_law, low_rank_plus_noise]
+    fold_rule: leave_one_spectrum_family_out
+    train_instances: all registered instances whose family is not held out
+    test_instances: all registered instances whose family is held out
+    family_identity_feature_included: false
+    test_outcomes_used_for_training: false
+    predictions_written_before_test_outcome_join: true
+    shared_left_right_basis_within_seed: true
+  spectrum_analysis_roles:
+    exact_rank_reference: low_rank_plus_noise with tail_noise == 0
+    approximate_spectrum:
+      - exponential
+      - power_law
+      - low_rank_plus_noise with tail_noise > 0
+learning:
+  primary_estimator: descriptor_conditioned_low_rank_controller
+  reused_pattern: E10/E10b LowRankOperatorController plus AdamW matrix training
+  descriptor:
+    definition: family-agnostic log-spectrum anchors, cumulative energy, effective rank, stable rank
+    dimension: 16
+    log_singular_value_indices: [0, 1, 2, 3, 7, 15, 31, 63]
+    cumulative_energy_ranks: [1, 2, 4, 8, 16, 32]
+    include_effective_rank: true
+    include_stable_rank: true
+    family_identity_feature_included: false
+  model:
+    class: LowRankOperatorController
+    hidden_dim: 64
+  training:
+    optimizer: AdamW
+    steps: 800
+    batch_size: 16
+    learning_rate: 0.003
+    weight_decay: 0.0001
+    gradient_clip_norm: 1.0
+  evaluation:
+    batch_size: 64
+    clean_population_operator: true
+    test_outcome_join_after_prediction_artifact: true
+  direct_empirical_svd_diagnostic:
+    primary_result: false
+    observation_count: 32
+    relative_observation_noise: 0.05
+    evaluation_target: clean_population_operator
+epsilon_minimal:
+  relative_residual_epsilon: 0.05
+  grid_only: true
+  unresolved_is_not_a_match: true
+estimands:
+  - normalized_oracle_floor
+  - normalized_ood_learned_error
+  - ood_learned_excess_over_oracle
+  - effective_rank
+  - stable_rank
+  - ood_epsilon_minimal_rank_match
+  - leave_one_spectrum_family_out_metrics
+claim_gate:
+  minimum_ood_epsilon_rank_match_fraction: 0.50
+  maximum_mean_normalized_excess_over_oracle: 0.25
+  all_three_family_folds_required: true
+execution:
+  dry_run_required_device_type: cpu
+  dry_run_artifact_root: fresh_subdirectory_below_tmp
+  main_requires_explicit_allow_main: true
+  main_requires_explicit_dependency_root: true
+  main_writes_forbidden_without_allow_main: true
+reporting:
+  results_summary_filename: RESULTS_SUMMARY_KO.md
+  results_summary_language: ko
+  maximum_lines: 45
+  dry_run_status_label: DRY_RUN_NON_EVIDENCE
+  main_status_label: MAIN_CONTROLLED_THEORY_STRESS
+claim_ceiling:
+  allowed_after_authorized_main: descriptor-conditioned learned rank-controller OOD transfer across the three registered controlled spectrum families only
+  forbidden:
+    - universal rank theorem
+    - parameter-efficiency claim
+    - official recurrent-memory backend claim
+    - pretrained language-model claim
+    - transfer beyond the three registered synthetic spectrum families
+    - unseen geometry or basis transfer
+dry_run_overrides:
+  seed: 993101
+  exponential_tau: [3.0]
+  power_law_exponent: [1.5]
+  low_rank_base_ranks: [8]
+  low_rank_tail_noise: [0.0, 0.05]
+  learned_ranks: [1, 8, 32]
+  training_steps: 8
+  diagnostic_observation_count: 4

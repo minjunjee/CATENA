@@ -1,0 +1,11 @@
+{
+  "changed": [],
+  "expected_aggregate_sha256": "4ef82dd6fe42543bc1e3b8a63f24781c2ba5d476a39bd84448f9dde6896c87f7",
+  "expected_file_count": 1329,
+  "missing": [],
+  "observed_aggregate_sha256": "4ef82dd6fe42543bc1e3b8a63f24781c2ba5d476a39bd84448f9dde6896c87f7",
+  "observed_file_count": 1329,
+  "passed": true,
+  "status": "PASS",
+  "unexpected": []
+}

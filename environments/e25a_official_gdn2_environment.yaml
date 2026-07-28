@@ -1,0 +1,23 @@
+name: catena-e25a-official-gdn2
+# Recreation specification only.  Scientific provenance comes from the
+# read-only observed inventory in e25a_official_gdn2_observed_lock.json plus
+# the runtime source/origin gate; this file does not attest to an installed
+# environment.
+channels:
+  - nvidia
+  - pytorch
+  - conda-forge
+dependencies:
+  - python=3.11.15
+  - cuda-nvcc=12.8
+  - pip
+  - pip:
+      # Observed wheel/package versions in the pinned prefix on 2026-07-28.
+      # GDN2 and FLA operator source still come only from the exact detached
+      # Git checkouts verified by E25a; never trust ambient editable source.
+      - torch==2.9.0
+      - triton==3.5.0
+      - einops==0.8.2
+      - ninja==1.13.0
+      - numpy==2.4.6
+      - flash-linear-attention==0.5.2

@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e23_product_poset_theory",
+  "protocol_frozen_before_main": true,
+  "main_execution_started": false,
+  "e23a_screen_outcomes_observed": false,
+  "outcome_fields_used": [],
+  "files": {
+    "src/catena/data/controller_poset.py": "5c81a7bdf3da78c92f133031dd3782f9768c32dcaf7048f8477e57991a441917"
+  },
+  "theory_prediction": {
+    "sha256": "ddd9862f55a2df8f6121272d73cd9e773eb8ba2ed35bb978defd414146882795",
+    "payload": {
+      "absolute_adequacy": {
+        "affected_mse_tolerance": 0.0001,
+        "capacity_only_uses_locality": false,
+        "locality_mse_tolerance": 0.0005,
+        "retention_mse_tolerance": 0.0005,
+        "safe_minimality_uses_locality": true
+      },
+      "adequacy_aggregates_worst_case_over_registered_sequence_grid": true,
+      "boundary_union_covers_all_16_controllers": true,
+      "confirmatory_boundary_sets": {
+        "address": ["c0000", "c0001", "c0010", "c0011", "c0100", "c0110", "c1000", "c1010", "c1111"],
+        "address_conditioning": ["c0001", "c0010", "c0011", "c0101", "c0110", "c0111", "c1001", "c1010", "c1011", "c1100", "c1111"],
+        "conditioning": ["c0000", "c0001", "c0010", "c0011", "c0100", "c0101", "c1000", "c1001", "c1111"],
+        "magnitude": ["c0000", "c0001", "c0010", "c0100", "c1000", "c1001", "c1010", "c1100", "c1111"],
+        "magnitude_address": ["c0010", "c0011", "c0101", "c0110", "c1000", "c1001", "c1010", "c1011", "c1100", "c1110", "c1111"],
+        "magnitude_conditioning": ["c0001", "c0011", "c0101", "c0110", "c1000", "c1001", "c1010", "c1011", "c1100", "c1101", "c1111"],
+        "magnitude_value": ["c0011", "c0100", "c0101", "c0110", "c1000", "c1001", "c1010", "c1100", "c1101", "c1110", "c1111"],
+        "preserve": ["c0000", "c0001", "c0010", "c0100", "c1000", "c1111"],
+        "value": ["c0000", "c0001", "c0010", "c0100", "c0101", "c0110", "c1000", "c1100", "c1111"],
+        "value_address": ["c0010", "c0011", "c0100", "c0101", "c0110", "c0111", "c1001", "c1010", "c1100", "c1110", "c1111"],
+        "value_conditioning": ["c0001", "c0011", "c0100", "c0101", "c0110", "c0111", "c1001", "c1010", "c1100", "c1101", "c1111"]
+      },
+      "controller_axes": ["magnitude", "value", "address", "conditioning"],
+      "controller_ids": ["c0000", "c0001", "c0010", "c0011", "c0100", "c0101", "c0110", "c0111", "c1000", "c1001", "c1010", "c1011", "c1100", "c1101", "c1110", "c1111"],
+      "demand_families": ["magnitude", "value", "address", "conditioning", "magnitude_value", "magnitude_address", "magnitude_conditioning", "value_address", "value_conditioning", "address_conditioning", "preserve"],
+      "intensities": [0.25, 0.5, 1.0],
+      "outcome_fields_used": [],
+      "poset_minimal_sets": {
+        "address": ["c0010"],
+        "address_conditioning": ["c0011"],
+        "conditioning": ["c0001"],
+        "magnitude": ["c1000"],
+        "magnitude_address": ["c1010"],
+        "magnitude_conditioning": ["c1001"],
+        "magnitude_value": ["c1100"],
+        "preserve": ["c0000"],
+        "value": ["c0100"],
+        "value_address": ["c0110"],
+        "value_conditioning": ["c0101"]
+      },
+      "rule": "absolute_adequacy_then_poset_minimal_v2",
+      "sequence_grid": {
+        "gap_events": [0, 512, 2048],
+        "updates": [1, 4, 8]
+      },
+      "theory_adequate_sets": {
+        "address": ["c0010", "c0011", "c0110", "c0111", "c1010", "c1011", "c1110", "c1111"],
+        "address_conditioning": ["c0011", "c0111", "c1011", "c1111"],
+        "conditioning": ["c0001", "c0011", "c0101", "c0111", "c1001", "c1011", "c1101", "c1111"],
+        "magnitude": ["c1000", "c1001", "c1010", "c1011", "c1100", "c1101", "c1110", "c1111"],
+        "magnitude_address": ["c1010", "c1011", "c1110", "c1111"],
+        "magnitude_conditioning": ["c1001", "c1011", "c1101", "c1111"],
+        "magnitude_value": ["c1100", "c1101", "c1110", "c1111"],
+        "preserve": ["c0000", "c0001", "c0010", "c0011", "c0100", "c0101", "c0110", "c0111", "c1000", "c1001", "c1010", "c1011", "c1100", "c1101", "c1110", "c1111"],
+        "value": ["c0100", "c0101", "c0110", "c0111", "c1100", "c1101", "c1110", "c1111"],
+        "value_address": ["c0110", "c0111", "c1110", "c1111"],
+        "value_conditioning": ["c0101", "c0111", "c1101", "c1111"]
+      }
+    }
+  }
+}

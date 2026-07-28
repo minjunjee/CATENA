@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e24b_behavioral_attainability_stress",
+  "experiment_family": "E24",
+  "protocol_version": "E24_PREMAIN_V1",
+  "protocol_frozen_before_main": true,
+  "main_execution_started": false,
+  "main_authorized_by_default": false,
+  "main_requires_explicit_allow_main": true,
+  "dry_run_claim_eligible": false,
+  "evidence_tier": "CONTROLLED_THEORY_STRESS",
+  "dry_run_dependency_validation": "EXPECTATIONS_ONLY_DO_NOT_READ_CANONICAL_ARTIFACTS",
+  "future_main_dependency_failure_status": "BLOCKED_DEPENDENCY",
+  "required_evidence_dependencies": [
+    {
+      "anchor_id": "h1_behavioral_reachability",
+      "relative_report_path": "e01b_constrained_behavioral_reachability/20260726T152354.081239Z/report.json",
+      "report_sha256": "8e1d16ca7763cec1e4e5b13d2b0f163f4015c8058ed7764871a6fbb5fa5ea6d6",
+      "expected_status": "PASS",
+      "expected_claim_disposition": "SUPPORTED"
+    },
+    {
+      "anchor_id": "e10b_floor_aware_rank_scaling",
+      "relative_report_path": "e10b_floor_aware_rank_scaling/20260727T190906.272784Z/report.json",
+      "report_sha256": "30f2f781bcc8528964602e0c66e1b61bb9d71a6ca5f964b833b2551c93b72484",
+      "expected_status": "PASS",
+      "expected_claim_disposition": "SUPPORTED"
+    },
+    {
+      "anchor_id": "e11b_scale_normalized_coadaptation",
+      "relative_report_path": "e11b_scale_normalized_coadaptation/20260727T183004.928280Z/report.json",
+      "report_sha256": "54015400029b3eae0367a1c12cb1dd717dee5a0568906f7d8e972c45bc4301b3",
+      "expected_status": "PASS",
+      "expected_claim_disposition": "SUPPORTED"
+    }
+  ],
+  "files": {
+    "configs/e24b_behavioral_attainability_stress.yaml": "0461fe1d483358224382ab4963f86de986f87e8f9980ec3daad349be580cded9",
+    "docs/E24_THEORY_STRESS_PROTOCOL_KO.md": "852cbcb0d1bf9604bf7e342b9929b696fee12de7a7a6256201d8bd1a320e03e0",
+    "experiments/e24b_behavioral_attainability_stress.py": "21212a2b95949448770a38c842842459bf35cc32f022afd5751fecfb43e06146",
+    "src/catena/post_e21/contracts.py": "ad48180e0a6da507b503b614c5487054b5b4ba8a28774fdb1575b4c5e8f337b1",
+    "src/catena/post_e21/e24_protocol.py": "13e0f040ee52cb078e611aa1394bd5e8ab66c7b6dde1e6622789cdeccf439622",
+    "src/catena/post_e21/e24b_behavioral_attainability.py": "04b5e5005dd7caccd92c555e74dff29ee45e933712869a6c5402c2e3b82a1950",
+    "tests/test_e24b_behavioral_attainability_stress.py": "532d457212527f96bad8eb60d1a0faded83ff2fbc3ae6177f2d672e8dc19e741"
+  },
+  "claim_boundary": {
+    "allowed_after_separate_future_authorization": "OOS calibration on registered finite-dimensional controlled constructions only",
+    "current_claim_eligible": false
+  }
+}

@@ -1,0 +1,113 @@
+experiment_id: e23b_product_poset_confirmatory
+phase: CONFIRMATORY
+evidence_tier: CONTROLLED_REFERENCE
+namespace: e23b_confirmatory_v1
+controller_axes:
+  - magnitude
+  - value
+  - address
+  - conditioning
+single_axis_demands:
+  - magnitude
+  - value
+  - address
+  - conditioning
+pairwise_demands:
+  - magnitude_value
+  - magnitude_address
+  - magnitude_conditioning
+  - value_address
+  - value_conditioning
+  - address_conditioning
+demand_families:
+  - magnitude
+  - value
+  - address
+  - conditioning
+  - magnitude_value
+  - magnitude_address
+  - magnitude_conditioning
+  - value_address
+  - value_conditioning
+  - address_conditioning
+  - preserve
+intensities: [0.25, 0.5, 1.0]
+seeds: [2401, 2411, 2423, 2437, 2441, 2459, 2473, 2477]
+data:
+  num_entities: 32
+  value_dim: 32
+model:
+  embedding_dim: 128
+  hidden_dim: 512
+training:
+  steps: 3000
+  batch_size: 128
+  updates: 4
+  gap_events: 128
+  learning_rate: 0.0005
+  retention_weight: 1.0
+  optimizer: AdamW
+  maximal_parameter_surface: true
+  paired_initialization: true
+  paired_data_order: true
+  initialization_seed_offset: 243000
+  data_seed_offset: 244000
+evaluation:
+  updates: [1, 4, 8]
+  gap_events: [0, 512, 2048]
+  batches: 2
+  batch_size: 32
+  seed_offset: 245000
+dry_run:
+  seed_count: 1
+  training_steps: 2
+  training_batch_size: 2
+  training_updates: 1
+  training_gap_events: 0
+  evaluation_batches: 1
+  evaluation_batch_size: 2
+adequacy:
+  affected_mse_tolerance: 0.0001
+  target_margin: 0.0001
+  retention_margin: 0.0005
+  locality_margin: 0.0005
+  minimum_single_axis_exact_matches: 4
+  minimum_pairwise_exact_matches: 5
+  incomparable_direction_margin: 0.0
+  maximal_simpler_degradation_margin: 0.0005
+probe:
+  missing_axis_floor: 0.004
+  numerical_floor: 0.000001
+boundary_selection:
+  rule: theory_boundary_only_v1
+  result_independent: true
+dependency:
+  e18:
+    experiment_id: e18b_sequence_control_lattice_aggregate
+    explicit_freeze_required_for_main: true
+    required_execution_status: PASS
+    required_claim_status: SUPPORTED
+    dry_run_internal_fixture: SYNTHETIC_NON_EVIDENCE
+  e23a_screen:
+    experiment_id: e23a_product_poset_screen
+    explicit_completed_run_required_for_main: true
+    outcomes_may_change_boundary: false
+    dry_run_internal_fixture: SYNTHETIC_NON_EVIDENCE
+  e22:
+    experiment_id: e22b_active_path_locality
+    explicit_completed_run_required_for_main: true
+    missing_or_incomplete: BLOCKED_DEPENDENCY
+    safe_status: SUPPORTED_SAFE_LOCALIZED_ASSIMILATION_CONTROLLED
+    safe_boundary_mode: safe_minimality
+    completed_non_safe_boundary_mode: capacity_only
+    accepted_non_safe_statuses:
+      - CAPACITY_SUPPORTED_LOCALITY_NOT_SUPPORTED
+      - OVERREGULARIZED_LOCALITY_TRADEOFF
+      - NOT_SUPPORTED
+    dry_run_internal_fixture: SYNTHETIC_NON_EVIDENCE
+claim_boundary:
+  capacity_only_excludes_locality_claim: true
+  semantic_claim_eligible: false
+  language_model_claim_eligible: false
+  agent_claim_eligible: false
+  official_backend_claim_eligible: false

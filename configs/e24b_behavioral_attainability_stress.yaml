@@ -1,0 +1,254 @@
+experiment_id: e24b_behavioral_attainability_stress
+protocol:
+  version: E24_PREMAIN_V1
+  lock_path: docs/E24B_BEHAVIORAL_ATTAINABILITY_STRESS_LOCK.json
+  protocol_frozen_before_main: true
+  main_execution_started: false
+  main_authorized_by_default: false
+  main_requires_explicit_allow_main: true
+evidence:
+  tier: CONTROLLED_THEORY_STRESS
+  dry_run_claim_eligible: false
+  official_backend_claim_eligible: false
+  pretrained_language_model_claim_eligible: false
+dependencies:
+  canonical_artifact_root: /data/minjun_dev/CATENA/artifacts
+  dry_run_policy: EXPECTATIONS_ONLY_DO_NOT_READ_CANONICAL_ARTIFACTS
+  main_requires_all: true
+  main_failure_status: BLOCKED_DEPENDENCY
+  required:
+    - anchor_id: h1_behavioral_reachability
+      experiment_id: e01b_constrained_behavioral_reachability
+      relative_report_path: e01b_constrained_behavioral_reachability/20260726T152354.081239Z/report.json
+      report_sha256: 8e1d16ca7763cec1e4e5b13d2b0f163f4015c8058ed7764871a6fbb5fa5ea6d6
+      expected_status: PASS
+      expected_claim_disposition: SUPPORTED
+      expected_fields:
+        status: PASS
+        claim_gate.supported: true
+    - anchor_id: e10b_floor_aware_rank_scaling
+      experiment_id: e10b_floor_aware_rank_scaling
+      relative_report_path: e10b_floor_aware_rank_scaling/20260727T190906.272784Z/report.json
+      report_sha256: 30f2f781bcc8528964602e0c66e1b61bb9d71a6ca5f964b833b2551c93b72484
+      expected_status: PASS
+      expected_claim_disposition: SUPPORTED
+      expected_fields:
+        status: PASS
+        claim_gate.supported: true
+    - anchor_id: e11b_scale_normalized_coadaptation
+      experiment_id: e11b_scale_normalized_coadaptation
+      relative_report_path: e11b_scale_normalized_coadaptation/20260727T183004.928280Z/report.json
+      report_sha256: 54015400029b3eae0367a1c12cb1dd717dee5a0568906f7d8e972c45bc4301b3
+      expected_status: PASS
+      expected_claim_disposition: SUPPORTED
+      expected_fields:
+        status: PASS
+        claim_gate.supported: true
+seeds: [3101, 3119, 3137, 3163, 3181, 3203, 3221, 3251]
+design:
+  dimension: 16
+  batch_size: 128
+  noise_conditions:
+    - label: clean_teacher
+      target_noise_factor: 0.0
+      teacher_noise_factor: 0.0
+    - label: target_shift_0p01
+      target_noise_factor: 0.01
+      teacher_noise_factor: 0.0
+    - label: target_shift_0p05
+      target_noise_factor: 0.05
+      teacher_noise_factor: 0.0
+    - label: target_shift_0p10
+      target_noise_factor: 0.10
+      teacher_noise_factor: 0.0
+    - label: teacher_corruption_0p01
+      target_noise_factor: 0.0
+      teacher_noise_factor: 0.01
+    - label: teacher_corruption_0p05
+      target_noise_factor: 0.0
+      teacher_noise_factor: 0.05
+    - label: teacher_corruption_0p10
+      target_noise_factor: 0.0
+      teacher_noise_factor: 0.10
+    - label: matched_noise_0p01
+      target_noise_factor: 0.01
+      teacher_noise_factor: 0.01
+    - label: matched_noise_0p05
+      target_noise_factor: 0.05
+      teacher_noise_factor: 0.05
+    - label: matched_noise_0p10
+      target_noise_factor: 0.10
+      teacher_noise_factor: 0.10
+  readout_lambda: [0.25, 0.5, 0.75]
+  horizon: [1, 4, 8]
+  readout: [linear, fixed_nonlinear_mlp]
+  demand_families:
+    - axis_commuting
+    - common_rotated_commuting
+    - noncommuting
+  controller_classes:
+    - fixed_diagonal
+    - shared_basis_diagonal
+    - rank8
+    - full
+  geometry_profiles:
+    - label: baseline_geometry
+      key_correlation: 0.0
+      target_operator_norm: 1.0
+      key_load_fraction: 0.5
+    - label: unseen_key_correlation
+      key_correlation: 0.75
+      target_operator_norm: 1.0
+      key_load_fraction: 0.5
+    - label: unseen_operator_norm
+      key_correlation: 0.0
+      target_operator_norm: 1.5
+      key_load_fraction: 0.5
+    - label: unseen_key_load
+      key_correlation: 0.0
+      target_operator_norm: 1.0
+      key_load_fraction: 1.0
+  geometry_blocks:
+    - baseline_geometry
+    - unseen_key_correlation
+    - unseen_operator_norm
+    - unseen_key_load
+  holdouts:
+    - demand_family
+    - controller_class
+    - geometry_block
+simulation:
+  update_scale: 0.20
+  recurrence_decay: 0.55
+  affected_row_fraction: 0.75
+  retained_rows_clean_zero: true
+  exact_temporal_input_whitening: true
+  minimum_batch_size: horizon * dimension
+  target_noise_definition: relative Frobenius perturbation confined to affected rows; its realized operator is the clean application target
+  teacher_noise_definition: independent relative Frobenius corruption of the clean application target over all rows
+  controller_fit_source: noisy_teacher_only
+  evaluation_target: clean_application_target_only
+  geometry_randomness_paired_across_profiles: true
+  key_correlation_definition: exact off-diagonal correlation of the temporally whitened input-key covariance
+  key_load_definition: fraction of input-key coordinates at unit scale; remaining coordinates have scale 0.25
+  operator_norm_definition: Frobenius norm of each nominal clean target before target-noise realization
+  nonlinear_residual_scale: 0.20
+  nonlinear_readout_definition: deterministic block-local tied-orthogonal two-layer tanh residual MLP with bias
+  readout_weighting:
+    formula: lambda * affected_mse + (1 - lambda) * unaffected_mse
+    row_blocks: structural_affected_and_retained_state_rows_with_within_block_qr_whitening
+    affected_block: first affected_row_fraction rows
+    unaffected_block: remaining structurally retained rows
+    component_mse_weighting: true
+    global_output_scaling: false
+predictor:
+  method: training_only_log_ridge_on_teacher_side_proxies_v2
+  feature_order:
+    - log_teacher_linearized_behavioral_regret
+    - log_teacher_lipschitz_upper_bound
+    - log_teacher_operator_residual
+    - log_horizon
+    - target_noise_factor
+    - teacher_noise_factor
+    - readout_lambda
+    - key_correlation
+    - target_operator_norm
+    - key_load_fraction
+    - nonlinear_readout_indicator
+  ridge: 0.000001
+  outcome_floor: 0.000000000001
+  clean_target_features_forbidden: true
+  fold_membership_precomputed_without_outcomes: true
+  predictions_written_before_test_outcome_join: true
+optimization_gap:
+  lower_bound_name: controller_specific_clean_target_analytic_behavioral_lower_bound
+  construction: exact row-and-key-weighted clean-target projection in the same controller class, combined with the registered readout co-Lipschitz constant
+  same_controller_class_required: true
+  observed_application_outcome_used_in_bound: false
+  bound_frozen_before_observed_application_outcome: true
+  clean_oracle_attainable_error_reported_separately: true
+  predictor_feature_excluded: true
+  excess_definition: observed_application_error minus controller-specific clean-target analytic behavioral lower bound
+inference:
+  upper_unit: seed
+  cluster_bootstrap:
+    enabled: true
+    replicates: 2000
+    confidence_level: 0.95
+    seed: 24024
+    resample_unit: seed
+    episode_row_resampling_forbidden: true
+oos_metrics:
+  required:
+    - r2
+    - rmse
+    - mae
+    - pearson_r
+    - spearman_r
+    - calibration_slope
+    - calibration_intercept
+  gates:
+    minimum_r2: 0.80
+    minimum_pearson_r: 0.90
+    maximum_normalized_rmse: 0.25
+    all_holdout_axes_required: true
+claim_assessment:
+  prediction_scale: log_behavioral_mse
+  broad_subset:
+    teacher_noise_factor: positive
+    readout: fixed_nonlinear_mlp
+    horizon: greater_than_one
+  linear_h1_subset:
+    readout: linear
+    horizon: 1
+  broad_pass_requires_overall_oos_gate: true
+  decision_order:
+    - BROAD_NOISY_NONLINEAR_MULTISTEP_PASS
+    - ONLY_LINEAR_H1_PASS
+    - CONSTRUCTION_ROBUST_PREDICTION_FAILURE
+execution:
+  dry_run_required_device_type: cpu
+  dry_run_artifact_root: fresh_subdirectory_below_tmp
+  main_requires_explicit_allow_main: true
+  main_requires_explicit_dependency_root: true
+  main_writes_forbidden_without_allow_main: true
+reporting:
+  results_summary_filename: RESULTS_SUMMARY_KO.md
+  results_summary_language: ko
+  maximum_lines: 45
+  dry_run_status_label: DRY_RUN_NON_EVIDENCE
+  main_status_label: MAIN_CONTROLLED_THEORY_STRESS
+  family_level_scatter_unit: held_out_level_by_seed
+  sensitivity_factors: [readout_lambda, noise_condition, horizon]
+claim_ceiling:
+  allowed_after_authorized_main: OOS calibration on the registered finite-dimensional controlled constructions only
+  forbidden:
+    - causal identification from prediction
+    - universal behavioral-reachability theorem
+    - natural-language transaction claim
+    - official recurrent-memory or KVEraser claim
+    - agent or planning transfer
+dry_run_overrides:
+  seed: 993119
+  dimension: 16
+  batch_size: 64
+  noise_conditions:
+    - clean_teacher
+    - target_shift_0p05
+    - teacher_corruption_0p01
+    - teacher_corruption_0p10
+    - matched_noise_0p05
+  readout_lambda: [0.25, 0.75]
+  horizon: [1, 4]
+  demand_families: [axis_commuting, noncommuting]
+  controller_classes:
+    - fixed_diagonal
+    - shared_basis_diagonal
+    - rank8
+    - full
+  geometry_blocks:
+    - baseline_geometry
+    - unseen_key_correlation
+    - unseen_operator_norm
+    - unseen_key_load
+  bootstrap_replicates: 32

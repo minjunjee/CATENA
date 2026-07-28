@@ -1,0 +1,21 @@
+# Reference-only mock contract; not a live experiment config.
+experiment_id: e25b_text_transaction_anchor
+status: mock_contract_only
+artifact_root: /data/minjun_dev/CATENA/artifacts
+shared_encoder: frozen_shared_text_encoder
+forbidden_inputs:
+  - operation_label
+  - erase_write_bits
+  - exact_mask
+  - integer_address_id
+queries: [direct_fact, derived_action, old_rule_probe, unaffected_retention]
+splits:
+  primary: heldout_operation_seen_domain_template
+  paraphrase: heldout_paraphrase
+  identifier: heldout_entity_and_identifier
+  domain: heldout_domain
+  combined: heldout_operation_domain_paraphrase
+controllers: [tied, dual, diagonal, separate_address, state_aware]
+controls: [oracle_demand, shuffled_text, wrong_entity, transaction_only_zero_state, state_only]
+human_audit_items: 300
+seeds: [4101, 4111, 4127, 4133, 4153]

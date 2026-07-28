@@ -1,0 +1,68 @@
+experiment_id: e25a_official_gdn2_gate
+protocol:
+  protocol_id: prospective_official_gdn2_kda_operator_gate_v1
+  no_reference_fallback: true
+  separate_environment_required: true
+  scientific_replication_requires_explicit_flag: true
+environment:
+  required_prefix: ${CATENA_E25A_ENV_PREFIX}
+backend:
+  name: gdn2_kda_official_e25a
+  repo_path: ${CATENA_GDN2_REPO}
+  expected_commit: 95709fc250357c2dd109361c353192f2aa5913f9
+  remote_url: https://github.com/NVlabs/GatedDeltaNet-2.git
+  license_path: LICENSE
+  license_sha256: eaff393a7abc4ea7cb05795423b531a212b6d2189bcbe30410587d52d70988bb
+  fla_repo_path: ${CATENA_FLA_REPO}
+  fla_expected_commit: 4b02d15d6a68700181b180235be62a9fb95d2a38
+  fla_license_path: LICENSE
+  fla_license_sha256: 41a83c8187efc1e3ccc21909e806a9e52338e69448554d9754706c3d1cd610e7
+  plugin_module: catena_official_plugins.gdn2_gate
+  plugin_source_path: ${CATENA_E25A_PLUGIN_SOURCE}
+  plugin_source_sha256: e5643656de1a9ba164f78c4bdd46a66b971acedf0f84a8114a7cf3b38ba575a3
+  checks:
+    full_sequence_chunked_fp32:
+      metric_key: full_chunked_fp32_relative_l2
+      comparison: le
+      threshold: 1.0e-5
+    tied_reduction_kda_fp32:
+      metric_key: tied_kda_fp32_relative_l2
+      comparison: le
+      threshold: 1.0e-5
+    bf16_parity:
+      metric_key: bf16_relative_l2
+      comparison: le
+      threshold: 5.0e-3
+    backward_finite:
+      metric_key: backward_all_finite
+      comparison: eq
+      expected: true
+    state_carry_clone_restore:
+      metric_key: state_carry_clone_restore
+      comparison: eq
+      expected: true
+    intervention_hook_confinement:
+      metric_key: intervention_hook_confined
+      comparison: eq
+      expected: true
+replication:
+  plugin_module: catena_official_plugins.e25a_replication
+  plugin_source_path: src/catena_official_plugins/e25a_replication.py
+  plugin_source_sha256: d60f98aa215e448a7d4ae75b3d000a8a95e98d561c4f1191be6c1b6ce7c111b7
+  required_gate_experiment_id: e25a_official_gdn2_gate
+  explicit_safe_e22b_report_env: CATENA_E25A_E22B_REPORT
+  subsets:
+    [e02b_magnitude_factorization, e18_magnitude_sequence, e22_locality_if_supported]
+  e18_evaluation_batches: 2
+  e18_evaluation_batch_size: 32
+  source_tensor_contract:
+    e02b_config: configs/e02b_prospective_absolute_supersede.yaml
+    e18_config: configs/e18a_sequence_control_lattice.yaml
+    e22_config: configs/e22b_active_path_locality.yaml
+    e22_experiment_id: e22b_active_path_locality
+claim_boundary:
+  official_operator_parity_claim_only_after_gate: true
+  official_magnitude_claim_only_after_replication: true
+  pretrained_lm_claim_eligible: false
+  agent_claim_eligible: false
+  transformer_or_kveraser_claim_eligible: false

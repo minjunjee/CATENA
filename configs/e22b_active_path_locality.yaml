@@ -1,0 +1,95 @@
+experiment_family: E22
+experiment_id: e22b_active_path_locality
+protocol:
+  protocol_id: prospective_active_path_locality_confirmatory_v1
+  phase: confirmatory
+  evidence_tier: CONTROLLED_REFERENCE
+  parent_threshold_lock_path: docs/E21_STRUCTURED_SEQUENCE_LOCALIZATION_TRANSFER_LOCK.json
+  explicit_selection_run_required: true
+  e22a_main_selection_required_for_main: true
+  dry_run_temp_only: true
+selection_contract:
+  experiment_id: e22a_locality_method_selection
+  config_path: configs/e22a_locality_method_selection.yaml
+  protocol_lock_path: docs/E22A_LOCALITY_METHOD_SELECTION_PROTOCOL_LOCK.json
+  selection_filename: selection_lock.json
+  baseline_method_id: mean_retention
+confirmatory_seeds: [1301, 1319, 1327, 1361, 1381, 1409, 1423, 1451]
+conditions:
+  - A_oracle_address_oracle_candidate
+  - B_learned_address_oracle_candidate
+  - C_oracle_address_state_read_candidate
+  - D_learned_address_state_read_candidate
+demand_families:
+  - magnitude_factorization
+  - value_granularity
+  - address_decoupling
+  - state_conditioning
+data:
+  slots: 32
+  value_dim: 32
+  identifier_code_dim: 32
+  state_scale: 0.5
+model:
+  variants: [base, separate_address, state_aware, full]
+  hidden_dim: 256
+  address_temperature: 0.2
+  common_maximal_surface: true
+training:
+  steps: 3000
+  batch_size: 128
+  updates: 4
+  gap_events: 128
+  learning_rate: 0.0005
+  optimizer: AdamW
+  address_loss_weight: 0.25
+  candidate_loss_weight: 1.0
+  activity_loss_weight: 0.25
+  retention_weight: 1.0
+  sparse_route_weight: 0.25
+evaluation:
+  updates: [1, 4, 8]
+  gap_events: [0, 128, 512, 2048]
+  batches: 8
+  batch_size: 128
+  route_weight_threshold: 0.05
+  activity_support_threshold: 0.5
+  stress:
+    updates: 8
+    gap_events: 2048
+namespaces:
+  train: e22b-locality-confirmatory-train-v1
+  evaluation: e22b-locality-confirmatory-eval-v1
+  distractor: e22b-locality-confirmatory-distractor-v1
+  identifier_schema_seed: 22002
+initialization_seed_offset: 230000
+training_seed_offset: 231000
+evaluation_seed_offset: 232000
+statistics:
+  statistical_unit: paired_training_seed
+  exact_sign_flip: one_sided_greater
+registered_gates:
+  recovery:
+    - b_separate_address_gain
+    - c_state_read_gain
+    - d_full_only_gain
+  selected_vs_mean_locality: seedwise_maximum_nontarget_degradation_gain
+  stress: all_seed_mean_gain_positive_at_updates8_gap2048
+  guardrails:
+    - maximum_selected_vs_mean_nontarget_degradation
+    - maximum_selected_vs_mean_primary_retention_degradation
+    - maximum_capable_affected_mse
+    - minimum_capable_address_accuracy
+    - maximum_capable_candidate_mse
+    - maximum_oracle_floor_mse
+    - minimum_verified_activity
+    - maximum_distractor_activity
+  threshold_values: inherited_dynamically_from_e21_lock
+registered_statuses:
+  - SUPPORTED_SAFE_LOCALIZED_ASSIMILATION_CONTROLLED
+  - CAPACITY_SUPPORTED_LOCALITY_NOT_SUPPORTED
+  - OVERREGULARIZED_LOCALITY_TRADEOFF
+  - NOT_SUPPORTED
+results_summary:
+  filename: RESULTS_SUMMARY_KO.md
+  maximum_lines: 55

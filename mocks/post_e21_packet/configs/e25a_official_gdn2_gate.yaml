@@ -1,0 +1,24 @@
+# Reference-only mock contract; not a live experiment config.
+experiment_id: e25a_official_gdn2_gate
+status: mock_contract_only
+environment: catena-gdn2-official
+required_env:
+  - CATENA_GDN2_REPO
+  - CATENA_GDN2_COMMIT
+no_reference_fallback: true
+parity:
+  fp32_relative_l2_max: 1.0e-5
+  bf16_relative_l2_max: 5.0e-3
+  behavioral_top1_agreement_min: 0.999
+checks:
+  - exact_revision
+  - import
+  - full_chunk_parity
+  - tied_kda_equivalence
+  - finite_backward
+  - state_carry_clone_restore
+  - intervention_confinement
+replications:
+  - e02b_magnitude_factorization
+  - e18_magnitude_sequence_subset
+  - e22_locality_subset_if_available

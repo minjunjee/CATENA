@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e24a_approximate_rank_stress",
+  "experiment_family": "E24",
+  "protocol_version": "E24_PREMAIN_V1",
+  "protocol_frozen_before_main": true,
+  "main_execution_started": false,
+  "main_authorized_by_default": false,
+  "main_requires_explicit_allow_main": true,
+  "dry_run_claim_eligible": false,
+  "evidence_tier": "CONTROLLED_THEORY_STRESS",
+  "dry_run_dependency_validation": "EXPECTATIONS_ONLY_DO_NOT_READ_CANONICAL_ARTIFACTS",
+  "future_main_dependency_failure_status": "BLOCKED_DEPENDENCY",
+  "required_evidence_dependencies": [
+    {
+      "anchor_id": "h1_behavioral_reachability",
+      "relative_report_path": "e01b_constrained_behavioral_reachability/20260726T152354.081239Z/report.json",
+      "report_sha256": "8e1d16ca7763cec1e4e5b13d2b0f163f4015c8058ed7764871a6fbb5fa5ea6d6",
+      "expected_status": "PASS",
+      "expected_claim_disposition": "SUPPORTED"
+    },
+    {
+      "anchor_id": "e10b_floor_aware_rank_scaling",
+      "relative_report_path": "e10b_floor_aware_rank_scaling/20260727T190906.272784Z/report.json",
+      "report_sha256": "30f2f781bcc8528964602e0c66e1b61bb9d71a6ca5f964b833b2551c93b72484",
+      "expected_status": "PASS",
+      "expected_claim_disposition": "SUPPORTED"
+    },
+    {
+      "anchor_id": "e11b_scale_normalized_coadaptation",
+      "relative_report_path": "e11b_scale_normalized_coadaptation/20260727T183004.928280Z/report.json",
+      "report_sha256": "54015400029b3eae0367a1c12cb1dd717dee5a0568906f7d8e972c45bc4301b3",
+      "expected_status": "PASS",
+      "expected_claim_disposition": "SUPPORTED"
+    }
+  ],
+  "files": {
+    "configs/e24a_approximate_rank_stress.yaml": "3277eb5bd6539ec00a2a4c9d665beef5d16daab49062637d08918e3a6faf1ab6",
+    "docs/E24_THEORY_STRESS_PROTOCOL_KO.md": "852cbcb0d1bf9604bf7e342b9929b696fee12de7a7a6256201d8bd1a320e03e0",
+    "experiments/e24a_approximate_rank_stress.py": "56da0f68cdbea5a87e795ec7537118991fa0049f9e961a34ed4310d346cbe823",
+    "src/catena/post_e21/contracts.py": "ad48180e0a6da507b503b614c5487054b5b4ba8a28774fdb1575b4c5e8f337b1",
+    "src/catena/post_e21/e24_protocol.py": "13e0f040ee52cb078e611aa1394bd5e8ab66c7b6dde1e6622789cdeccf439622",
+    "src/catena/models/operator_controllers.py": "11aff4df33bf0d1cd31def5d824f0e4f2ab5200750f0b52c67e86a6bf6c07b9a",
+    "src/catena/training/postcore.py": "e14cbead25125a67c2fa9d99437736fb643613ed2983cba40a428ed9b0d4097c",
+    "src/catena/post_e21/e24a_approximate_rank.py": "74f6dd1adf2865aad68c41965f1623a592a3726f484d381cf2513dac072ed355",
+    "tests/test_e24a_approximate_rank_stress.py": "1f3e9dd1dbb93f0a94cfc80951feda6e4a37b9e6a2a9ebff41f0fd2e524c1022"
+  },
+  "claim_boundary": {
+    "allowed_after_separate_future_authorization": "descriptor-conditioned learned rank-controller OOD transfer across the three registered controlled spectrum families with shared seed basis only",
+    "current_claim_eligible": false
+  }
+}

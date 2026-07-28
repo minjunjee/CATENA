@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e25b_text_transaction_anchor",
+  "protocol_id": "prospective_shared_text_transaction_anchor_v4",
+  "frozen_at_utc": "2026-07-28T14:16:44Z",
+  "protocol_frozen_before_main": true,
+  "main_execution_started": false,
+  "main_namespace_generated": false,
+  "mock_contract_used_as_scientific_code": false,
+  "files": {
+    "configs/e25b_text_transaction_anchor.yaml": "263aadf92efa562cc2ae8d8eae1c1eb637a29d0ddb687ec7d7b262ca68740ff0",
+    "docs/E25B_TEXT_TRANSACTION_PROTOCOL_KO.md": "47ab4cab2a057aac4fe8f841cd0e7a76564e3786252a7d184bef32213240d4a0",
+    "experiments/e25b_text_transaction_anchor.py": "48b505b844c50135f3ec2e87ccf750f48b5f8798cadcdc310d87d4cdbde0d615",
+    "src/catena/post_e21/contracts.py": "ad48180e0a6da507b503b614c5487054b5b4ba8a28774fdb1575b4c5e8f337b1",
+    "src/catena/post_e21/text_anchor.py": "d36e44753978596918f9d8202c5096485e92ea5964d58864b85eaa7943a15e4a",
+    "src/catena/post_e21/text_transactions.py": "9aaf9d4b659ec80c8ed74e30180c00dbb84014aa94c9b9f96a50186a5a844aad"
+  },
+  "claim_boundary": {
+    "evidence_tier": "CONTROLLED_REFERENCE",
+    "shared_text_anchor_claim_eligible_after_full_gate": true,
+    "pretrained_lm_claim_eligible": false,
+    "free_form_generation_claim_eligible": false,
+    "agent_claim_eligible": false,
+    "official_backend_claim_eligible": false,
+    "production_latency_claim_eligible": false
+  }
+}
