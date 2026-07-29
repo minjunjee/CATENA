@@ -8,9 +8,12 @@ __pycache__/
 artifacts/**
 !artifacts/.gitkeep
 data/
+!papers/transactional_control_algebra_long/data/
+!papers/transactional_control_algebra_long/data/source_manifest.json
 !src/catena/data/
 src/catena/data/*
 !src/catena/data/controller_poset.py
 !src/catena/data/product_poset_sequence.py
+!src/catena/data/*.py
 checkpoints/
 *.egg-info/

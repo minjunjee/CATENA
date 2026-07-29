@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "amendment_id": "post_e21_git_source_capture_v1",
+  "base_git_commit": "51156242dfc429cb66d577c144b8d38a5ae38551",
+  "base_source_fingerprint": {
+    "sha256": "9f97b8cbdae1ed1abec7784b79893dea860bda535a1942188161d6ab5875e4ac",
+    "files": 472
+  },
+  "scientific_protocol_changed": false,
+  "existing_file_content_changed": false,
+  "artifact_changed": false,
+  "captured_file_count": 24,
+  "sorted_manifest_sha256": "d03a3bb0a74ba99fb1c9abd1f0fa0d982b90ead7f8c841e90e8b91b172f62ea0",
+  "amendment_files": {
+    ".gitignore": "abf6233eb8149ebf3580fdc9254e1397636b97d76ee25656f467ad05d906d9e3",
+    "docs/POST_E21_SOURCE_CAPTURE_AMENDMENT_KO.md": "61b5a7f76318aef62d4ae372bc1d31d46586a57d7b450632640e109e78872de3"
+  },
+  "files": {
+    "papers/transactional_control_algebra_long/data/source_manifest.json": "274e1ffa59bf223eee2e487c091c72f675c5e0a43b2b4c30000f376db9679f48",
+    "src/catena/data/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/catena/data/chains.py": "0b19f8392ddd063eca8b9055ff81a23d1b070332b12c4a28ad3aa7c3e32d2f96",
+    "src/catena/data/control_lattice.py": "e35d44e44e8f97f438f34947480adace62cb1b23b95fa9d9b3f4e79064bbd5a9",
+    "src/catena/data/geometry_sweep.py": "333bd3e09e4dd413a9488c940333efe2b29ae605a57eee41fab3003271cf1806",
+    "src/catena/data/graded_operator_families.py": "d2df5ad87e2b05ebb12700f8097fc7e9d8b5039df8ac829666f17f8300b0fd06",
+    "src/catena/data/learned_rank.py": "21fb27389f5b56c862e4371b7c2a4fde121cc592c3016f9fa0a5a03640454820",
+    "src/catena/data/localization_candidate.py": "63e40fdf01525fcbcc69917a9c4f093d357173c29b9c0b6a0839fda37141c6cc",
+    "src/catena/data/natural_transactions.py": "68bfbefcb9fdc893468ccca2d8f81db4455b4296dab16b8ec7403a0a0c8c69fa",
+    "src/catena/data/operator_families.py": "105719c17001d362ae54523da3a5a22bb741e41671b11e7295f21babcc835326",
+    "src/catena/data/orientation.py": "dbaa6c96daadb1b2c92e6a6649c5a769ec12a296bf5c933a518a32103e1a1734",
+    "src/catena/data/representation_dynamics.py": "309435e0d6bb819e0d11d7a2b02716b674afe4900f0a50df625e9577b44b6da6",
+    "src/catena/data/semantic_controls_r1.py": "1f2a8a85c6866959ab5e2485efb6061b4dbb4b85f67bcea678c2316afe221349",
+    "src/catena/data/semantic_controls_v61.py": "fdb0f5adaf24ba4f06041b4ca9cff8ee197951bb35b6970a778df8efe1f88510",
+    "src/catena/data/semantic_registry_v61.py": "264645e63f8588107ba13e2571468d4819143fccb7f0e9b35da53b8fbfbb2057",
+    "src/catena/data/semantic_transactions.py": "6cafb605bc17129926366e643b16a5cbff21e7fd630406415f93b2259605ba56",
+    "src/catena/data/semantic_transactions_r1.py": "dedafb92d74fa60bd4fed99fd1b072b32c7917c102d7960a5177d929103515a5",
+    "src/catena/data/semantic_transactions_v61.py": "6ab3293cd30e49081eb5c7a8f602f687c015c0986e37c8067742d4b0613c7596",
+    "src/catena/data/sequence_control_lattice.py": "ae6462348852a0b7af189a60932be9f7403026c610544fde7bdb76dac9dbcc13",
+    "src/catena/data/sequential.py": "0f18fdb695c7021a974787d23c326be0d0b744e4041fce8c7b0eedf54921dc03",
+    "src/catena/data/structured_sequence_localization.py": "d95e694d027119f4fab69857c025854cea821c17244db6230dfd0a9e879e23a4",
+    "src/catena/data/tamp.py": "b927e47c8098da420f4a405cae76e5d60ce3ed275ebb64600ff6f0bad58abc33",
+    "src/catena/data/transactional_sequence.py": "b022f22285b3b85229b9504280fb4f8aae4bc8c90799c9329169acbe3df7faf6",
+    "src/catena/data/transactional_sequence_v2.py": "8c635d6ec9451258016e83762a90a626576d72ef49b6d49b119712537a588e92"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "amendment_id": "e22b_paired_seed_sharding_v1",
+  "base_protocol_lock_sha256": "e19dfd26018e53d7ab601d1bd1b0e94c3bd922e1849c35cdcffec7ae38474598",
+  "base_source_commit": "51156242dfc429cb66d577c144b8d38a5ae38551",
+  "experiment_id": "e22b_active_path_locality",
+  "files": {
+    "configs/e22b_active_path_locality.yaml": "49c719dcf93ae8b6ecd5bd6c5c7b91bf8c855b99eb0348799b86fc5da73d724f",
+    "docs/E22B_SEED_SHARD_EXECUTION_AMENDMENT_KO.md": "d431c3af056baabb34f7dc8c704e51288bb35920b89620203e25093f9e29e981",
+    "docs/E22B_SEED_SHARD_VALIDATION_KO.md": "0c471503698d1513000f01ac4829b625a2b48eb30a161fe1d570f2be46a38364",
+    "scripts/launch_e22b_seed_shards.py": "4b9265f34462705be70fa34a19130abcaf540873c7983aaea5b2aabfb941e957",
+    "src/catena/post_e21/e22b_sharding.py": "575f68ffa829b512bcaf6b2defce21087935df058a29348a8b8cf491aa4057cd",
+    "tests/test_e22b_seed_sharding.py": "edc4d2f9fb8c20a082711d7264ab77213baca5396dbad087f1a0c0caa0a3ded1"
+  },
+  "authorization": {
+    "authorized_at_utc_date": "2026-07-29",
+    "scope": "execution_topology_only",
+    "scientific_change_authorized": false,
+    "user_authorized": true
+  },
+  "main_authorized": true,
+  "performance_only": true,
+  "registered_execution": {
+    "canonical_aggregate_order": [
+      "seed",
+      "method",
+      "variant",
+      "condition",
+      "demand_family",
+      "updates",
+      "gap_events"
+    ],
+    "checkpoint_materialization": "atomic_independent_byte_copy",
+    "partition_rule": "round_robin_registered_seed_order",
+    "seed_shards": [
+      [
+        1301,
+        1381
+      ],
+      [
+        1319,
+        1409
+      ],
+      [
+        1327,
+        1423
+      ],
+      [
+        1361,
+        1451
+      ]
+    ],
+    "shard_count": 4,
+    "worker_unit": "complete_paired_seed"
+  },
+  "registered_main_gates": {
+    "acknowledgement": "CATENA_POST_E21_MAIN_ACK=POST_E21_MAIN_AUTHORIZED",
+    "canonical_equivalence_copy_required": true,
+    "catena_v6_interpreter": "/home/minjun_dev/miniconda3/envs/catena-v6/bin/python",
+    "catena_v6_prefix": "/home/minjun_dev/miniconda3/envs/catena-v6",
+    "exclusive_launcher_lock_required": true,
+    "four_idle_homogeneous_gpus_required": true
+  },
+  "registered_equivalence_validation": {
+    "check_keys": [
+      "raw_row_count_equal",
+      "canonical_scientific_rows_exact",
+      "checkpoint_state_hashes_exact",
+      "identifier_codebook_hash_exact",
+      "initialization_hashes_exact",
+      "parameter_counts_exact"
+    ],
+    "checks_exact_and_all_true": true,
+    "comparison_exclusions": [
+      "examples_per_second",
+      "checkpoint container file SHA-256"
+    ],
+    "derived_fields": [
+      "seeds",
+      "selected_method_id",
+      "baseline_method_id",
+      "runtime_config_sha256",
+      "serial_rows",
+      "sharded_rows"
+    ],
+    "fixed_non_evidence_fields": {
+      "checkpoint_state_hash_comparison": "exact",
+      "claim_eligible": false,
+      "scientific_evidence": false,
+      "scientific_metric_comparison": "exact"
+    },
+    "producer_self_validation_required": true
+  },
+  "schema_version": 1,
+  "scientific_invariants": {
+    "batch_size_changed": false,
+    "checkpoint_reuse_or_resume": false,
+    "config_changed": false,
+    "data_or_namespace_changed": false,
+    "metric_or_claim_changed": false,
+    "model_or_optimizer_changed": false,
+    "precision_changed": false,
+    "seed_or_seed_offset_changed": false,
+    "steps_changed": false,
+    "threshold_or_sesoi_changed": false
+  },
+  "scientific_protocol_changed": false,
+  "source_lock_required_before_main": true
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "experiment_id": "e23b_product_poset_confirmatory_sharded_execution",
+  "parent_experiment_id": "e23b_product_poset_confirmatory",
+  "parent_protocol_lock_sha256": "ffcff888c026a4cbf03e6443965f49f42d3fbd9034d6f7374e1f5203fb02b1ca",
+  "protocol_frozen_before_main": true,
+  "main_execution_started": false,
+  "scientific_protocol_unchanged": true,
+  "execution_topology_only": true,
+  "topology_optimization_authorized_on": "2026-07-29",
+  "source_lock_required_before_main": true,
+  "source_lock_must_be_annotated_tag_on_clean_head": true,
+  "dependency_bound_cpu_equivalence_required_before_main": true,
+  "cpu_equivalence_check_keys": [
+    "registered_four_seed_subset_exact",
+    "raw_row_count_exact",
+    "canonical_scientific_raw_rows_exact",
+    "canonical_scientific_training_rows_exact",
+    "checkpoint_state_hashes_exact",
+    "seed_statistics_exact",
+    "cell_statistics_exact",
+    "assessment_exact",
+    "runtime_contract_exact"
+  ],
+  "cpu_equivalence_fixed_fields": [
+    "boundary_mode",
+    "locality_method",
+    "locality_risk_scale",
+    "seeds",
+    "runtime_config_sha256",
+    "serial_rows",
+    "sharded_rows",
+    "comparison_exclusions",
+    "checkpoint_state_hash_comparison",
+    "scientific_metric_comparison"
+  ],
+  "cpu_equivalence_comparison_exclusions": [
+    "examples_per_second",
+    "peak_memory_bytes",
+    "checkpoint absolute path",
+    "checkpoint container file SHA-256"
+  ],
+  "shard_axis": "registered_training_seed",
+  "registered_main_shard_count": 4,
+  "aggregation_order": "frozen_config_seed_order",
+  "precision_change": false,
+  "metric_change": false,
+  "threshold_change": false,
+  "seed_change": false,
+  "seed_offset_change": false,
+  "model_change": false,
+  "controller_set_change": false,
+  "optimizer_change": false,
+  "batch_size_change": false,
+  "training_step_change": false,
+  "data_or_namespace_change": false,
+  "theory_boundary_change": false,
+  "dependency_rule_change": false,
+  "claim_wording_change": false,
+  "checkpoint_reuse_or_resume": false,
+  "physical_gpu_identity_bound_before_workers": true,
+  "physical_gpu_uuid_unique_and_homogeneous_required": true,
+  "workspace_aggregate_lock_held_through_receipt_and_latest": true,
+  "canonical_artifact_copies_execution_manifests": true,
+  "files": {
+    "configs/e23b_product_poset_confirmatory.yaml": "b2008d2323a7352e8ddc44d6c6eaec27f6752dce08ef6c5a673432903730b0cd",
+    "docs/E23B_PRODUCT_POSET_CONFIRMATORY_LOCK.json": "ffcff888c026a4cbf03e6443965f49f42d3fbd9034d6f7374e1f5203fb02b1ca",
+    "docs/E23B_SHARDED_EXECUTION_AMENDMENT_KO.md": "2b6c33895bb77d77fdf91632eeab2d8dd64dc2991b785140ccdd0632789243f4",
+    "experiments/e23b_product_poset_confirmatory_sharded.py": "7e2027b3d4e3d19abf2991889b2e216be8e4b254fd4f8f70881eceafe46c8632",
+    "scripts/launch_e23b_sharded.sh": "e65354c270c6c53d69f4566220ee46b62221a4249f677ab7fff7fd60ee7ccffa",
+    "src/catena/post_e21/e23b_sharded_execution.py": "b15e8777f1b30e825eb7672b7ebdf685ec04ab11fc78806a26f6bab5b2ad1580",
+    "tests/test_e23b_sharded_execution.py": "a60e84c08a795be6631dbfa95e0e7b380a7963b1f2816edf9f0ac672e63d9c0b"
+  },
+  "registered_seed_partition_default": [
+    {
+      "shard_id": "shard_00",
+      "seeds": [2401, 2411]
+    },
+    {
+      "shard_id": "shard_01",
+      "seeds": [2423, 2437]
+    },
+    {
+      "shard_id": "shard_02",
+      "seeds": [2441, 2459]
+    },
+    {
+      "shard_id": "shard_03",
+      "seeds": [2473, 2477]
+    }
+  ],
+  "aggregation_fail_closed_checks": [
+    "source_config_and_lock_hashes",
+    "dependency_hashes",
+    "registered_seed_exact_cover",
+    "raw_cartesian_grid_exact",
+    "training_grid_exact",
+    "checkpoint_count_and_file_hashes",
+    "row_level_dependency_and_checkpoint_provenance",
+    "paired_base_transaction_digest",
+    "nonfinite_and_duplicate_rows",
+    "single_final_report_after_all_shards"
+  ],
+  "serial_vs_shard_cpu_dry_run_required": true
+}
