@@ -52,17 +52,54 @@ E22a, E23a, E24a/E24b, E25a dry contract, E25b development dry-run은
 - Official dependency가 없거나 revision/hash가 다르면 reference
   backend로 대체하지 않는다.
 
-## 구현 완료 시점의 terminal 상태
+## Scientific MAIN 완료 시점의 terminal 상태
 
 - E25a parity-only gate는 official source가 구성된 상태에서 `FAIL`이다.
   BF16 relative L2와 tied-to-KDA parity가 등록 tolerance를 넘었으므로
   threshold를 바꾸거나 replication으로 진행하지 않는다.
-- E25b v4는 train에서 `ADD`/`INVALIDATE`만 사용하고, primary의
-  `SUPERSEDE`를 held-out composition으로 둔다. Asymmetric tied-to-dual
-  gain과 symmetric tied/dual equivalence를 별도 gate로 판정한다.
-  Old-rule query는 `FULL/PARTIAL/NONE`으로 평가하고 oracle도 동일
-  evaluator를 통과한다.
-- E22–E24와 E25b scientific MAIN은 아직 실행하지 않았다.
+- E22a는 `smoothmax_100`을 development-only 방법으로 선택했다.
+  Fresh 8-seed E22b는 recovery 방향과 retention을 유지했지만 absolute
+  capacity, worst-cell locality와 paired locality-improvement gate가
+  실패해 `NOT_SUPPORTED`다.
+- E22b가 safe PASS가 아니므로 E23b는 사전 규칙대로 `capacity_only`
+  mode로 실행됐다. E23a outcome은 boundary 선택에 사용하지 않았다.
+  E23b는 directional predecessor/incomparable contrast를 보였지만
+  absolute adequacy와 minimal-set recovery가 실패해 `NOT_SUPPORTED`다.
+- E24a는 descriptor-conditioned learned controller의 OOD spectrum-family
+  transfer를 지지하지 않았고, E24b는 construction-robust behavioral
+  prediction gate를 통과하지 못했다.
+- E25b는 immutable 300-item audit population, Reviewer A/B CSV와 검수
+  도구까지만 생성된 `AUDIT_PENDING` 상태다. 실제 독립 인간 2인의
+  audit 전에는 leakage/floor gate와 scientific MAIN이 차단된다.
+
+실제 완료 경로:
+
+```text
+E21b-R1
+  -> E22a SELECTED
+  -> E22b NOT_SUPPORTED
+       -> E23b capacity_only
+            -> E23b NOT_SUPPORTED
+
+E18b SUPPORTED
+  -> E23a SCREEN_ONLY
+  -> E23b completed
+
+H1/E10b/E11b
+  -> E24a OOD transfer NOT SUPPORTED
+  -> E24b construction-robust prediction FAILURE
+
+Official source
+  -> E25a parity FAIL (terminal)
+
+E25b audit population
+  -> audit package complete
+  -> two independent humans required
+```
+
+Canonical run, SHA와 gate별 수치는
+`docs/POST_E21_WAVE1_RESULTS_KO.md`와
+`docs/POST_E21_WAVE1_ARTIFACT_AUDIT_KO.md`에 고정했다.
 
 ## Claim ceiling
 
