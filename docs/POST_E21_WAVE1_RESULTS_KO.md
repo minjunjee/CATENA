@@ -244,7 +244,8 @@ entity_ambiguity,old_value_leakage,gold_consistency}`, Reviewer B는 동일한
 허용되지 않는다. Merge, raw agreement, Cohen's kappa, disagreement
 adjudication template 생성과 최종 validate 명령은 package의
 `REVIEWER_INSTRUCTIONS_KO.md`에 고정돼 있다. Adjudication CSV는 A/B 완료
-후 merge 도구가 disagreement만 포함해 생성하므로 현재는 존재하지 않는다.
+후 merge 도구가 전체 300행 merged template으로 생성하며, 제3 reviewer는
+disagreement인 judgment cell만 작성한다. 따라서 현재는 존재하지 않는다.
 
 ## 실제 dependency DAG
 

@@ -152,7 +152,8 @@ reviewer_{a,b}_gold_consistency
 문자열은 금지된다. Merge/kappa/adjudication/validate 명령은
 `/data/minjun_dev/CATENA/artifacts/e25b_human_audit_packages/20260728T174341Z/REVIEWER_INSTRUCTIONS_KO.md`
 에 고정했다. Adjudication CSV는 두 reviewer 완료 후 merge 명령이
-disagreement에 대해서만 생성한다.
+전체 300행 merged template으로 생성하며, 제3 reviewer는 disagreement인
+judgment cell만 작성한다.
 
 ## E00–E21 불변성
 
