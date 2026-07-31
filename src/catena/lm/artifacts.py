@@ -115,6 +115,9 @@ class ArtifactRun:
         dry_run: bool,
         canonical_artifact_root: str | Path = "/data/minjun_dev/CATENA/artifacts",
         source_root: str | Path | None = None,
+        scientific_evidence: bool | None = None,
+        evidence_tier: str | None = None,
+        claim_ceiling: str | None = None,
     ) -> None:
         root = Path(artifact_root).expanduser().resolve()
         canonical = Path(canonical_artifact_root).expanduser().resolve()
@@ -138,10 +141,26 @@ class ArtifactRun:
             )
         elif run_mode != "MAIN":
             raise ArtifactContractError("Non-dry E26+ runs require run_mode=MAIN")
+        if dry_run:
+            if scientific_evidence not in (None, False):
+                raise ArtifactContractError("Dry-run artifacts cannot claim scientific evidence")
+            if evidence_tier not in (None, "NON_EVIDENCE_VALIDATION"):
+                raise ArtifactContractError(
+                    "Dry-run artifacts must use evidence_tier=NON_EVIDENCE_VALIDATION"
+                )
+        elif scientific_evidence is None or evidence_tier is None:
+            raise ArtifactContractError(
+                "Non-dry runs must explicitly declare scientific_evidence and evidence_tier"
+            )
+        if claim_ceiling is not None and not claim_ceiling.strip():
+            raise ArtifactContractError("claim_ceiling cannot be empty")
 
         self.experiment = experiment
         self.run_mode = run_mode
         self.dry_run = dry_run
+        self.scientific_evidence = False if dry_run else scientific_evidence
+        self.evidence_tier = "NON_EVIDENCE_VALIDATION" if dry_run else evidence_tier
+        self.claim_ceiling = claim_ceiling
         self.root = root
         self.source_root = Path(source_root or Path.cwd()).resolve(strict=True)
         if not self.source_root.is_dir():
@@ -170,8 +189,9 @@ class ArtifactRun:
             "experiment": self.experiment,
             "run_id": self.run_id,
             "run_mode": self.run_mode,
-            "scientific_evidence": False if self.dry_run else None,
-            "evidence_tier": "NON_EVIDENCE_VALIDATION" if self.dry_run else None,
+            "scientific_evidence": self.scientific_evidence,
+            "evidence_tier": self.evidence_tier,
+            "claim_ceiling": self.claim_ceiling,
             "utc": datetime.now(UTC).isoformat(),
             "cwd": str(Path.cwd().resolve()),
             "source_root": str(self.source_root),
@@ -228,6 +248,17 @@ class ArtifactRun:
         ):
             raise ArtifactContractError(
                 "Dry-run report must remain NON_EVIDENCE_VALIDATION with scientific_evidence=false"
+            )
+        if (
+            report.get("scientific_evidence") is not self.scientific_evidence
+            or report.get("evidence_tier") != self.evidence_tier
+        ):
+            raise ArtifactContractError(
+                "Report evidence boundary differs from the run-manifest declaration"
+            )
+        if self.claim_ceiling is not None and report.get("claim_ceiling") != self.claim_ceiling:
+            raise ArtifactContractError(
+                "Report claim_ceiling differs from the run-manifest declaration"
             )
 
     def finalize(self, report: dict[str, Any], summary_markdown: str) -> None:

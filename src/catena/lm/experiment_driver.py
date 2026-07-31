@@ -11,6 +11,8 @@ from typing import Any
 import torch
 import yaml
 
+from catena.core.provenance_v61 import read_json_object_strict
+
 from .artifacts import ArtifactRun, git_fingerprint
 from .config import ExperimentConfig, ModelConfig
 from .general_corpus import write_synthetic_token_memmap
@@ -70,10 +72,23 @@ def _parser(experiment: str, default_config: str) -> argparse.ArgumentParser:
     parser.add_argument("--allow-main", action="store_true")
     parser.add_argument("--steps", type=int, default=2)
     parser.add_argument("--dependency-report", action="append", default=[])
+    parser.add_argument("--backend-candidate-lock")
     parser.add_argument("--backend-manifest")
     parser.add_argument("--protocol-lock")
     parser.add_argument("--tokenizer-manifest")
     parser.add_argument("--corpus-manifest")
+    parser.add_argument("--data-lock")
+    parser.add_argument("--calibration-config")
+    parser.add_argument("--data-readiness")
+    parser.add_argument("--transaction-manifest")
+    parser.add_argument("--validation-population-lock")
+    parser.add_argument("--schedule-manifest")
+    parser.add_argument("--numerical-audit")
+    parser.add_argument("--restart-audit")
+    parser.add_argument("--frozen-tree-receipt")
+    parser.add_argument("--resource-preflight")
+    parser.add_argument("--expected-resource-preflight-sha256")
+    parser.add_argument("--execution-ack")
     parser.add_argument("--non-evidence-smoke", action="store_true")
     parser.add_argument("--candidate-id", default="d512_ctx4096")
     parser.add_argument("--batch-size", type=int, default=1)
@@ -107,10 +122,28 @@ def _guard_mode(args: argparse.Namespace, experiment: str) -> None:
         "--tokenizer-manifest": args.tokenizer_manifest,
         "--corpus-manifest": args.corpus_manifest,
     }
+    if experiment == "e26a_operator_data_gate":
+        required.update(
+            {
+                "--data-lock": args.data_lock,
+                "--backend-candidate-lock": args.backend_candidate_lock,
+                "--calibration-config": args.calibration_config,
+                "--data-readiness": args.data_readiness,
+                "--transaction-manifest": args.transaction_manifest,
+                "--validation-population-lock": args.validation_population_lock,
+                "--schedule-manifest": args.schedule_manifest,
+                "--numerical-audit": args.numerical_audit,
+                "--restart-audit": args.restart_audit,
+                "--frozen-tree-receipt": args.frozen_tree_receipt,
+                "--resource-preflight": args.resource_preflight,
+                "--expected-resource-preflight-sha256": (args.expected_resource_preflight_sha256),
+                "--execution-ack": args.execution_ack,
+            }
+        )
     missing = [name for name, value in required.items() if value is None]
     if missing:
         raise SystemExit(f"{experiment}: scientific execution is missing {', '.join(missing)}")
-    manifest = json.loads(Path(args.backend_manifest).read_text(encoding="utf-8"))
+    manifest = read_json_object_strict(args.backend_manifest)
     if experiment == "e26a_operator_data_gate":
         if not manifest.get("e26a_candidate_capable", False):
             raise SystemExit(f"{experiment}: backend_manifest.e26a_candidate_capable is not true")
@@ -843,11 +876,50 @@ def _run_e26a(args: argparse.Namespace, raw: dict[str, Any], config_path: str) -
     if args.non_evidence_smoke:
         return _run_e26a_non_evidence_smoke(args, raw, config_path)
     if not args.dry_run:
-        raise SystemExit(
-            "E26a scientific execution is not implemented in the reference driver. "
-            "The optimized candidate must first pass the complete registered E26a "
-            "operator/data/numerical/throughput gate without a scientific training run."
+        from .e26a_executor import run_scientific_e26a
+        from .e26a_gate import (
+            E26AGateBlocked,
+            gate_input_paths,
+            validate_scientific_gate_admission,
         )
+
+        try:
+            paths = gate_input_paths(
+                config=config_path,
+                calibration_config=args.calibration_config,
+                protocol_lock=args.protocol_lock,
+                backend_candidate_lock=args.backend_candidate_lock,
+                backend_manifest=args.backend_manifest,
+                tokenizer_manifest=args.tokenizer_manifest,
+                corpus_manifest=args.corpus_manifest,
+                data_lock=args.data_lock,
+                data_readiness=args.data_readiness,
+                transaction_manifest=args.transaction_manifest,
+                validation_population_lock=args.validation_population_lock,
+                schedule_manifest=args.schedule_manifest,
+                numerical_audit=args.numerical_audit,
+                restart_audit=args.restart_audit,
+                frozen_tree_receipt=args.frozen_tree_receipt,
+                resource_preflight=args.resource_preflight,
+            )
+            admission = validate_scientific_gate_admission(
+                repo_root=Path.cwd(),
+                artifact_root=args.artifact_root,
+                execution_ack=str(args.execution_ack),
+                paths=paths,
+                expected_resource_preflight_sha256=str(args.expected_resource_preflight_sha256),
+                execution_device=args.device,
+            )
+        except E26AGateBlocked as error:
+            raise SystemExit(
+                f"E26a scientific gate blocked before artifact creation: {error}"
+            ) from error
+        run_dir, report = run_scientific_e26a(
+            admission,
+            device=admission.execution_device_binding.cli_device,
+        )
+        print(run_dir)
+        return 0 if report.get("disposition") == "GO_E26B" else 1
     device = torch.device(args.device)
     tokenizer = ByteTokenizer()
     base = ModelConfig.tiny_reference()

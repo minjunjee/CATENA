@@ -5,14 +5,17 @@ import os
 import statistics
 import time
 from collections.abc import Iterable, Iterator, Sequence
+from contextlib import nullcontext
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 import torch
+from torch.nn import functional as F
 
 from catena.core.provenance_v61 import sha256_file
 
-from .hashing import optimizer_state_signature
+from .hashing import optimizer_state_signature, tensor_tree_digest
 from .model import CatenaLM, cross_entropy_loss
 
 
@@ -81,6 +84,33 @@ class NonEvidenceSmokeSummary:
         }
 
 
+@dataclass
+class GradAccumulationStep:
+    """One global-token optimizer update and its execution-semantics receipt."""
+
+    loss: float
+    valid_prediction_tokens: int
+    exposed_input_tokens: int
+    microbatch_count: int
+    gradient_norm_before_clip: float
+    clip_coefficient: float
+    gradient_digest_before_clip: str
+    learning_rates_after_step: tuple[float, ...]
+    gradients_before_clip: dict[str, torch.Tensor] | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "loss": self.loss,
+            "valid_prediction_tokens": self.valid_prediction_tokens,
+            "exposed_input_tokens": self.exposed_input_tokens,
+            "microbatch_count": self.microbatch_count,
+            "gradient_norm_before_clip": self.gradient_norm_before_clip,
+            "clip_coefficient": self.clip_coefficient,
+            "gradient_digest_before_clip": self.gradient_digest_before_clip,
+            "learning_rates_after_step": list(self.learning_rates_after_step),
+        }
+
+
 def make_optimizer(
     model: CatenaLM,
     *,
@@ -104,6 +134,133 @@ def grad_global_norm(parameters: Iterable[torch.nn.Parameter]) -> float:
     if not squares:
         return 0.0
     return float(torch.sqrt(torch.stack(squares).sum()).item())
+
+
+def autoregressive_loss_sum(
+    logits: torch.Tensor,
+    input_ids: torch.Tensor,
+    *,
+    loss_mask: torch.Tensor | None = None,
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Return summed next-token CE and its (possibly weighted) denominator."""
+
+    if logits.shape[:2] != input_ids.shape:
+        raise ValueError("logits and input_ids sequence shapes differ")
+    if input_ids.shape[1] <= 1:
+        raise ValueError("autoregressive loss requires at least two tokens")
+    per_token = F.cross_entropy(
+        logits[:, :-1].reshape(-1, logits.shape[-1]),
+        input_ids[:, 1:].reshape(-1),
+        reduction="none",
+    ).view(input_ids.shape[0], input_ids.shape[1] - 1)
+    if loss_mask is None:
+        weights = torch.ones_like(per_token)
+    else:
+        if loss_mask.shape == input_ids.shape:
+            weights = loss_mask[:, 1:].to(device=per_token.device, dtype=per_token.dtype)
+        elif loss_mask.shape == per_token.shape:
+            weights = loss_mask.to(device=per_token.device, dtype=per_token.dtype)
+        else:
+            raise ValueError("loss_mask must match input_ids or shifted target shape")
+        if not bool(torch.isfinite(weights).all().item()) or bool((weights < 0).any().item()):
+            raise ValueError("loss_mask weights must be finite and non-negative")
+    denominator = weights.sum()
+    if float(denominator.detach().item()) <= 0:
+        raise ValueError("loss_mask selects no prediction tokens")
+    return (per_token * weights).sum(), denominator
+
+
+def optimizer_step_microbatches(
+    model: CatenaLM,
+    microbatches: Sequence[torch.Tensor],
+    *,
+    optimizer: torch.optim.Optimizer,
+    scheduler: Any = None,
+    loss_masks: Sequence[torch.Tensor | None] | None = None,
+    grad_clip_norm: float = 1.0,
+    autocast_dtype: torch.dtype | None = None,
+    capture_gradients: bool = False,
+) -> GradAccumulationStep:
+    """Apply one optimizer update for one fixed global token batch.
+
+    Every microbatch loss is normalized by the total number of valid prediction
+    tokens. Gradient clipping, AdamW, and scheduler advancement happen exactly
+    once, independent of microbatch count.
+    """
+
+    if not microbatches:
+        raise ValueError("At least one microbatch is required")
+    if grad_clip_norm <= 0:
+        raise ValueError("grad_clip_norm must be positive")
+    masks = list(loss_masks) if loss_masks is not None else [None] * len(microbatches)
+    if len(masks) != len(microbatches):
+        raise ValueError("loss_masks and microbatches must have equal length")
+    device = next(model.parameters()).device
+    if any(batch.device != device for batch in microbatches):
+        raise ValueError("All microbatches and model parameters must share one device")
+
+    valid_counts: list[torch.Tensor] = []
+    for batch, mask in zip(microbatches, masks, strict=True):
+        if batch.ndim != 2 or batch.shape[1] <= 1:
+            raise ValueError("Each microbatch must have shape [batch, sequence>1]")
+        target_shape = (batch.shape[0], batch.shape[1] - 1)
+        if mask is None:
+            valid_counts.append(torch.tensor(target_shape[0] * target_shape[1], device=device))
+        else:
+            shifted = mask[:, 1:] if mask.shape == batch.shape else mask
+            if shifted.shape != target_shape:
+                raise ValueError("loss_mask must match input_ids or shifted target shape")
+            shifted = shifted.to(device=device, dtype=torch.float32)
+            if not bool(torch.isfinite(shifted).all().item()) or bool((shifted < 0).any().item()):
+                raise ValueError("loss_mask weights must be finite and non-negative")
+            valid_counts.append(shifted.sum())
+    total_valid = torch.stack([value.float() for value in valid_counts]).sum()
+    if float(total_valid.item()) <= 0:
+        raise ValueError("Global batch contains no valid prediction tokens")
+
+    optimizer.zero_grad(set_to_none=True)
+    detached_loss_sum = 0.0
+    model.train()
+    for batch, mask in zip(microbatches, masks, strict=True):
+        context = (
+            torch.autocast(device_type=device.type, dtype=autocast_dtype)
+            if autocast_dtype is not None
+            else nullcontext()
+        )
+        with context:
+            output = model(batch)
+            loss_sum, _ = autoregressive_loss_sum(output.logits, batch, loss_mask=mask)
+            normalized_loss = loss_sum / total_valid
+        normalized_loss.backward()  # type: ignore[no-untyped-call]
+        detached_loss_sum += float(loss_sum.detach().float().item())
+
+    gradients = {
+        name: parameter.grad.detach().clone()
+        for name, parameter in model.named_parameters()
+        if parameter.grad is not None
+    }
+    if len(gradients) != sum(1 for _ in model.parameters()):
+        raise RuntimeError("One or more registered parameters received no gradient")
+    if not all(bool(torch.isfinite(value).all().item()) for value in gradients.values()):
+        raise FloatingPointError("Non-finite gradient in accumulated optimizer step")
+    norm = grad_global_norm(model.parameters())
+    clip_coefficient = min(1.0, grad_clip_norm / (norm + 1.0e-6))
+    gradient_digest = tensor_tree_digest(gradients)
+    torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip_norm)
+    optimizer.step()
+    if scheduler is not None:
+        scheduler.step()
+    return GradAccumulationStep(
+        loss=detached_loss_sum / float(total_valid.item()),
+        valid_prediction_tokens=int(total_valid.item()),
+        exposed_input_tokens=sum(int(batch.numel()) for batch in microbatches),
+        microbatch_count=len(microbatches),
+        gradient_norm_before_clip=norm,
+        clip_coefficient=clip_coefficient,
+        gradient_digest_before_clip=gradient_digest,
+        learning_rates_after_step=tuple(float(group["lr"]) for group in optimizer.param_groups),
+        gradients_before_clip=gradients if capture_gradients else None,
+    )
 
 
 def train_reference_steps(

@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "scope": "immutable_E00_through_E25_completed_artifacts",
+  "artifact_root": "/data/minjun_dev/CATENA/artifacts",
+  "file_count": 2062,
+  "total_bytes": 2696893933,
+  "aggregate_sha256": "46a779594c760fc1103833810bcc5227d7ca4526111911d7856cdfe2ff2d202b",
+  "base_manifest": {
+    "path": "POST_E21_PREIMPLEMENTATION_ARTIFACT_SHA256.json",
+    "sha256": "d3f98449a12b4dd01c9efd2bb8ffa425b6c739f251e75e8b58bd49368c3a6973",
+    "scope": "immutable_E00_through_E21_artifacts",
+    "file_count": 1329,
+    "aggregate_sha256": "4ef82dd6fe42543bc1e3b8a63f24781c2ba5d476a39bd84448f9dde6896c87f7"
+  },
+  "extension": {
+    "experiment_min": 22,
+    "experiment_max": 25,
+    "include_top_level": [
+      "POST_E21_WAVE1_STATUS.json"
+    ],
+    "file_count": 733,
+    "total_bytes": 1367597308,
+    "aggregate_sha256": "3b9524854ee01d17a9a3f99b8b0ebd08a2ebf0c725d3765dac3496442772564e",
+    "namespaces": [
+      {
+        "path": "POST_E21_WAVE1_STATUS.json",
+        "file_count": 1,
+        "total_bytes": 13751,
+        "aggregate_sha256": "e99de820677d81adb51f55f9af7c8e6aae1288c1640796031480a1fe8a65fb86"
+      },
+      {
+        "path": "e22a_locality_method_selection",
+        "file_count": 145,
+        "total_bytes": 128257433,
+        "aggregate_sha256": "157c06013fdf9b2d47e3e528d8d4758f968f3ca03f96e922f0e00344842f8cc2"
+      },
+      {
+        "path": "e22b_active_path_locality",
+        "file_count": 168,
+        "total_bytes": 122766865,
+        "aggregate_sha256": "7f2e8f7c6f7674304c10d8693e26707aad597027fbebc1e3f3dbc2103b92cbe2"
+      },
+      {
+        "path": "e23a_product_poset_screen",
+        "file_count": 61,
+        "total_bytes": 112337318,
+        "aggregate_sha256": "447c797cb7d91fa28955e53c30e46a383fcac87a031cec748df6858a3be0b6f3"
+      },
+      {
+        "path": "e23b_product_poset_confirmatory",
+        "file_count": 148,
+        "total_bytes": 311942214,
+        "aggregate_sha256": "fe9f183cedeca6ed3cd048e20d0a83fe6a04fdd5735651e5d90a2dc17fd5dbaf"
+      },
+      {
+        "path": "e24a_approximate_rank_stress",
+        "file_count": 161,
+        "total_bytes": 84577744,
+        "aggregate_sha256": "e421004cff3a0863db177683f032d557eadeca2c6e7384aff654c6fac1b1434a"
+      },
+      {
+        "path": "e24b_behavioral_attainability_stress",
+        "file_count": 18,
+        "total_bytes": 604868317,
+        "aggregate_sha256": "fb73050439e7acda730e873ee17bbfec896105bf204d62c297dbd6bfffeb5e4d"
+      },
+      {
+        "path": "e25a_official_gdn2_gate",
+        "file_count": 12,
+        "total_bytes": 24349,
+        "aggregate_sha256": "0e2f589845c25e4338a17cd858f882cc1522a5b2696191e87360d09e0395570d"
+      },
+      {
+        "path": "e25b_human_audit_packages",
+        "file_count": 6,
+        "total_bytes": 1420985,
+        "aggregate_sha256": "4b15fbf4b0473a8763d379caf9d318e0d54bd302a78056ca6f83e9d44cb3b68b"
+      },
+      {
+        "path": "e25b_text_transaction_anchor",
+        "file_count": 13,
+        "total_bytes": 1388332,
+        "aggregate_sha256": "050d69dca50385863e513d930929153fa8a7f7a89dd8afcbe15df0b35efb7612"
+      }
+    ]
+  }
+}

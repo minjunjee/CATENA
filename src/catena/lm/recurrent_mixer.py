@@ -545,13 +545,20 @@ class TransactionalDeltaMixer(nn.Module):
         for start in range(0, sequence, size):
             stop = min(start + size, sequence)
             valid = stop - start
-            q_chunk = q[:, start:stop]
-            erase_key_chunk = erase_key[:, start:stop]
-            write_key_chunk = write_key[:, start:stop]
-            value_chunk = value[:, start:stop]
-            erase_chunk = erase[:, start:stop]
-            write_chunk = write[:, start:stop]
-            decay_chunk = decay[:, start:stop]
+            # External state-carry partitions change the parent sequence
+            # stride even when this fixed scan chunk has an identical shape.
+            # Normalize views before the compiled boundary so Dynamo sees one
+            # stable signature rather than recompiling by parent stride.
+            # ``contiguous()`` alone may retain an arbitrary stride for the
+            # singleton batch dimension. An explicit contiguous-format clone
+            # canonicalizes every stride while preserving autograd.
+            q_chunk = q[:, start:stop].clone(memory_format=torch.contiguous_format)
+            erase_key_chunk = erase_key[:, start:stop].clone(memory_format=torch.contiguous_format)
+            write_key_chunk = write_key[:, start:stop].clone(memory_format=torch.contiguous_format)
+            value_chunk = value[:, start:stop].clone(memory_format=torch.contiguous_format)
+            erase_chunk = erase[:, start:stop].clone(memory_format=torch.contiguous_format)
+            write_chunk = write[:, start:stop].clone(memory_format=torch.contiguous_format)
+            decay_chunk = decay[:, start:stop].clone(memory_format=torch.contiguous_format)
             if valid < size:
                 padding = size - valid
                 vector_padding = torch.zeros(

@@ -47,17 +47,18 @@ def _validate_jsonl(path: Path) -> int:
 
 
 def validate_run(run_dir: Path, schema_root: Path) -> dict[str, Any]:
+    missing = [name for name in _REQUIRED_FILES if not (run_dir / name).is_file()]
+    if missing:
+        raise FileNotFoundError(f"Run lacks required artifacts: {missing}")
+
     try:
-        import jsonschema
+        import jsonschema  # type: ignore[import-untyped]
     except ModuleNotFoundError as error:
         raise RuntimeError(
             "Run-schema validation requires jsonschema; install the validation "
             "extra or expose it through PYTHONPATH"
         ) from error
 
-    missing = [name for name in _REQUIRED_FILES if not (run_dir / name).is_file()]
-    if missing:
-        raise FileNotFoundError(f"Run lacks required artifacts: {missing}")
     for artifact_name, schema_name in _SCHEMA_FILES.items():
         payload = read_json_object_strict(run_dir / artifact_name)
         schema = read_json_object_strict(schema_root / schema_name)

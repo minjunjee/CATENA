@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from catena.core.provenance_v61 import sha256_file
+from catena.lm.audit_contract import e26_execution_source_inventory
 from catena.lm.hashing import hash_mapping
 from catena.lm.readiness import E26ReadinessBlocked, validate_e26a_control_inputs
 
@@ -19,11 +19,12 @@ def _write_control_inputs(
     root = Path(__file__).resolve().parents[1]
     config_path = root / "configs/e26a_operator_data_gate.yaml"
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
-    capture = tmp_path / "source-capture.json"
-    capture.write_text('{"test":true}\n', encoding="utf-8")
+    inventory = e26_execution_source_inventory(root)
     sections = {
         key: config[key]
         for key in (
+            "safety",
+            "candidate_selection",
             "matching",
             "backend_gates",
             "data",
@@ -39,8 +40,10 @@ def _write_control_inputs(
         "config_hash": hash_mapping(config),
         "full_config_snapshot": config,
         "thresholds": sections,
-        "source_fingerprint_path": str(capture),
-        "source_hash": sha256_file(capture),
+        "execution_inputs": {
+            "source_tree_sha256": inventory["source_tree_sha256"],
+        },
+        "source_hash": inventory["source_tree_sha256"],
     }
     protocol_path = tmp_path / "protocol.json"
     protocol_path.write_text(json.dumps(protocol), encoding="utf-8")
@@ -75,13 +78,15 @@ def test_control_readiness_accepts_candidate_only_manifest(tmp_path: Path) -> No
     assert result["candidate_id"] == "d512_ctx4096"
 
 
-def test_control_readiness_rejects_failed_candidate_smoke(tmp_path: Path) -> None:
+def test_control_readiness_rejects_failed_stage2_backend_preflight(
+    tmp_path: Path,
+) -> None:
     root = Path(__file__).resolve().parents[1]
     config, protocol, backend = _write_control_inputs(
         tmp_path,
         candidate_capable=False,
     )
-    with pytest.raises(E26ReadinessBlocked, match="candidate smoke"):
+    with pytest.raises(E26ReadinessBlocked, match="numerical/restart backend preflight"):
         validate_e26a_control_inputs(
             repo_root=root,
             config_path=config,

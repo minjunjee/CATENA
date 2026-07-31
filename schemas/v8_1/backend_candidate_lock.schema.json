@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://catena.local/schemas/v8.1/backend_candidate_lock.schema.json",
+  "title": "CATENA E26 pre-audit backend candidate lock",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "manifest_type",
+    "scientific_evidence",
+    "main_test_opened",
+    "source_commit",
+    "source_inventory",
+    "config_sha256",
+    "candidate_configs",
+    "backend_id",
+    "compiler",
+    "e26a_candidate_capable",
+    "e26a_gate_capable",
+    "scientific_main_capable",
+    "parity_verified",
+    "manifest_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "catena-v8.1"},
+    "manifest_type": {"const": "E26_BACKEND_CANDIDATE_LOCK"},
+    "scientific_evidence": {"const": false},
+    "main_test_opened": {"const": false},
+    "source_commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "e26a_candidate_capable": {"const": false},
+    "e26a_gate_capable": {"const": false},
+    "scientific_main_capable": {"const": false},
+    "parity_verified": {"const": false},
+    "config_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}

@@ -246,8 +246,7 @@ def validate_stage2_data_bundle(
         or amendment.get("outcome_based_selection") is not False
         or amendment.get("prior_validation_tokens") != 4_971_104
         or amendment.get("required_validation_tokens") != 5_000_000
-        or amendment.get("prior_build_disposition")
-        != "FAILED_CAPACITY_IMMUTABLE"
+        or amendment.get("prior_build_disposition") != "FAILED_CAPACITY_IMMUTABLE"
     ):
         raise Stage2DataReadinessError("download capacity-expansion provenance mismatch")
 
@@ -256,6 +255,16 @@ def validate_stage2_data_bundle(
     _require(replay, "artifact_hash_sets_identical", True, "tokenizer_replay")
     if replay.get("tokenizer_manifest_sha256") != tokenizer.manifest_hash:
         raise Stage2DataReadinessError("tokenizer replay receipt hash mismatch")
+    tokenizer_checksum = replay.get("tokenizer_sha256_file")
+    if not isinstance(tokenizer_checksum, dict):
+        raise Stage2DataReadinessError("tokenizer replay lacks TOKENIZER_SHA256.txt binding")
+    checksum_path = Path(str(tokenizer_checksum.get("path", ""))).resolve(strict=True)
+    if (
+        sha256_file(checksum_path) != tokenizer_checksum.get("sha256")
+        or checksum_path.read_text(encoding="utf-8")
+        != f"{tokenizer.model_sha256}  tokenizer.json\n"
+    ):
+        raise Stage2DataReadinessError("TOKENIZER_SHA256.txt binding changed")
 
     dedup_path, dedup, dedup_hash = _load(dedup_receipt_path, "dedup_receipt")
     if int(dedup.get("unique_documents", 0)) < 1:
@@ -290,8 +299,7 @@ def validate_stage2_data_bundle(
         not isinstance(history, list)
         or len(history) != 1
         or not isinstance(history[0], dict)
-        or history[0].get("status")
-        != "INVALID_IMPLEMENTATION_ATTEMPT_INTERRUPTED"
+        or history[0].get("status") != "INVALID_IMPLEMENTATION_ATTEMPT_INTERRUPTED"
         or history[0].get("scientific_input_eligible") is not False
         or not history[0].get("command")
     ):

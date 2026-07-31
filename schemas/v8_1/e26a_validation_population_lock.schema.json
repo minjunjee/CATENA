@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "catena://schemas/v8_1/e26a_validation_population_lock.schema.json",
+  "title": "CATENA E26a validation population lock",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "manifest_type",
+    "scientific_evidence",
+    "scientific_main_input_eligible",
+    "generation_seed",
+    "split",
+    "episode_count",
+    "records_sha256",
+    "replay_identical",
+    "main_test_opened",
+    "main_test_access_count",
+    "heldout_domain_opened",
+    "heldout_domain_access_count",
+    "records",
+    "manifest_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "catena-e26a-validation-population-v1"
+    },
+    "manifest_type": {
+      "const": "E26A_VALIDATION_POPULATION_LOCK"
+    },
+    "scientific_evidence": {
+      "const": false
+    },
+    "scientific_main_input_eligible": {
+      "const": true
+    },
+    "split": {
+      "const": "validation"
+    },
+    "generation_seed": {
+      "type": "integer"
+    },
+    "episode_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "records_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "replay_identical": {
+      "const": true
+    },
+    "main_test_opened": {
+      "const": false
+    },
+    "main_test_access_count": {
+      "const": 0
+    },
+    "heldout_domain_opened": {
+      "const": false
+    },
+    "heldout_domain_access_count": {
+      "const": 0
+    },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "split": {
+            "const": "validation"
+          }
+        },
+        "required": [
+          "split"
+        ]
+      }
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

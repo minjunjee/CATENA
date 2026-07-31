@@ -6,8 +6,12 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 V8_CONFIG_PREFIXES = ("e26", "e27", "e28", "e29", "e30")
+NON_EXPERIMENT_CONFIG_NAMES = {"e26_data_lock_v1.yaml"}
 PACKET_SCHEMA_NAMES = {
+    "backend_candidate_lock.schema.json",
     "backend_manifest.schema.json",
+    "backend_preflight_manifest.schema.json",
+    "construction_source_receipt.schema.json",
     "data_manifest.schema.json",
     "evaluation_row.schema.json",
     "model_manifest.schema.json",
@@ -16,8 +20,12 @@ PACKET_SCHEMA_NAMES = {
     "transaction_episode.schema.json",
 }
 SCIENTIFIC_DATA_SCHEMA_NAMES = {
+    "e26_frozen_invariance_receipt.schema.json",
+    "e26_resource_preflight_receipt.schema.json",
+    "e26a_validation_population_lock.schema.json",
     "general_corpus_manifest.schema.json",
     "scientific_data_readiness.schema.json",
+    "scientific_data_readiness_v2.schema.json",
     "tokenizer_manifest.schema.json",
 }
 
@@ -26,7 +34,7 @@ def test_all_protocol_yaml_parse_and_have_core_keys() -> None:
     paths = [
         path
         for path in sorted((REPO_ROOT / "configs").glob("*.yaml"))
-        if path.name.startswith(V8_CONFIG_PREFIXES)
+        if path.name.startswith(V8_CONFIG_PREFIXES) and path.name not in NON_EXPERIMENT_CONFIG_NAMES
     ]
     assert len(paths) == 14
     for path in paths:

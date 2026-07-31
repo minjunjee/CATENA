@@ -14,6 +14,7 @@ from catena.core.provenance_v61 import (
     sha256_file,
 )
 
+from .audit_contract import e26_execution_source_inventory
 from .general_corpus import ScientificDataReadiness, validate_scientific_data_bundle
 from .hashing import hash_mapping
 
@@ -23,6 +24,8 @@ class E26ReadinessBlocked(RuntimeError):
 
 
 _LOCKED_CONFIG_SECTIONS = (
+    "safety",
+    "candidate_selection",
     "matching",
     "backend_gates",
     "data",
@@ -113,15 +116,19 @@ def validate_e26a_control_inputs(
     if protocol.get("thresholds") != _locked_sections(config):
         raise E26ReadinessBlocked("Protocol thresholds do not snapshot all E26a gates")
 
-    source_capture_path_value = protocol.get("source_fingerprint_path")
-    if not isinstance(source_capture_path_value, str) or not source_capture_path_value:
-        raise E26ReadinessBlocked("Protocol lock lacks source_fingerprint_path")
-    source_capture_path = Path(source_capture_path_value).expanduser().resolve(strict=True)
-    if sha256_file(source_capture_path) != _require_sha(
-        protocol.get("source_hash"),
-        "protocol.source_hash",
+    execution_inputs = protocol.get("execution_inputs")
+    if not isinstance(execution_inputs, dict):
+        raise E26ReadinessBlocked("Protocol lock lacks execution_inputs")
+    current_inventory = e26_execution_source_inventory(root)
+    source_hash = _require_sha(
+        execution_inputs.get("source_tree_sha256"),
+        "protocol.execution_inputs.source_tree_sha256",
+    )
+    if (
+        source_hash != current_inventory["source_tree_sha256"]
+        or protocol.get("source_hash") != source_hash
     ):
-        raise E26ReadinessBlocked("Protocol source capture hash mismatch")
+        raise E26ReadinessBlocked("Protocol execution-source inventory changed")
 
     if backend.get("schema_version") != "catena-v8.1":
         raise E26ReadinessBlocked("Backend manifest schema_version changed")
@@ -130,7 +137,7 @@ def validate_e26a_control_inputs(
     if backend.get("candidate_codegen_capable") is not True:
         raise E26ReadinessBlocked("Backend code generation is not E26a-capable")
     if backend.get("e26a_candidate_capable") is not True:
-        raise E26ReadinessBlocked("100-step candidate smoke did not pass")
+        raise E26ReadinessBlocked("Stage-2 numerical/restart backend preflight did not pass")
     if backend.get("e26a_gate_capable") is not False:
         raise E26ReadinessBlocked("Candidate manifest improperly pre-opened E26a")
     if backend.get("parity_verified") is not False:

@@ -43,6 +43,11 @@ model_candidates:
     local_attention_layers: [3, 7]
     local_attention_window: 256
     context_length: 4096
+candidate_selection:
+  parameter_count_min: 35000000
+  parameter_count_max: 50000000
+  tie_break: FIRST_PASSING_CANDIDATE_IN_CONFIG_ORDER
+  token_budget_tie_break: LARGEST_RESOURCE_ELIGIBLE_BUDGET
 variants: [projected_tied_delta_lm, dual_delta_lm]
 matching:
   require_same_parameter_names_shapes: true
@@ -60,6 +65,10 @@ backend_gates:
   state_clone_no_alias: true
   compile_graph_breaks_max: 0
   fallback_count_main_max: 0
+  arbitrary_partition_random_seeds: [260101, 260102, 260103, 260104, 260105, 260106, 260107, 260108]
+  restart_and_grad_accum_fp32_relative_l2_max: 1.0e-5
+  restart_and_grad_accum_fp32_max_abs_max: 1.0e-5
+  restart_and_grad_accum_bf16_relative_l2_max: 7.0e-3
 data:
   tokenizer_manifest_required: true
   general_corpus_manifest_required: true
@@ -74,6 +83,13 @@ data:
   forbid_operation_label_in_input: true
   forbid_gate_label_in_input: true
   forbid_exact_address_mask_in_input: true
+  training_mix:
+    nominal_general_fraction: 0.80
+    nominal_transaction_fraction: 0.20
+    algorithm: token_balanced_complete_example_80_20_v2
+    complete_transaction_examples_required: true
+    discrepancy: ABS_4T_MINUS_G_LE_4_TIMES_CONTEXT_LENGTH
+    forbid_exact_fraction_claim: true
 gate_population:
   generation_seed: 260001
   namespace: e26a_gate_population_v1
@@ -85,16 +101,32 @@ gate_population:
   population_hash_required: true
 floor_gate:
   pilot_tokens_max: 20000000
+  general_validation_tokens: 1048576
+  primary_operations: [ADD, INVALIDATE]
   exact_minus_stale_score_min_each_primary_operation: 0.10
+  stale_baseline: IDENTICAL_PREFIX_WITHOUT_TRANSACTION_APPLICATION
   general_ppl_must_be_finite: true
+  primary_query_metrics_nondegenerate_open_interval: [0.0, 1.0]
   max_gate_saturation_fraction: 0.99
+  gate_saturation_low_inclusive: 0.01
+  gate_saturation_high_inclusive: 0.99
   state_norm_finite: true
+  state_norm_statistic: MAX_NORMALIZED_FROBENIUS_ACROSS_RECURRENT_STATES
 throughput:
   warmup_steps: 20
   measured_steps: 100
+  descriptive_stability_steps_optional_max: 500
+  target_global_batch_tokens: 65536
+  microbatch_size_candidates: [1, 2, 4, 8]
+  target_grad_accum_initialization_seed: 260151
+  target_grad_accum_data_seed: 260152
+  microbatch_selection_uses_outcomes: false
   main_token_budget_candidates: [250000000, 300000000, 400000000, 500000000]
   deadline_fraction_max: 0.70
+  deadline_reference_hours: 240
+  max_main_wall_clock_hours: 168
   safety_time_multiplier: 1.25
+  max_main_checkpoint_storage_gib: 100
 go_requires_all_gates: true
 registered_dispositions:
   - GO_E26B

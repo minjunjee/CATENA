@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "catena://schemas/v8_1/e26_frozen_invariance_receipt.schema.json",
+  "title": "CATENA E26 frozen invariance receipt",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "manifest_type",
+    "scientific_evidence",
+    "passed",
+    "live_repository",
+    "frozen_artifacts",
+    "receipt_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "catena-e26-frozen-invariance-v1"
+    },
+    "manifest_type": {
+      "const": "E26_FROZEN_INVARIANCE_RECEIPT"
+    },
+    "scientific_evidence": {
+      "const": false
+    },
+    "passed": {
+      "const": true
+    },
+    "live_repository": {
+      "type": "object",
+      "required": [
+        "expected_head",
+        "observed_head",
+        "head_matches",
+        "git_clean",
+        "registered_file_count",
+        "expected_files",
+        "observed_files",
+        "registered_aggregate_sha256",
+        "base_aggregate_sha256",
+        "missing",
+        "changed",
+        "passed"
+      ]
+    },
+    "frozen_artifacts": {
+      "type": "object",
+      "required": [
+        "scope",
+        "baseline_manifest",
+        "baseline_manifest_sha256",
+        "base_manifest",
+        "base_manifest_sha256",
+        "base_scope",
+        "registered_base_file_count",
+        "registered_base_aggregate_sha256",
+        "expected_file_count",
+        "observed_file_count",
+        "registered_file_count",
+        "expected_aggregate_sha256",
+        "observed_aggregate_sha256",
+        "extension_file_count",
+        "extension_aggregate_sha256",
+        "excluded_experiment_min",
+        "missing",
+        "unexpected",
+        "changed",
+        "missing_namespaces",
+        "unexpected_namespaces",
+        "changed_namespaces",
+        "passed"
+      ],
+      "properties": {
+        "scope": {
+          "const": "immutable_E00_through_E25_completed_artifacts"
+        },
+        "base_scope": {
+          "const": "immutable_E00_through_E21_artifacts"
+        },
+        "excluded_experiment_min": {
+          "const": 26
+        },
+        "registered_base_file_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "registered_base_aggregate_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "extension_file_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "extension_aggregate_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "missing_namespaces": {
+          "type": "array"
+        },
+        "unexpected_namespaces": {
+          "type": "array"
+        },
+        "changed_namespaces": {
+          "type": "array"
+        }
+      }
+    },
+    "receipt_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "additionalProperties": true
+}

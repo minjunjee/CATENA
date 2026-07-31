@@ -7,7 +7,10 @@ repository:
   live_repo: /home/minjun_dev/CATENA
   e26_worktree: /home/minjun_dev/CATENA_E26
   expected_live_head: adfdeaf9e87a8602a8e334915d87acb9ff25af39
+  pre_e26_source_file_count: 556
+  pre_e26_source_aggregate_sha256: 554d5ff5792d28472a3b0d01f558d026f748d0126428a45aed5a3f9242566bf9
   minimum_e26_head: bb5fd9ae3799652457b15fd038405b43dbbf3d9a
+  frozen_artifact_file_count: 1329
   frozen_artifact_aggregate_sha256: 4ef82dd6fe42543bc1e3b8a63f24781c2ba5d476a39bd84448f9dde6896c87f7
 
 source:
