@@ -246,6 +246,11 @@ def build_replayed_tokenizer(
     }
     tokenizer_manifest_path = canonical / "tokenizer_manifest.json"
     write_json_strict(tokenizer_manifest_path, tokenizer_manifest)
+    tokenizer_sha256_path = canonical / "TOKENIZER_SHA256.txt"
+    tokenizer_sha256_path.write_text(
+        f"{sha256_file(tokenizer_path)}  {tokenizer_path.name}\n",
+        encoding="utf-8",
+    )
     stress = _stress_tokenizer(tokenizer_path)
     if not stress["pass"]:
         raise TokenizerBuildError("Tokenizer round-trip/OOV stress audit failed")
@@ -257,6 +262,10 @@ def build_replayed_tokenizer(
         "artifact_hash_sets_identical": True,
         "tokenizer_manifest_path": str(tokenizer_manifest_path.resolve()),
         "tokenizer_manifest_sha256": sha256_file(tokenizer_manifest_path),
+        "tokenizer_sha256_file": {
+            "path": str(tokenizer_sha256_path.resolve()),
+            "sha256": sha256_file(tokenizer_sha256_path),
+        },
         "training_manifest_sha256": sha256_file(training_path),
         "stress_audit": stress,
     }

@@ -48,3 +48,6 @@ def test_tokenizer_replay_twice_has_fixed_16k_ids(tmp_path: Path) -> None:
     assert receipt["artifact_hash_sets_identical"] is True
     assert receipt["stress_audit"]["pass"] is True
     assert [token_id for _, token_id in SPECIAL_TOKENS.values()] == [0, 1, 2, 3, 4]
+    checksum_path = Path(receipt["tokenizer_sha256_file"]["path"])
+    expected = receipt["artifact_hashes"]["tokenizer.json"]
+    assert checksum_path.read_text(encoding="utf-8") == f"{expected}  tokenizer.json\n"
