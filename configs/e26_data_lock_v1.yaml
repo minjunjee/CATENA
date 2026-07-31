@@ -1,0 +1,128 @@
+schema_version: catena-e26-data-lock-v1
+status: PROSPECTIVE_PRE_E26A_LOCK
+scientific_evidence: false
+claim_ceiling: PROTOCOL_IDENTIFIABILITY_ONLY
+
+repository:
+  live_repo: /home/minjun_dev/CATENA
+  e26_worktree: /home/minjun_dev/CATENA_E26
+  expected_live_head: adfdeaf9e87a8602a8e334915d87acb9ff25af39
+  minimum_e26_head: bb5fd9ae3799652457b15fd038405b43dbbf3d9a
+  frozen_artifact_aggregate_sha256: 4ef82dd6fe42543bc1e3b8a63f24781c2ba5d476a39bd84448f9dde6896c87f7
+
+source:
+  dataset_id: HuggingFaceFW/fineweb-edu
+  subset: sample-10BT
+  revision: 87f09149ef4734204d70ed1d046ddc9ca3f2b8f9
+  path: sample/10BT
+  language: en
+  license: odc-by
+  initial_even_grid_count: 4
+  expansion_even_grid_count: 8
+  expansion_policy: INITIAL_PLUS_PREFIX_OF_MISSING_8_GRID_V1
+  allowed_expansion_trigger: REGISTERED_MINIMUM_TOKEN_CAPACITY_ONLY
+  current_expansion_additions: 1
+  current_added_indices: [2]
+  prior_validation_tokens: 4971104
+  required_validation_tokens: 5000000
+  prior_build_disposition: FAILED_CAPACITY_IMMUTABLE
+  allow_outcome_based_selection: false
+
+content_partition:
+  normalization: NFC_AND_LF_LINE_ENDINGS_ONLY
+  identity: SHA256_NORMALIZED_UTF8_TEXT
+  modulo: 10000
+  tokenizer_only: [0, 99]
+  general_validation: [100, 119]
+  general_test: [120, 139]
+  general_train: [140, 9999]
+  exact_deduplicate_by_content_sha: true
+  duplicate_representative: FIRST_CANONICAL_SHARD_ROW
+  hash_collision_policy: FAIL_CLOSED
+  near_duplicate:
+    normalization: LOWERCASE_NFC_WHITESPACE_TOKENS
+    shingle_width_words: 5
+    permutations: 128
+    algorithm: SHA256_PERMUTED_MINHASH_V1
+    field_prime: 4294967291
+    shingle_hash: SHA256_PREFIX_64_BIG_ENDIAN
+    field_reduction: SHINGLE_HASH_MOD_FIELD_BEFORE_AFFINE_PERMUTATION
+    bands: 32
+    rows_per_band: 4
+    seed: 260026
+    estimated_jaccard_flag_threshold: 0.80
+    comparison_scope: CROSS_SPLIT_AND_TOKENIZER_VS_EVALUATION
+    flagged_pair_policy: FAIL_PENDING_MANUAL_AUDIT
+
+tokenizer:
+  implementation: huggingface_tokenizers
+  implementation_version: 0.23.1
+  model: BPE
+  vocab_size: 16384
+  normalizer: NFC
+  pre_tokenizer: ByteLevel
+  decoder: ByteLevel
+  min_frequency: 2
+  training_limit_normalized_utf8_bytes: 100000000
+  final_document_policy: MAXIMAL_UTF8_VALID_PREFIX_NOT_EXCEEDING_LIMIT
+  threads: 1
+  tokenizers_parallelism: false
+  replay_count: 2
+  special_tokens:
+    pad: {token: "<pad>", id: 0}
+    bos: {token: "<bos>", id: 1}
+    eos: {token: "<eos>", id: 2}
+    doc: {token: "<doc>", id: 3}
+    unk: {token: "<unk>", id: 4}
+
+data_root: /data/minjun_dev/CATENA/e26_data_v1
+memmaps:
+  dtype: "<u2"
+  token_id_upper_exclusive: 16384
+  document_separator_id: 3
+  general_train_tokens_min: 400000000
+  general_validation_tokens_min: 5000000
+  general_test_tokens_min: 5000000
+  transaction_train_tokens_min_or_exact_replay: 100000000
+  capacity_policy: WHOLE_DOCUMENT_THEN_RECORDED_OVERSHOOT
+  shared_across_variants: true
+  shared_across_runs: true
+
+transaction:
+  generator_version: v8.1
+  operations: [PRESERVE, ADD, INVALIDATE, SUPERSEDE, ADD_EXCEPTION]
+  updates: [1, 4, 8]
+  gaps: [0, 256, 1024, 3072]
+  query_types: [current_state, derived_action, stale_probe, unaffected_retention]
+  general_fraction: 0.80
+  transaction_fraction: 0.20
+  mix_validation: ABS_4T_MINUS_G_LE_4_TIMES_SEQUENCE_LENGTH
+  transaction_packing: COMPLETE_EXAMPLES_NO_TRUNCATION_V2
+  schedule_algorithm: TOKEN_BALANCED_COMPLETE_EXAMPLE_80_20_V2
+  schedule_seed: 260026
+  paired_and_resume_exact_replay_required: true
+  main_test_access_forbidden: true
+
+tooling:
+  environment: ISOLATED_FROM_CATENA_V6
+  construction_source_receipt_required: true
+  construction_repo_must_be_clean: true
+  construction_artifact_binding_required: true
+  packages:
+    numpy: 2.4.4
+    tokenizers: 0.23.1
+    huggingface_hub: 1.26.0
+    pyarrow: 25.0.0
+
+resource_policy:
+  deadline_reference_hours: 240
+  max_main_wall_clock_hours: 168
+  safety_time_multiplier: 1.25
+  max_main_checkpoint_storage_gib: 100
+  main_token_budget_candidates: [250000000, 300000000, 400000000, 500000000]
+  choose_budget_from_throughput_and_deadline_only: true
+
+stop_policy:
+  execute_scientific_e26a: false
+  execute_e26b: false
+  execute_e26c_or_later: false

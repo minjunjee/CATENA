@@ -63,7 +63,7 @@ def _materialized_inputs(root: Path) -> tuple[Path, Path]:
                 "path": tokenizer_training.name,
                 "sha256": sha256_file(tokenizer_training),
             },
-            "special_tokens": {"pad": 0, "bos": 1, "eos": 2, "unk": 3},
+            "special_tokens": {"pad": 0, "bos": 1, "eos": 2, "doc": 3, "unk": 4},
         },
     )
 
@@ -215,7 +215,7 @@ def test_external_scientific_tokenizer_runtime_adapter() -> None:
         training_document_selection_sha256="2" * 64,
         manifest_path="/unused/manifest.json",
         manifest_sha256="3" * 64,
-        special_tokens={"pad": 0, "bos": 1, "eos": 2, "unk": 3},
+        special_tokens={"pad": 0, "bos": 1, "eos": 2, "doc": 3, "unk": 4},
         evidence_tier="SCIENTIFIC_INPUT",
         scientific_main_eligible=True,
         synthetic=False,

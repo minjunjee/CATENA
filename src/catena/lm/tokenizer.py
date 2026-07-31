@@ -78,6 +78,11 @@ class TokenizerManifest:
             raise ScientificTokenizerContractError(
                 f"Tokenizer family must be one of {sorted(SCIENTIFIC_TOKENIZER_FAMILIES)}"
             )
+        locked_specials = {"pad": 0, "bos": 1, "eos": 2, "doc": 3, "unk": 4}
+        if self.special_tokens != locked_specials:
+            raise ScientificTokenizerContractError(
+                f"Scientific tokenizer must use locked special IDs {locked_specials}"
+            )
         required_hashes = (
             self.model_sha256,
             self.training_manifest_sha256,
@@ -363,10 +368,10 @@ def load_scientific_tokenizer_manifest(
         raise ScientificTokenizerContractError("Tokenizer training manifest SHA-256 mismatch")
 
     special_tokens = payload.get("special_tokens")
-    required_specials = {"pad", "bos", "eos", "unk"}
-    if not isinstance(special_tokens, dict) or not required_specials.issubset(special_tokens):
+    locked_specials = {"pad": 0, "bos": 1, "eos": 2, "doc": 3, "unk": 4}
+    if not isinstance(special_tokens, dict) or set(special_tokens) != set(locked_specials):
         raise ScientificTokenizerContractError(
-            f"special_tokens must define {sorted(required_specials)}"
+            f"special_tokens must exactly define {sorted(locked_specials)}"
         )
     normalized_specials: dict[str, int] = {}
     for name, value in special_tokens.items():
@@ -380,6 +385,10 @@ def load_scientific_tokenizer_manifest(
         normalized_specials[name] = value
     if len(set(normalized_specials.values())) != len(normalized_specials):
         raise ScientificTokenizerContractError("Special token IDs must be unique")
+    if normalized_specials != locked_specials:
+        raise ScientificTokenizerContractError(
+            f"special_tokens must use the locked IDs {locked_specials}"
+        )
 
     manifest = TokenizerManifest(
         tokenizer_id=tokenizer_id,

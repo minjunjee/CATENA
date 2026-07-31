@@ -45,15 +45,19 @@
       "const": true
     },
     "special_tokens": {
-      "additionalProperties": {
-        "maximum": 16383,
-        "minimum": 0,
-        "type": "integer"
+      "additionalProperties": false,
+      "properties": {
+        "pad": {"const": 0},
+        "bos": {"const": 1},
+        "eos": {"const": 2},
+        "doc": {"const": 3},
+        "unk": {"const": 4}
       },
       "required": [
         "pad",
         "bos",
         "eos",
+        "doc",
         "unk"
       ],
       "type": "object"

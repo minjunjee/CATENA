@@ -48,6 +48,9 @@
     "reference_only": {
       "const": false
     },
+    "split": {
+      "enum": ["general_train", "general_validation", "general_test"]
+    },
     "schema_version": {
       "const": "catena-v8.1"
     },
@@ -77,9 +80,12 @@
         },
         "dtype": {
           "enum": [
-            "uint16",
-            "uint32"
+            "<u2",
+            "uint16"
           ]
+        },
+        "byte_order": {
+          "const": "little"
         },
         "path": {
           "minLength": 1,
@@ -100,6 +106,14 @@
         },
         "token_id_min": {
           "maximum": 16383,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "minimum_required_tokens": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "whole_document_overshoot_tokens": {
           "minimum": 0,
           "type": "integer"
         }

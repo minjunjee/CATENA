@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import hashlib
-from collections.abc import Iterator
+from collections.abc import Iterator, Mapping
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -111,11 +111,15 @@ class TokenCursorReceipt:
     end_sequence_index: int
     sequences: int
     tokens: int
+    starts: tuple[int, ...]
     starts_sha256: str
+    token_bytes_sha256: str
     data_order_sha256: str
 
     def as_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        payload = asdict(self)
+        payload["starts"] = list(self.starts)
+        return payload
 
 
 class PairedTokenCursor:
@@ -167,13 +171,64 @@ class PairedTokenCursor:
         payload["snapshot_sha256"] = sha256_canonical_json(payload)
         return payload
 
-    def fork(self) -> PairedTokenCursor:
-        return PairedTokenCursor(
-            self.corpus,
-            seed=self.seed,
-            sequence_length=self.sequence_length,
-            start_sequence_index=self.sequence_index,
+    @classmethod
+    def from_snapshot(
+        cls,
+        corpus: TokenMemmap,
+        snapshot: Mapping[str, Any],
+    ) -> PairedTokenCursor:
+        expected_fields = {
+            "schema_version",
+            "cursor_algorithm",
+            "manifest_hash",
+            "seed",
+            "sequence_length",
+            "sequence_index",
+            "tokens_emitted",
+            "snapshot_sha256",
+        }
+        if set(snapshot) != expected_fields:
+            raise ScientificCorpusContractError(
+                "Token cursor snapshot fields do not match the locked schema"
+            )
+        payload = {key: snapshot[key] for key in expected_fields - {"snapshot_sha256"}}
+        observed_hash = snapshot.get("snapshot_sha256")
+        if not isinstance(observed_hash, str) or observed_hash != sha256_canonical_json(payload):
+            raise ScientificCorpusContractError("Token cursor snapshot SHA-256 mismatch")
+        if snapshot["schema_version"] != "catena-v8.1":
+            raise ScientificCorpusContractError("Unsupported token cursor snapshot schema")
+        if snapshot["cursor_algorithm"] != "sha256_counter_v1":
+            raise ScientificCorpusContractError("Unsupported token cursor algorithm")
+        if snapshot["manifest_hash"] != corpus.manifest.manifest_hash:
+            raise ScientificCorpusContractError("Token cursor corpus manifest changed")
+        seed = snapshot["seed"]
+        sequence_length = snapshot["sequence_length"]
+        sequence_index = snapshot["sequence_index"]
+        tokens_emitted = snapshot["tokens_emitted"]
+        if (
+            isinstance(seed, bool)
+            or not isinstance(seed, int)
+            or isinstance(sequence_length, bool)
+            or not isinstance(sequence_length, int)
+            or isinstance(sequence_index, bool)
+            or not isinstance(sequence_index, int)
+            or isinstance(tokens_emitted, bool)
+            or not isinstance(tokens_emitted, int)
+        ):
+            raise ScientificCorpusContractError("Token cursor counters must be integers")
+        if tokens_emitted != sequence_index * sequence_length:
+            raise ScientificCorpusContractError(
+                "Token cursor exposure count disagrees with its sequence index"
+            )
+        return cls(
+            corpus,
+            seed=seed,
+            sequence_length=sequence_length,
+            start_sequence_index=sequence_index,
         )
+
+    def fork(self) -> PairedTokenCursor:
+        return self.from_snapshot(self.corpus, self.snapshot())
 
     def take(self, count: int) -> tuple[list[NDArray[np.int64]], TokenCursorReceipt]:
         if isinstance(count, bool) or not isinstance(count, int) or count < 0:
@@ -189,6 +244,13 @@ class PairedTokenCursor:
         ]
         self.sequence_index += count
         starts_sha256 = sha256_canonical_json(starts)
+        token_digest = hashlib.sha256()
+        locked_dtype = np.dtype(self.corpus.manifest.dtype)
+        for sequence in sequences:
+            encoded = np.asarray(sequence, dtype=locked_dtype)
+            token_digest.update(len(encoded).to_bytes(8, "big"))
+            token_digest.update(encoded.tobytes(order="C"))
+        token_bytes_sha256 = token_digest.hexdigest()
         receipt_payload: dict[str, Any] = {
             "manifest_hash": self.corpus.manifest.manifest_hash,
             "seed": self.seed,
@@ -197,7 +259,9 @@ class PairedTokenCursor:
             "end_sequence_index": self.sequence_index,
             "sequences": count,
             "tokens": count * self.sequence_length,
+            "starts": starts,
             "starts_sha256": starts_sha256,
+            "token_bytes_sha256": token_bytes_sha256,
         }
         return sequences, TokenCursorReceipt(
             manifest_hash=self.corpus.manifest.manifest_hash,
@@ -207,7 +271,9 @@ class PairedTokenCursor:
             end_sequence_index=self.sequence_index,
             sequences=count,
             tokens=count * self.sequence_length,
+            starts=tuple(starts),
             starts_sha256=starts_sha256,
+            token_bytes_sha256=token_bytes_sha256,
             data_order_sha256=sha256_canonical_json(receipt_payload),
         )
 
@@ -469,8 +535,10 @@ def load_scientific_corpus_manifest(
         dtype = np.dtype(dtype_name)
     except TypeError as error:
         raise ScientificCorpusContractError(f"Unsupported token dtype: {dtype_name}") from error
-    if dtype.name not in {"uint16", "uint32"}:
-        raise ScientificCorpusContractError("Scientific token dtype must be uint16 or uint32")
+    if dtype.str != "<u2":
+        raise ScientificCorpusContractError(
+            "Scientific token dtype must be explicit little-endian uint16"
+        )
     expected_bytes = token_file.get("bytes")
     if isinstance(expected_bytes, bool) or not isinstance(expected_bytes, int):
         raise ScientificCorpusContractError("token_file.bytes must be an integer")
@@ -514,7 +582,7 @@ def load_scientific_corpus_manifest(
 
     manifest = TokenMemmapManifest(
         token_path=str(token_path),
-        dtype=dtype.name,
+        dtype=dtype.str,
         token_count=token_count,
         token_file_sha256=expected_token_hash,
         document_manifest_path=str(document_path),

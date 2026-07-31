@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://catena.local/schemas/v8.1/scientific_data_readiness_v2.schema.json",
+  "title": "CATENA E26 Stage-2 Scientific Data Readiness",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "manifest_type",
+    "scientific_evidence",
+    "evidence_tier",
+    "claim_ceiling",
+    "scientific_main_input_eligible",
+    "main_test_opened",
+    "all_input_hashes_verified",
+    "construction_source",
+    "tokenizer",
+    "general_corpora",
+    "transaction_manifest",
+    "schedule_manifest",
+    "split_collision_count",
+    "exact_duplicate_cross_split_count",
+    "near_duplicate_flagged_pair_count",
+    "readiness_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "catena-e26-scientific-data-readiness-v2"
+    },
+    "manifest_type": {
+      "const": "E26_SCIENTIFIC_DATA_READINESS_V2"
+    },
+    "scientific_evidence": {
+      "const": false
+    },
+    "evidence_tier": {
+      "const": "SCIENTIFIC_INPUT_PROVENANCE"
+    },
+    "claim_ceiling": {
+      "const": "PROTOCOL_IDENTIFIABILITY_ONLY"
+    },
+    "scientific_main_input_eligible": {
+      "const": true
+    },
+    "main_test_opened": {
+      "const": false
+    },
+    "all_input_hashes_verified": {
+      "const": true
+    },
+    "split_collision_count": {
+      "const": 0
+    },
+    "exact_duplicate_cross_split_count": {
+      "const": 0
+    },
+    "near_duplicate_flagged_pair_count": {
+      "const": 0
+    },
+    "readiness_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

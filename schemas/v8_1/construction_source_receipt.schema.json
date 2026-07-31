@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://catena.local/schemas/v8_1/construction_source_receipt.schema.json",
+  "title": "E26 Stage-2 construction source receipt",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "manifest_type",
+    "scientific_evidence",
+    "construction_contract_complete",
+    "repo_root",
+    "git_head",
+    "git_clean",
+    "builder_files",
+    "builder_source_sha256",
+    "artifact_bindings",
+    "artifact_binding_sha256",
+    "tool_environment",
+    "scientific_main_input_eligible",
+    "receipt_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "catena-e26-construction-source-v1"},
+    "manifest_type": {"const": "E26_CONSTRUCTION_SOURCE_RECEIPT"},
+    "scientific_evidence": {"const": false},
+    "construction_contract_complete": {"const": true},
+    "repo_root": {"type": "string"},
+    "git_head": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "git_clean": {"type": "boolean"},
+    "builder_files": {"type": "array", "minItems": 1},
+    "builder_source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifact_bindings": {"type": "array", "minItems": 11, "maxItems": 11},
+    "artifact_binding_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "tool_environment": {"type": "object"},
+    "scientific_main_input_eligible": {"type": "boolean"},
+    "receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "additionalProperties": true
+}
