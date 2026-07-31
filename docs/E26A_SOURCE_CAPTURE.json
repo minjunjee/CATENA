@@ -1,0 +1,35 @@
+{
+  "schema_version": "catena-v8.1",
+  "manifest_type": "E26A_SOURCE_CAPTURE",
+  "capture_utc": "2026-07-31T07:13:51Z",
+  "worktree": "/home/minjun_dev/CATENA_E26",
+  "branch": "exp/e26-autoregressive-lm",
+  "source_commit": "bb5fd9ae3799652457b15fd038405b43dbbf3d9a",
+  "source_clean_at_capture": true,
+  "source_fingerprint": {
+    "files": 636,
+    "sha256": "7cba62f8548d2b062536275067f1d5f47dea0a78be6b77a9ec92e25c27fd8214"
+  },
+  "pre_e26_base_commit": "adfdeaf9e87a8602a8e334915d87acb9ff25af39",
+  "pre_e26_source_verification": {
+    "files_unchanged": 556,
+    "files_expected": 556,
+    "aggregate_sha256": "554d5ff5792d28472a3b0d01f558d026f748d0126428a45aed5a3f9242566bf9",
+    "passed": true
+  },
+  "frozen_e00_e21_artifact_verification": {
+    "files_unchanged": 1329,
+    "files_expected": 1329,
+    "aggregate_sha256": "4ef82dd6fe42543bc1e3b8a63f24781c2ba5d476a39bd84448f9dde6896c87f7",
+    "passed": true
+  },
+  "non_evidence_smoke": {
+    "original_failed_run": "/tmp/catena_e26_dry_gpu_smoke_20260731T0701Z/e26a_operator_data_gate/20260731T070224.840049Z",
+    "original_report_sha256": "f64cddaed57ef351997c5c0808dcc0abe2f53813300e2b4525ea62d795c99bbe",
+    "repair_run": "/tmp/catena_e26_dry_gpu_smoke_repair_20260731T0716Z/e26a_operator_data_gate/20260731T071132.954822Z",
+    "repair_report_sha256": "aa50a0f75da4a981956f94cfbe575e3c6281242bc1963c747567c0dd01dd7d07",
+    "repair_backend_manifest_sha256": "822221639c79abd232500b8f35de887d0c0256d21aec2f50dc5285f68eb05adc",
+    "disposition": "NON_EVIDENCE_100_STEP_SMOKE_PASS"
+  },
+  "scientific_main_started": false
+}
