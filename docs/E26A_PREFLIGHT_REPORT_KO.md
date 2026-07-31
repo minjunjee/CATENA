@@ -21,13 +21,14 @@ E26a candidate/budget lock은 생성하지 않았다. 이는 구현 failure가 �
 | Live repository | `/home/minjun_dev/CATENA` | immutable |
 | Live HEAD | `adfdeaf9e87a8602a8e334915d87acb9ff25af39` | PASS |
 | E26 worktree/branch | `/home/minjun_dev/CATENA_E26`, `exp/e26-autoregressive-lm` | isolated |
-| Stage-2 implementation commit | `PENDING_IMPLEMENTATION_COMMIT` | pending |
+| Stage-2 implementation commit | `8970f67ea8ff64497f9b681f52064922c7c77e6d` | PASS |
 | Pre-E26 source | 556 files, `554d5ff5792d28472a3b0d01f558d026f748d0126428a45aed5a3f9242566bf9` | PASS |
 | Frozen E00–E21 base | 1,329 files, `4ef82dd6fe42543bc1e3b8a63f24781c2ba5d476a39bd84448f9dde6896c87f7` | PASS |
 | Frozen E22–E25 extension | 733 files, `3b9524854ee01d17a9a3f99b8b0ebd08a2ebf0c725d3765dac3496442772564e` | PASS |
 | Frozen E00–E25 composite lock | 2,062 files, `46a779594c760fc1103833810bcc5227d7ca4526111911d7856cdfe2ff2d202b` | PASS |
 | Composite lock path/SHA | `docs/E26_FROZEN_E00_E25_ARTIFACT_LOCK.json`, `3820d5d00b45a36e5bf207f962840bb3692d4b4be3ea9ffeaef0afe453a18423` | PASS |
-| Post-commit frozen receipt | `PENDING_FROZEN_RECEIPT` | pending |
+| Post-commit frozen receipt | `/tmp/catena_e26_stage2_frozen.rv0kqq/e26_frozen_invariance_receipt.json` | PASS |
+| Frozen receipt file/embedded SHA | `fc35fc59d7fb14b2b8ec07f7c623f660eaeca7315833590be9b9b47285102125` / `09f449ba5d9aa4c237a06a7bc95971e4795afe2cf61258a689df35fb5bb61716` | PASS |
 | Canonical E26 artifact | 없음 | PASS |
 
 기존 integration `28f6b868…`, numerical repair `bb5fd9ae…`, data commits
@@ -50,7 +51,11 @@ non-evidence smoke도 수정하지 않았다.
 
 두 corrected LSH audit의 파일 SHA-256은 동일한
 `9bfe3c84df9368955b97ec6285db01450dff912cecd9f2f3334a7b8ced18f17a`다.
-검수용 541행 CSV/JSONL은 생성했지만 label은 모두 비어 있다.
+검수용 541행 CSV/JSONL은 생성했지만 label은 모두 비어 있다. 사람이 검수할
+clean CSV는
+`/data/minjun_dev/CATENA/e26_data_v1/near_duplicate/reviewer_package_v2_expansion1_clean/near_duplicate_pairs_review.csv`
+이며 SHA-256은
+`b023c0ac46cbf8f4eb04398e0fc3ae130a993bab27cdaf8fbd553da28058b3ac`다.
 
 ## 구현된 execution contract
 
@@ -117,7 +122,7 @@ schemas, regression tests와 amendment/report 문서에 한정된다. 전체 aut
 
 ```bash
 git -C /home/minjun_dev/CATENA_E26 show \
-  --name-status --format=fuller PENDING_IMPLEMENTATION_COMMIT
+  --name-status --format=fuller 8970f67ea8ff64497f9b681f52064922c7c77e6d
 ```
 
 Raw text, parquet, tokenizer model, memmap, SQLite, checkpoint는 Git에 추가하지
