@@ -4,7 +4,7 @@ import pytest
 import torch
 
 from catena.lm import ModelConfig, build_paired_models
-from catena.lm.model import CatenaLM, LocalCausalSelfAttention
+from catena.lm.model import CatenaLM, LocalCausalSelfAttention, SwiGLU
 
 
 def _hybrid_config(variant: str = "dual_delta_lm") -> ModelConfig:
@@ -21,6 +21,20 @@ def _hybrid_config(variant: str = "dual_delta_lm") -> ModelConfig:
         reference_chunk_size=3,
         variant=variant,
     )
+
+
+def test_swiglu_low_precision_output_projection_preserves_input_dtype() -> None:
+    config = _hybrid_config()
+    module = SwiGLU(config)
+    value = torch.randn(2, 7, config.d_model, requires_grad=True)
+
+    with torch.autocast(device_type="cpu", dtype=torch.bfloat16):
+        output = module(value)
+    output.square().mean().backward()
+
+    assert output.dtype == value.dtype
+    assert value.grad is not None
+    assert torch.isfinite(value.grad).all()
 
 
 def _assert_runtime_close(left, right) -> None:

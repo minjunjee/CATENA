@@ -239,8 +239,8 @@ def optimized_backend_metadata(
             and bool(parity_verified)
         ),
         "accumulation_policy": (
-            "bf16/fp16 projections with fp32 recurrent-state and output-projection "
-            "accumulation; fp32 path matches reference"
+            "bf16/fp16 input projections with fp32 recurrent-state, recurrent-output, "
+            "and FFN-output projection accumulation; fp32 path matches reference"
         ),
         "supported_gate_interventions": [
             "scale",

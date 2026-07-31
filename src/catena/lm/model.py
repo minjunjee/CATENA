@@ -34,7 +34,23 @@ class SwiGLU(nn.Module):
 
     def forward(self, value: torch.Tensor) -> torch.Tensor:
         gate, content = self.in_proj(value).chunk(2, dim=-1)
-        return cast(torch.Tensor, self.out_proj(F.silu(gate) * content))
+        activated = F.silu(gate) * content
+        if activated.dtype in {torch.bfloat16, torch.float16}:
+            # Low-precision GEMM reduction paths can depend on the sequence-row
+            # count.  That made a full sequence and an equivalent
+            # prefix/continuation pair drift after several carried layers.
+            # Keep the larger input projection under autocast, while using a
+            # shape-stable FP32 accumulation for the narrower output
+            # projection.  The equation, parameters, and registered numerical
+            # thresholds remain unchanged.
+            with torch.autocast(device_type=value.device.type, enabled=False):
+                output = F.linear(
+                    activated.float(),
+                    self.out_proj.weight.float(),
+                    self.out_proj.bias.float() if self.out_proj.bias is not None else None,
+                )
+            return output.to(value.dtype)
+        return cast(torch.Tensor, self.out_proj(activated))
 
 
 @dataclass

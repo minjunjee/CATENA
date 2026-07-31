@@ -729,6 +729,8 @@ def _run_e26a_non_evidence_smoke(
         "bf16_fp32_relative_l2": bf16_fp32_error,
         "gradient_finite": gradient_finite,
         "state_clone_no_alias": clone_no_alias,
+        "graph_break_count": diagnostics["graph_break_count"],
+        "fallback_count": diagnostics["fallback_count"],
         "e26a_candidate_capable": numerical_pass,
         "e26a_gate_capable": False,
         "parity_verified": False,
