@@ -17,7 +17,7 @@ fi
 
 mkdir -p "$DATA_ROOT"
 if [[ ! -x "$TOOL_ENV/bin/python" ]]; then
-  "$BASE_PYTHON" -m venv --system-site-packages "$TOOL_ENV"
+  "$BASE_PYTHON" -m venv "$TOOL_ENV"
   "$TOOL_ENV/bin/python" -m pip install \
     --disable-pip-version-check \
     -r "$REPO_ROOT/configs/e26_data_tooling_requirements.txt"
