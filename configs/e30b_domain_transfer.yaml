@@ -1,0 +1,17 @@
+schema_version: catena-v8.1
+experiment: e30b_domain_transfer
+stage: FROZEN_HELDOUT_DOMAIN
+dependency:
+  experiment: e26c_matched_lm_train
+  required_disposition: COMPLETE_FIXED_TOKEN_CHECKPOINTS
+heldout_domain: versioned_preference_and_instruction
+retraining: false
+operations: [PRESERVE, ADD, INVALIDATE, SUPERSEDE]
+query_types: [current_state, derived_action, stale_probe, unaffected_retention]
+primary: heldout_domain_DID_and_attenuation_relative_to_in_domain
+use_for_tuning: false
+registered_dispositions:
+  - HELDOUT_DOMAIN_DIRECTION_SUPPORTED
+  - IN_DOMAIN_ONLY_INTERACTION
+  - NO_HELDOUT_DOMAIN_FLOOR
+  - BLOCKED_DEPENDENCY

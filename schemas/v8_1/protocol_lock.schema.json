@@ -1,0 +1,83 @@
+{
+  "$id": "https://catena.local/schemas/v8.1/protocol_lock.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "config_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "dependencies": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "experiment": {
+      "pattern": "^e(26|27|28|29|30)",
+      "type": "string"
+    },
+    "inference_unit": {
+      "enum": [
+        "training_seed",
+        "paired_training_seed",
+        "diagnostic_episode",
+        "systems_repetition"
+      ]
+    },
+    "lock_utc": {
+      "format": "date-time",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "locked": {
+      "type": "boolean"
+    },
+    "primary_estimand": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "primary_question": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "registered_dispositions": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "schema_version": {
+      "const": "catena-v8.1"
+    },
+    "source_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "thresholds": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "experiment",
+    "stage",
+    "locked",
+    "lock_utc",
+    "source_hash",
+    "config_hash",
+    "primary_question",
+    "primary_estimand",
+    "inference_unit",
+    "registered_dispositions"
+  ],
+  "title": "CATENA v8.1 Protocol Lock",
+  "type": "object"
+}

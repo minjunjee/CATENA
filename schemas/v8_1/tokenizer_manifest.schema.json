@@ -1,0 +1,121 @@
+{
+  "$id": "https://catena.local/schemas/v8.1/tokenizer_manifest.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "evidence_tier": {
+      "const": "SCIENTIFIC_INPUT"
+    },
+    "manifest_type": {
+      "const": "E26_SCIENTIFIC_TOKENIZER"
+    },
+    "model": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "bytes"
+      ],
+      "type": "object"
+    },
+    "reference_only": {
+      "const": false
+    },
+    "schema_version": {
+      "const": "catena-v8.1"
+    },
+    "scientific_main_eligible": {
+      "const": true
+    },
+    "shared_across_variants": {
+      "const": true
+    },
+    "special_tokens": {
+      "additionalProperties": {
+        "maximum": 16383,
+        "minimum": 0,
+        "type": "integer"
+      },
+      "required": [
+        "pad",
+        "bos",
+        "eos",
+        "unk"
+      ],
+      "type": "object"
+    },
+    "synthetic": {
+      "const": false
+    },
+    "tokenizer_family": {
+      "enum": [
+        "BPE",
+        "UNIGRAM"
+      ]
+    },
+    "tokenizer_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "tokenizer_type": {
+      "const": "EXTERNAL_SCIENTIFIC_TOKENIZER"
+    },
+    "trained_once": {
+      "const": true
+    },
+    "training_manifest": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "type": "object"
+    },
+    "vocab_size": {
+      "const": 16384
+    }
+  },
+  "required": [
+    "schema_version",
+    "manifest_type",
+    "evidence_tier",
+    "scientific_main_eligible",
+    "synthetic",
+    "reference_only",
+    "shared_across_variants",
+    "trained_once",
+    "tokenizer_id",
+    "tokenizer_type",
+    "tokenizer_family",
+    "vocab_size",
+    "model",
+    "training_manifest",
+    "special_tokens"
+  ],
+  "title": "CATENA E26 Scientific Tokenizer Manifest",
+  "type": "object"
+}

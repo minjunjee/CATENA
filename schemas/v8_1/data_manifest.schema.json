@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://catena.local/schemas/v8.1/data_manifest.schema.json",
+  "title": "CATENA v8.1 Data Manifest",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version", "generator_version", "tokenizer", "general_corpus",
+    "transaction_splits", "split_audit", "manifest_hash"
+  ],
+  "properties": {
+    "schema_version": {"const": "catena-v8.1"},
+    "generator_version": {"type": "string"},
+    "tokenizer": {"type": "object", "required": ["id", "hash", "vocab_size"]},
+    "general_corpus": {"type": "object", "required": ["revision", "token_file_hash"]},
+    "transaction_splits": {"type": "object"},
+    "split_audit": {
+      "type": "object",
+      "required": ["disjoint", "duplicates", "answer_leakage"],
+      "properties": {
+        "disjoint": {"type": "boolean"},
+        "duplicates": {"type": "integer", "minimum": 0},
+        "answer_leakage": {"type": "integer", "minimum": 0}
+      }
+    },
+    "manifest_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}

@@ -1,0 +1,28 @@
+schema_version: catena-v8.1
+experiment: e29b_quality_cost_regime
+stage: SYSTEMS_MEASUREMENT
+dependency:
+  experiment: e29a_policy_correctness
+  required_disposition: QUALITY_MATCHED_POLICY_SET_READY
+regime_grid:
+  queries_per_update: [1, 2, 4, 8, 16, 32, 64]
+  context_length: [2048, 4096]
+  updates: [1, 4, 8]
+  dependency_depth: [0, 1, 2]
+  active_entity_load: [low, medium, high]
+measurements:
+  warmup_iterations: 20
+  measured_iterations: 100
+  percentiles: [50, 95]
+  include_update_cost: true
+  include_snapshot_build_cost: true
+  include_query_preparation_cost: true
+  report_host_device_bytes: true
+  report_resident_bytes: true
+  report_recomputed_tokens: true
+claim_ceiling: CONTROLLED_QUALITY_CONSTRAINED_REGIME_MAP
+registered_dispositions:
+  - REGIME_MAP_COMPLETE
+  - NO_RECURRENT_BREAK_EVEN
+  - MEASUREMENT_INVALID
+  - BLOCKED_DEPENDENCY

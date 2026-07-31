@@ -1,0 +1,7 @@
+{
+  "packet": "CATENA_v8_1_CODEX_EXPERIMENT_PACKET",
+  "version": "8.1.0",
+  "mode": "additive_no_overwrite",
+  "target": "/home/minjun_dev/CATENA_E26",
+  "source_manifest": "PACKET_MANIFEST_SHA256.txt"
+}

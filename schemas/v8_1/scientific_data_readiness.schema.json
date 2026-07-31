@@ -1,0 +1,48 @@
+{
+  "$id": "https://catena.local/schemas/v8.1/scientific_data_readiness.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "evidence_tier": {
+      "const": "SCIENTIFIC_INPUT_PROVENANCE"
+    },
+    "general_corpus": {
+      "type": "object"
+    },
+    "manifest_type": {
+      "const": "E26_SCIENTIFIC_DATA_READINESS"
+    },
+    "paired_cursor_probe": {
+      "type": "object"
+    },
+    "readiness_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "catena-v8.1"
+    },
+    "scientific_evidence": {
+      "const": false
+    },
+    "scientific_main_input_eligible": {
+      "const": true
+    },
+    "tokenizer": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "manifest_type",
+    "scientific_evidence",
+    "evidence_tier",
+    "scientific_main_input_eligible",
+    "tokenizer",
+    "general_corpus",
+    "paired_cursor_probe",
+    "readiness_sha256"
+  ],
+  "title": "CATENA E26 Scientific Data Readiness Receipt",
+  "type": "object"
+}

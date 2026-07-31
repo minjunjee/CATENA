@@ -1,0 +1,32 @@
+schema_version: catena-v8.1
+experiment: e26e_gate_interventions
+stage: FROZEN_CHECKPOINT_MECHANISM
+dependency:
+  experiment: e26c_matched_lm_train
+  required_disposition: COMPLETE_FIXED_TOKEN_CHECKPOINTS
+interventions:
+  inference_time_tying: true
+  dose_levels: [0.0, 0.25, 0.5, 0.75, 1.0]
+  erase_zero: true
+  write_zero: true
+  same_operation_transplant: true
+  cross_operation_transplant: true
+  wrong_entity_control: true
+  same_operation_donor_rescue: true
+  metadata_oracle_gate_rescue: true
+norm_match_transplants: true
+non_transaction_step_confinement_required: true
+mechanism_gates:
+  relevant_damage_exceeds_irrelevant: true
+  add_write_specificity: true
+  invalidate_erase_specificity: true
+  specificity_positive_seed_count_required: 5
+  same_operation_better_than_cross_operation: true
+  inference_time_tying_removes_fraction_of_asymmetric_gain_min: 0.50
+  wrong_entity_must_not_rescue: true
+registered_dispositions:
+  - OPERATION_SPECIFIC_GATE_MEDIATION_SUPPORTED
+  - BEHAVIORAL_EFFECT_NOT_MEDIATED_BY_REGISTERED_GATES
+  - PARTIAL_MECHANISM_SUPPORT
+  - INVALID_INTERVENTION_CONFINEMENT
+  - BLOCKED_DEPENDENCY

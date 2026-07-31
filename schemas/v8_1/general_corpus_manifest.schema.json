@@ -1,0 +1,149 @@
+{
+  "$id": "https://catena.local/schemas/v8.1/general_corpus_manifest.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "corpus_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "corpus_revision": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "document_manifest": {
+      "additionalProperties": false,
+      "properties": {
+        "document_count": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "document_selection_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        "path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "document_count",
+        "document_selection_sha256"
+      ],
+      "type": "object"
+    },
+    "evidence_tier": {
+      "const": "SCIENTIFIC_INPUT"
+    },
+    "manifest_type": {
+      "const": "E26_SCIENTIFIC_GENERAL_CORPUS"
+    },
+    "reference_only": {
+      "const": false
+    },
+    "schema_version": {
+      "const": "catena-v8.1"
+    },
+    "scientific_main_eligible": {
+      "const": true
+    },
+    "selection_frozen": {
+      "const": true
+    },
+    "source_revisions": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "synthetic": {
+      "const": false
+    },
+    "token_file": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes": {
+          "minimum": 2,
+          "type": "integer"
+        },
+        "dtype": {
+          "enum": [
+            "uint16",
+            "uint32"
+          ]
+        },
+        "path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        "token_count": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "token_id_max": {
+          "maximum": 16383,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "token_id_min": {
+          "maximum": 16383,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "bytes",
+        "dtype",
+        "token_count",
+        "token_id_min",
+        "token_id_max"
+      ],
+      "type": "object"
+    },
+    "tokenizer_manifest_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "tokenizer_model_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "tokenizer_vocab_size": {
+      "const": 16384
+    }
+  },
+  "required": [
+    "schema_version",
+    "manifest_type",
+    "evidence_tier",
+    "scientific_main_eligible",
+    "synthetic",
+    "reference_only",
+    "selection_frozen",
+    "corpus_id",
+    "corpus_revision",
+    "source_revisions",
+    "tokenizer_manifest_sha256",
+    "tokenizer_model_sha256",
+    "tokenizer_vocab_size",
+    "document_manifest",
+    "token_file"
+  ],
+  "title": "CATENA E26 Scientific General Corpus Manifest",
+  "type": "object"
+}

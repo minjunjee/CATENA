@@ -1,0 +1,89 @@
+{
+  "$id": "https://catena.local/schemas/v8.1/model_manifest.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "oneOf": [
+    {
+      "required": [
+        "schema_version",
+        "variant",
+        "model_config",
+        "parameter_count",
+        "parameter_signature_hash",
+        "initialization_digest",
+        "pair_id",
+        "recurrent_state_shape",
+        "recurrent_state_bytes"
+      ]
+    },
+    {
+      "properties": {
+        "not_applicable": {
+          "const": true
+        },
+        "reason": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "not_applicable",
+        "reason"
+      ]
+    }
+  ],
+  "properties": {
+    "checkpoint": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "initialization_digest": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "model_config": {
+      "type": "object"
+    },
+    "optimizer_state_signature": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "pair_id": {
+      "type": "string"
+    },
+    "parameter_count": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "parameter_signature_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "recurrent_state_bytes": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "recurrent_state_shape": {
+      "items": {
+        "type": "integer"
+      },
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "catena-v8.1"
+    },
+    "variant": {
+      "enum": [
+        "dual_delta_lm",
+        "projected_tied_delta_lm"
+      ]
+    }
+  },
+  "title": "CATENA v8.1 Model Manifest",
+  "type": "object"
+}

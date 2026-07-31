@@ -1,0 +1,25 @@
+schema_version: catena-v8.1
+experiment: e28b_locality_learned_main
+stage: MAIN_TRAIN
+dependency:
+  experiment: e27_oracle_decomposition
+  required_disposition: STRUCTURAL_SPILL_CONFIRMED
+comparison: [baseline_dual, covariance_local_dual]
+paired_seeds: [28111, 28122, 28133, 28144, 28155]
+training_recipe: inherit_e26_selected_recipe
+same_initialization_data_tokens: true
+claim_gates:
+  target_transaction_score_noninferiority_margin: 0.005
+  worst_active_non_target_relative_reduction_min: 0.30
+  positive_seed_count_required: 5
+  average_retention_noninferiority_margin: 0.005
+  relative_general_ppl_degradation_max: 0.015
+  numerical_fallback_fraction_max: 0.01
+  require_overhead_report: true
+registered_dispositions:
+  - LEARNED_LOCALITY_PARETO_SUPPORTED
+  - ORACLE_ONLY_LOCALITY
+  - LOCALITY_GAIN_WITH_TARGET_TRADEOFF
+  - NO_LOCALITY_IMPROVEMENT
+  - NUMERICAL_INSTABILITY
+  - BLOCKED_DEPENDENCY

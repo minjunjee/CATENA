@@ -1,0 +1,21 @@
+schema_version: catena-v8.1
+experiment: e28c_locality_transfer
+stage: FROZEN_TRANSFER
+dependency:
+  experiment: e28b_locality_learned_main
+  required_disposition: LEARNED_LOCALITY_PARETO_SUPPORTED
+conditions:
+  heldout_domain: true
+  gap_tokens: [3072]
+  updates: [8]
+  active_entity_load: [high]
+  key_correlation: [high]
+metrics:
+  - target_transaction_score
+  - worst_active_non_target_degradation
+  - retention
+  - general_ppl
+registered_dispositions:
+  - LOCALITY_TRANSFER_SUPPORTED
+  - IN_DOMAIN_ONLY_LOCALITY
+  - BLOCKED_DEPENDENCY

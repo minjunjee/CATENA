@@ -1,0 +1,47 @@
+schema_version: catena-v8.1
+experiment: e27_oracle_decomposition
+stage: FROZEN_CHECKPOINT_DIAGNOSTIC
+dependencies:
+  - experiment: e26c_matched_lm_train
+    required_disposition: COMPLETE_FIXED_TOKEN_CHECKPOINTS
+levels:
+  - learned
+  - metadata_oracle_gate
+  - metadata_oracle_gate_address
+  - metadata_oracle_gate_address_candidate
+  - outcome_behavioral_upper_bound
+  - exact_canonical_refresh
+future_query_allowed:
+  metadata_oracles: false
+  behavioral_upper_bound: true
+behavioral_upper_bound_is_deployable: false
+cells:
+  operations: [PRESERVE, ADD, INVALIDATE, SUPERSEDE]
+  updates: [1, 4, 8]
+  gaps: [0, 1024, 3072]
+metrics:
+  - transaction_score
+  - exact_headroom_recovered
+  - incremental_recovery
+  - stale_intrusion
+  - worst_active_non_target_degradation
+  - gate_error
+  - address_error
+  - candidate_error
+substantial_rescue:
+  exact_headroom_fraction_min: 0.20
+  transaction_score_gain_min: 0.02
+  positive_seed_count_required: 5
+structural_spill_gate:
+  target_exact_headroom_fraction_min: 0.90
+  worst_active_non_target_degradation_min: 0.01
+  min_seed_count_same_direction: 4
+registered_dispositions:
+  - GATE_POLICY_BOTTLENECK
+  - ADDRESS_LOCALIZATION_BOTTLENECK
+  - CANDIDATE_RECOVERY_BOTTLENECK
+  - REACHABLE_BUT_NOT_LEARNED
+  - STATE_SUBSTRATE_OR_OPERATOR_BOTTLENECK
+  - STRUCTURAL_SPILL_CONFIRMED
+  - NO_SINGLE_BOTTLENECK_IDENTIFIED
+  - BLOCKED_DEPENDENCY

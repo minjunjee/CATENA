@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://catena.local/schemas/v8.1/transaction_episode.schema.json",
+  "title": "CATENA v8.1 Transaction Episode",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "episode_id", "split", "domain", "operation", "template_family",
+    "entity_namespace", "seed", "state_before", "state_after",
+    "materialization_text", "transaction_text", "dependency_closure",
+    "distractor_text", "branch_prefix_text", "queries",
+    "exact_refresh_text", "protected_fields"
+  ],
+  "properties": {
+    "episode_id": {"type": "string", "minLength": 1},
+    "split": {"enum": ["train", "validation", "calibration", "main_test", "heldout_domain"]},
+    "domain": {"enum": ["access_control", "api_configuration", "workflow", "versioned_preference"]},
+    "operation": {"enum": ["PRESERVE", "ADD", "INVALIDATE", "SUPERSEDE", "ADD_EXCEPTION"]},
+    "template_family": {"type": "string", "minLength": 1},
+    "entity_namespace": {"type": "string", "minLength": 1},
+    "seed": {"type": "integer"},
+    "state_before": {"type": "object"},
+    "state_after": {"type": "object"},
+    "materialization_text": {"type": "string"},
+    "transaction_text": {"type": "string"},
+    "dependency_closure": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "distractor_text": {"type": "string"},
+    "branch_prefix_text": {"type": "string"},
+    "queries": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/query"}
+    },
+    "exact_refresh_text": {"type": "string"},
+    "protected_fields": {"type": "object"},
+    "visible_input_audit": {
+      "type": "object",
+      "properties": {
+        "contains_operation_label": {"type": "boolean"},
+        "contains_gate_label": {"type": "boolean"},
+        "contains_exact_address_mask": {"type": "boolean"},
+        "contains_future_query": {"type": "boolean"},
+        "contains_exact_final_tool_call": {"type": "boolean"}
+      },
+      "required": [
+        "contains_operation_label", "contains_gate_label",
+        "contains_exact_address_mask", "contains_future_query",
+        "contains_exact_final_tool_call"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "query_type", "prompt", "candidate_answers", "gold_index",
+        "affected_entities", "retained_entities"
+      ],
+      "properties": {
+        "query_type": {"enum": ["current_state", "derived_action", "stale_probe", "unaffected_retention"]},
+        "prompt": {"type": "string"},
+        "candidate_answers": {"type": "array", "minItems": 2, "items": {"type": "string"}},
+        "gold_index": {"type": "integer", "minimum": 0},
+        "structured_gold": {"type": ["object", "null"]},
+        "affected_entities": {"type": "array", "items": {"type": "string"}},
+        "retained_entities": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

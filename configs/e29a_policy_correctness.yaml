@@ -1,0 +1,29 @@
+schema_version: catena-v8.1
+experiment: e29a_policy_correctness
+stage: QUALITY_ALIGNMENT_GATE
+dependencies:
+  - experiment: e26d_transaction_eval
+    allowed_dispositions:
+      - SUPPORTED_MATCHED_AUTOREGRESSIVE_TRANSACTION_INTERACTION
+      - BEHAVIORAL_GAIN_MECHANISM_PENDING
+      - CORRECTION_GAIN_WITH_RETENTION_OR_PPL_TRADEOFF
+policies:
+  - stale_internal_state
+  - typed_transaction_append
+  - recurrent_assimilation
+  - external_canonical_read_per_query
+  - cached_canonical_snapshot
+  - affected_suffix_refresh
+  - full_refresh
+  - optional_official_kv_erasure
+quality_reference: full_refresh
+quality_margins:
+  current_derived_score: 0.01
+  stale_intrusion: 0.01
+  retention_degradation: 0.01
+optional_official_dependency_fail_closed: true
+registered_dispositions:
+  - QUALITY_MATCHED_POLICY_SET_READY
+  - INSUFFICIENT_QUALITY_MATCHED_POLICIES
+  - BLOCKED_OFFICIAL_POLICY
+  - BLOCKED_DEPENDENCY

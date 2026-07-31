@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://catena.local/schemas/v8.1/backend_manifest.schema.json",
+  "title": "CATENA v8.1 Backend Manifest",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version", "backend_id", "backend_type", "source_commit",
+    "full_chunk_relative_l2", "state_carry_relative_l2",
+    "gradient_finite", "state_clone_no_alias", "scientific_main_capable"
+  ],
+  "properties": {
+    "schema_version": {"const": "catena-v8.1"},
+    "backend_id": {"type": "string"},
+    "backend_type": {"enum": ["REFERENCE_PYTHON", "TORCH_COMPILED", "TRITON", "CUDA_EXTENSION", "UPSTREAM_ADAPTER"]},
+    "source_commit": {"type": "string"},
+    "kernel_commit": {"type": ["string", "null"]},
+    "full_chunk_relative_l2": {"type": "number", "minimum": 0},
+    "state_carry_relative_l2": {"type": "number", "minimum": 0},
+    "bf16_fp32_relative_l2": {"type": ["number", "null"], "minimum": 0},
+    "gradient_finite": {"type": "boolean"},
+    "state_clone_no_alias": {"type": "boolean"},
+    "graph_break_count": {"type": "integer", "minimum": 0},
+    "fallback_count": {"type": "integer", "minimum": 0},
+    "scientific_main_capable": {"type": "boolean"}
+  }
+}

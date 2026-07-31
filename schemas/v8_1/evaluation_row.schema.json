@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://catena.local/schemas/v8.1/evaluation_row.schema.json",
+  "title": "CATENA v8.1 Evaluation Metric Row",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "experiment", "run_id", "variant", "seed", "split", "operation",
+    "updates", "gap_tokens", "query_type", "metric", "value", "n_episodes",
+    "benchmark_hash"
+  ],
+  "properties": {
+    "experiment": {"type": "string"},
+    "run_id": {"type": "string"},
+    "variant": {"enum": ["dual_delta_lm", "projected_tied_delta_lm", "reference", "policy"]},
+    "seed": {"type": "integer"},
+    "split": {"type": "string"},
+    "domain": {"type": "string"},
+    "operation": {"type": "string"},
+    "updates": {"type": "integer", "minimum": 0},
+    "gap_tokens": {"type": "integer", "minimum": 0},
+    "query_type": {"type": "string"},
+    "metric": {"type": "string"},
+    "value": {"type": "number"},
+    "n_episodes": {"type": "integer", "minimum": 1},
+    "benchmark_hash": {"type": "string"}
+  }
+}

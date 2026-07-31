@@ -1,0 +1,20 @@
+# Merge only after auditing the live pyproject. Do not replace existing config.
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unused_ignores = true
+
+# Dependency proposal only. The frozen CATENA environment is not modified by
+# additive integration; install these into an E26-specific locked prefix.
+[project.optional-dependencies]
+e26-validation = ["jsonschema>=4.23,<5"]
+e26-data = ["tokenizers>=0.21,<1"]

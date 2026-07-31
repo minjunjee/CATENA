@@ -1,0 +1,27 @@
+schema_version: catena-v8.1
+experiment: e30a_scale_anchor
+stage: DIRECTIONAL_ANCHOR
+dependencies:
+  - experiment: e26d_transaction_eval
+    allowed_dispositions:
+      - SUPPORTED_MATCHED_AUTOREGRESSIVE_TRANSACTION_INTERACTION
+      - BEHAVIORAL_GAIN_MECHANISM_PENDING
+  - experiment: e27_oracle_decomposition
+    allowed_dispositions:
+      - GATE_POLICY_BOTTLENECK
+      - ADDRESS_LOCALIZATION_BOTTLENECK
+      - CANDIDATE_RECOVERY_BOTTLENECK
+      - REACHABLE_BUT_NOT_LEARNED
+      - STRUCTURAL_SPILL_CONFIRMED
+parameter_range: [110000000, 150000000]
+paired_seeds: [30001]
+tokens_per_model_candidates: [500000000, 750000000, 1000000000]
+confirmatory_claim_allowed: false
+gates:
+  asymmetric_did_direction_matches_e26: true
+  gross_symmetric_retention_ppl_guardrails: true
+  numerical_backend_regression_absent: true
+registered_dispositions:
+  - DIRECTIONAL_SCALE_ANCHOR_PASS
+  - DIRECTIONAL_SCALE_ANCHOR_FAIL
+  - BLOCKED_DEPENDENCY

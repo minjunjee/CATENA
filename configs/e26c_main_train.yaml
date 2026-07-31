@@ -1,0 +1,38 @@
+schema_version: catena-v8.1
+experiment: e26c_matched_lm_train
+stage: MAIN_TRAIN
+dependency:
+  experiment: e26b_lm_calibration
+  required_disposition: GO_E26C
+scientific_evidence: pending_e26d
+variants: [projected_tied_delta_lm, dual_delta_lm]
+paired_seeds: [26011, 26022, 26033, 26044, 26055]
+runs_expected: 10
+model_config_from_dependency_lock: true
+optimizer_from_dependency_lock: true
+token_budget_from_dependency_lock: true
+fixed_checkpoint_rule: exact_final_token_count
+training:
+  objective: autoregressive_next_token_cross_entropy
+  auxiliary_gate_loss: forbidden
+  operation_label_supervision: forbidden
+  address_mask_supervision: forbidden
+  early_stopping: false
+  best_checkpoint_selection: false
+  variant_specific_tuning: false
+  save_every_tokens: 25000000
+pairing:
+  same_initialization_digest: true
+  same_data_cursor: true
+  same_token_count: true
+  same_batch_schedule: true
+  same_backend: true
+failure_handling:
+  retain_diverged_runs: true
+  retain_oom_runs: true
+  no_seed_replacement_after_test_open: true
+registered_dispositions:
+  - COMPLETE_FIXED_TOKEN_CHECKPOINTS
+  - PARTIAL_RUN_FAILURE_RETAINED
+  - INVALID_MATCHED_COMPARISON
+  - BLOCKED_DEPENDENCY

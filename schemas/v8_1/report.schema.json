@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://catena.local/schemas/v8.1/report.schema.json",
+  "title": "CATENA v8.1 Experiment Report",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version", "experiment", "run_id", "run_mode", "status",
+    "scientific_evidence", "evidence_tier", "disposition", "allowed_claim",
+    "forbidden_claims", "gates", "artifacts"
+  ],
+  "properties": {
+    "schema_version": {"const": "catena-v8.1"},
+    "experiment": {"type": "string"},
+    "run_id": {"type": "string"},
+    "run_mode": {"enum": ["DRY_RUN", "SMOKE", "GATE", "CALIBRATION", "MAIN", "EVAL", "DIAGNOSTIC", "SYSTEMS"]},
+    "status": {"enum": ["PASS", "FAIL", "BLOCKED", "COMPLETE", "PARTIAL", "INVALID"]},
+    "scientific_evidence": {"type": "boolean"},
+    "evidence_tier": {"type": "string"},
+    "disposition": {"type": "string"},
+    "allowed_claim": {"type": "string"},
+    "forbidden_claims": {"type": "array", "items": {"type": "string"}},
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "passed"],
+        "properties": {
+          "name": {"type": "string"},
+          "passed": {"type": "boolean"},
+          "observed": {},
+          "criterion": {},
+          "note": {"type": "string"}
+        }
+      }
+    },
+    "artifacts": {"type": "object"},
+    "upstream_dependencies": {"type": "array", "items": {"type": "object"}}
+  }
+}

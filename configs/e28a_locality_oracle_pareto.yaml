@@ -1,0 +1,35 @@
+schema_version: catena-v8.1
+experiment: e28a_locality_oracle_pareto
+stage: DEVELOPMENT_AND_FRESH_ORACLE_DIAGNOSTIC
+dependency_any:
+  - experiment: e27_oracle_decomposition
+    allowed_dispositions: [STRUCTURAL_SPILL_CONFIRMED, NO_SINGLE_BOTTLENECK_IDENTIFIED]
+scientific_evidence: controlled_diagnostic_only
+methods:
+  - dense_baseline
+  - mean_retention
+  - smoothmax_or_cvar
+  - hard_topk
+  - protected_nullspace_oracle
+  - covariance_aware
+  - exact_target_projector_oracle
+covariance_sweep:
+  rho: [0.9, 0.99, 0.999]
+  lambda_relative_trace: [1.0e-4, 1.0e-3, 1.0e-2, 1.0e-1]
+  rank_truncation: [full, 32, 16]
+selection_rule: target_noninferiority_then_minimize_worst_spill
+main_oracle_namespace_fresh: true
+metrics:
+  - target_transaction_score
+  - worst_active_non_target_degradation
+  - average_retention
+  - unit_response_error
+  - condition_number
+  - fallback_fraction
+  - update_latency
+  - state_bytes
+registered_dispositions:
+  - ORACLE_LOCALITY_PARETO_FOUND
+  - NO_ORACLE_LOCALITY_PARETO
+  - NUMERICAL_INSTABILITY
+  - BLOCKED_DEPENDENCY

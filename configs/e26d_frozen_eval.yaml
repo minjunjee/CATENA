@@ -1,0 +1,42 @@
+schema_version: catena-v8.1
+experiment: e26d_transaction_eval
+stage: FROZEN_EVALUATION_AND_AGGREGATE
+dependency:
+  experiment: e26c_matched_lm_train
+  required_disposition: COMPLETE_FIXED_TOKEN_CHECKPOINTS
+benchmark:
+  manifest_from_e26b_lock: true
+  main_test_first_access_only_after_lock: true
+  query_branch_mode: cloned_runtime_state
+  operations: [PRESERVE, ADD, INVALIDATE, SUPERSEDE]
+  updates: [1, 4, 8]
+  gaps: [0, 256, 1024, 3072]
+  query_types: [current_state, derived_action, stale_probe, unaffected_retention]
+primary_score:
+  current_state_weight: 0.40
+  derived_action_weight: 0.40
+  stale_suppression_weight: 0.20
+  retention_in_primary_score: false
+primary_estimand: asymmetric_minus_symmetric_dual_minus_tied_DID
+inference_unit: training_seed
+claim_gates:
+  did_positive_seed_count_required: 5
+  one_sided_exact_sign_flip_p_max: 0.03125
+  asymmetric_absolute_gain_min: 0.02
+  alternative_exact_headroom_recovery_min: 0.10
+  preserve_supersede_equivalence_margin: 0.01
+  retention_noninferiority_margin: 0.01
+  worst_active_non_target_degradation_max: 0.01
+  relative_general_ppl_degradation_max: 0.015
+  require_long_stress_direction: true
+  require_matching_pass: true
+  require_e26e_for_full_mechanism_claim: true
+secondary_multiple_testing: Holm_or_descriptive_tier
+registered_dispositions:
+  - SUPPORTED_MATCHED_AUTOREGRESSIVE_TRANSACTION_INTERACTION
+  - BEHAVIORAL_GAIN_MECHANISM_PENDING
+  - CORRECTION_GAIN_WITH_RETENTION_OR_PPL_TRADEOFF
+  - NO_IDENTIFIABLE_LM_INTERACTION
+  - LM_PROTOCOL_FLOOR_NOT_ESTABLISHED
+  - INVALID_MATCHED_COMPARISON
+  - BLOCKED_DEPENDENCY

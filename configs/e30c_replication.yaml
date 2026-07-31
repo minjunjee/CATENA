@@ -1,0 +1,16 @@
+schema_version: catena-v8.1
+experiment: e30c_final_replication
+stage: CONDITIONAL_SCALE_REPLICATION
+dependencies:
+  - experiment: e30a_scale_anchor
+    required_disposition: DIRECTIONAL_SCALE_ANCHOR_PASS
+  - experiment: e30b_domain_transfer
+    required_disposition: HELDOUT_DOMAIN_DIRECTION_SUPPORTED
+paired_seeds: [30111, 30122, 30133]
+model_and_tokens_from_e30a_lock: true
+fixed_checkpoint_rule: exact_final_token_count
+confirmatory_note: three_pairs_minimum_exact_sign_p_is_0.125
+registered_dispositions:
+  - TWO_SCALE_DIRECTIONAL_REPLICATION_SUPPORTED
+  - SCALE_EFFECT_NOT_REPLICATED
+  - BLOCKED_DEPENDENCY

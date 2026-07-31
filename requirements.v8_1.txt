@@ -1,0 +1,7 @@
+# Prefer the live CATENA environment lock. These are packet-validation minima,
+# not a request to upgrade the scientific environment.
+torch>=2.10
+PyYAML>=6
+numpy>=2
+jsonschema>=4
+pytest>=8

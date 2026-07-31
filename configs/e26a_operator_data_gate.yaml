@@ -1,0 +1,106 @@
+schema_version: catena-v8.1
+experiment: e26a_operator_data_gate
+stage: GATE
+run_mode: DRY_RUN_OR_EXPLICIT_MAIN
+scientific_evidence: false
+claim_ceiling: PROTOCOL_IDENTIFIABILITY_ONLY
+safety:
+  require_separate_worktree: true
+  expected_live_repo: /home/minjun_dev/CATENA
+  expected_worktree: /home/minjun_dev/CATENA_E26
+  canonical_artifact_root: /data/minjun_dev/CATENA/artifacts
+  dry_run_root_prefix: /tmp/catena_e26_dry_
+  require_allow_main: true
+  forbid_reference_backend_for_main: true
+model_candidates:
+  - id: d512_ctx4096
+    vocab_size: 16384
+    n_layers: 8
+    d_model: 512
+    n_heads: 8
+    ffn_multiplier: 4.0
+    recurrent_layers: [0, 1, 2, 4, 5, 6]
+    local_attention_layers: [3, 7]
+    local_attention_window: 256
+    context_length: 4096
+  - id: d512_ctx2048
+    vocab_size: 16384
+    n_layers: 8
+    d_model: 512
+    n_heads: 8
+    ffn_multiplier: 4.0
+    recurrent_layers: [0, 1, 2, 4, 5, 6]
+    local_attention_layers: [3, 7]
+    local_attention_window: 256
+    context_length: 2048
+  - id: d448_ctx4096
+    vocab_size: 16384
+    n_layers: 8
+    d_model: 448
+    n_heads: 7
+    ffn_multiplier: 4.0
+    recurrent_layers: [0, 1, 2, 4, 5, 6]
+    local_attention_layers: [3, 7]
+    local_attention_window: 256
+    context_length: 4096
+variants: [projected_tied_delta_lm, dual_delta_lm]
+matching:
+  require_same_parameter_names_shapes: true
+  require_same_parameter_count: true
+  require_same_initialization_digest: true
+  require_same_optimizer_state_signature: true
+  require_same_data_cursor: true
+  require_same_token_exposure: true
+backend_gates:
+  fp32_full_chunk_relative_l2_max: 1.0e-5
+  fp32_full_chunk_max_abs_max: 1.0e-5
+  bf16_fp32_relative_l2_max: 7.0e-3
+  gradient_norm_min: 1.0e-8
+  gradient_norm_max: 1.0e3
+  state_clone_no_alias: true
+  compile_graph_breaks_max: 0
+  fallback_count_main_max: 0
+data:
+  tokenizer_manifest_required: true
+  general_corpus_manifest_required: true
+  transaction_generator_version: v8.1
+  operations: [PRESERVE, ADD, INVALIDATE, SUPERSEDE, ADD_EXCEPTION]
+  updates: [1, 4, 8]
+  gaps: [0, 256, 1024, 3072]
+  query_types: [current_state, derived_action, stale_probe, unaffected_retention]
+  require_split_disjointness: true
+  require_duplicate_audit: true
+  require_answer_leakage_audit: true
+  forbid_operation_label_in_input: true
+  forbid_gate_label_in_input: true
+  forbid_exact_address_mask_in_input: true
+gate_population:
+  generation_seed: 260001
+  namespace: e26a_gate_population_v1
+  splits: [train, validation, main_test, heldout_domain]
+  domains: [access_control, api_configuration, workflow, versioned_preference]
+  items_per_operation_per_split: 100
+  distractor_units: 1
+  generation_before_main: true
+  population_hash_required: true
+floor_gate:
+  pilot_tokens_max: 20000000
+  exact_minus_stale_score_min_each_primary_operation: 0.10
+  general_ppl_must_be_finite: true
+  max_gate_saturation_fraction: 0.99
+  state_norm_finite: true
+throughput:
+  warmup_steps: 20
+  measured_steps: 100
+  main_token_budget_candidates: [250000000, 300000000, 400000000, 500000000]
+  deadline_fraction_max: 0.70
+  safety_time_multiplier: 1.25
+go_requires_all_gates: true
+registered_dispositions:
+  - GO_E26B
+  - NO_GO_NUMERICAL
+  - NO_GO_DATA
+  - NO_GO_MATCHING
+  - NO_GO_FLOOR_HEADROOM
+  - NO_GO_THROUGHPUT
+  - BLOCKED_DEPENDENCY
