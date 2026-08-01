@@ -188,7 +188,7 @@ def test_schedule_probe_enforces_locked_80_20_tolerance() -> None:
                 "sequence_length": 4_096,
                 "target_general_fraction": 0.8,
                 "target_transaction_fraction": 0.2,
-            }
+            },
         },
     }
     _validate_schedule_probe(schedule, "probe")
