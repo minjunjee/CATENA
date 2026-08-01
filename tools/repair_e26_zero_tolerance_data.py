@@ -27,6 +27,7 @@ from catena.lm.tokenizer import ExternalScientificTokenizer
 from catena.lm.zero_tolerance_repair import (
     BLOCKED_CAPACITY,
     BLOCKED_PROVENANCE,
+    REQUIRED_STAGE2_BASE_COMMIT,
     ZERO_FLAGS,
     RepairCapacityError,
     RepairProvenanceError,
@@ -327,6 +328,73 @@ GPU preflight와 scientific E26a는 실행하지 않았다.
     return path
 
 
+def _write_blocked_report(
+    root: Path,
+    *,
+    disposition: str,
+    error: BaseException,
+    implementation_defect: bool,
+) -> Path:
+    """Record a fail-closed repair outcome without altering the frozen Stage-2 result."""
+
+    text = f"""# E26 zero-tolerance data repair 결과
+
+## 판정
+
+```text
+execution_status: BLOCKED
+disposition: {disposition}
+scientific_data_readiness_v3: NOT_CREATED
+gpu_preflight_started: false
+scientific_e26a_started: false
+implementation_defect: {str(implementation_defect).lower()}
+```
+
+Stage-2 원본 `BLOCKED_DATA_SOURCE`와 `FAIL_PENDING_MANUAL_AUDIT`는 변경하지
+않았다. Prospective zero-tolerance R1은 fail-closed했으며 부분 namespace를
+진단 가능하도록 보존했다.
+
+```text
+error_type: {type(error).__name__}
+error: {error}
+```
+
+이 결과는 repaired-data readiness, GPU preflight 또는 E26a 실행 권한을 열지
+않는다.
+"""
+    path = root / "E26_ZERO_TOLERANCE_DATA_REPAIR_REPORT_KO.md"
+    path.write_text(text, encoding="utf-8")
+    return path
+
+
+def _record_blocked_terminal(
+    root: Path | None,
+    *,
+    disposition: str,
+    error: BaseException,
+    implementation_defect: bool,
+) -> None:
+    if root is None or not root.is_dir() or (root / "terminal_status.json").exists():
+        return
+    report = _write_blocked_report(
+        root,
+        disposition=disposition,
+        error=error,
+        implementation_defect=implementation_defect,
+    )
+    write_terminal_status(
+        root / "terminal_status.json",
+        disposition=disposition,
+        detail={
+            "error_type": type(error).__name__,
+            "error": str(error),
+            "implementation_defect": implementation_defect,
+            "report": str(report),
+            "report_sha256": sha256_file(report),
+        },
+    )
+
+
 def run(config_path: str | Path, repo_root: str | Path) -> Path:
     protocol_path, protocol, protocol_sha = load_repair_protocol(config_path)
     bindings = validate_original_bindings(protocol)
@@ -354,6 +422,8 @@ def run(config_path: str | Path, repo_root: str | Path) -> Path:
     source_receipt = build_repair_source_receipt(repo_root)
     if source_receipt["git_branch"] != protocol["repository"]["branch"]:
         raise RepairProvenanceError("Repair executed from the wrong Git branch")
+    if protocol["repository"]["required_stage2_base_commit"] != REQUIRED_STAGE2_BASE_COMMIT:
+        raise RepairProvenanceError("Protocol Stage-2 base commit changed")
     source_receipt_path = root / "repair_source_receipt.json"
     write_json_strict(source_receipt_path, source_receipt)
 
@@ -598,26 +668,34 @@ def main() -> int:
         root = derived_data_root(protocol, protocol_sha)
         output = run(args.config, args.repo_root)
     except RepairCapacityError as error:
-        if root is not None and root.is_dir() and not (root / "terminal_status.json").exists():
-            write_terminal_status(
-                root / "terminal_status.json",
-                disposition=BLOCKED_CAPACITY,
-                detail={"error": str(error)},
-            )
+        _record_blocked_terminal(
+            root,
+            disposition=BLOCKED_CAPACITY,
+            error=error,
+            implementation_defect=False,
+        )
         print(f"E26 zero-tolerance repair: {BLOCKED_CAPACITY}: {error}", file=sys.stderr)
         return 2
     except RepairProvenanceError as error:
-        if root is not None and root.is_dir() and not (root / "terminal_status.json").exists():
-            write_terminal_status(
-                root / "terminal_status.json",
-                disposition=BLOCKED_PROVENANCE,
-                detail={"error": str(error)},
-            )
+        _record_blocked_terminal(
+            root,
+            disposition=BLOCKED_PROVENANCE,
+            error=error,
+            implementation_defect=False,
+        )
         print(f"E26 zero-tolerance repair: {BLOCKED_PROVENANCE}: {error}", file=sys.stderr)
         return 3
-    except Exception:
-        # Preserve the partial namespace, but do not mislabel implementation
-        # defects as a registered scientific disposition.
+    except Exception as error:
+        # An implementation failure cannot create readiness.  Record it under
+        # the preregistered fail-closed provenance disposition and retain its
+        # distinct implementation-defect marker for amendment handling.
+        if not isinstance(error, FileExistsError):
+            _record_blocked_terminal(
+                root,
+                disposition=BLOCKED_PROVENANCE,
+                error=error,
+                implementation_defect=True,
+            )
         traceback.print_exc()
         return 4
     print(f"E26 zero-tolerance repair: {ZERO_FLAGS} ({output})")

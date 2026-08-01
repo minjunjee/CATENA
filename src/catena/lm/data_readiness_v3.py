@@ -18,10 +18,12 @@ from .frozen_invariance import verify_frozen_artifacts
 from .general_corpus import load_scientific_corpus_manifest
 from .tokenizer import load_scientific_tokenizer_manifest
 from .zero_tolerance_repair import (
+    PROTECTED_SPLITS,
     ZERO_FLAGS,
     RepairProvenanceError,
     _expected_detector_contract,
     _validate_detector_payload,
+    load_initial_exclusions,
     load_repair_protocol,
     validate_original_bindings,
     validate_repair_source_receipt,
@@ -98,6 +100,53 @@ def _selected_hashes(document_manifest: Path) -> tuple[str, ...]:
     return tuple(rows)
 
 
+def _audit_train_additions(audit: Mapping[str, Any]) -> tuple[str, ...]:
+    rows = audit.get("flagged_pairs")
+    if not isinstance(rows, list) or len(rows) != audit.get("flagged_pair_count"):
+        raise DataReadinessV3Error("Near-duplicate audit flag population is malformed")
+    protected = {item.value for item in PROTECTED_SPLITS}
+    additions: set[str] = set()
+    for row in rows:
+        if (
+            not isinstance(row, Mapping)
+            or row.get("left_split") not in protected
+            or row.get("right_split") != ContentSplit.GENERAL_TRAIN.value
+            or not isinstance(row.get("right_sha256"), str)
+        ):
+            raise DataReadinessV3Error("Near-duplicate flag lacks one removable train side")
+        additions.add(str(row["right_sha256"]))
+    return tuple(sorted(additions))
+
+
+def _validate_schedule_probe(schedule: Mapping[str, Any], field: str) -> None:
+    probe = schedule.get(field)
+    if not isinstance(probe, Mapping):
+        raise DataReadinessV3Error(f"Paired schedule lacks {field}")
+    snapshot = probe.get("cursor_snapshot")
+    if not isinstance(snapshot, Mapping):
+        raise DataReadinessV3Error(f"Paired schedule {field} lacks cursor snapshot")
+    general_tokens = snapshot.get("general_unpadded_tokens")
+    transaction_tokens = snapshot.get("transaction_unpadded_tokens")
+    sequence_length = snapshot.get("sequence_length")
+    if (
+        isinstance(general_tokens, bool)
+        or not isinstance(general_tokens, int)
+        or isinstance(transaction_tokens, bool)
+        or not isinstance(transaction_tokens, int)
+        or isinstance(sequence_length, bool)
+        or not isinstance(sequence_length, int)
+        or general_tokens <= 0
+        or transaction_tokens <= 0
+        or sequence_length != schedule.get("sequence_length")
+        or snapshot.get("cursor_algorithm") != schedule.get("algorithm")
+        or snapshot.get("target_general_fraction") != schedule.get("target_general_fraction")
+        or snapshot.get("target_transaction_fraction")
+        != schedule.get("target_transaction_fraction")
+        or abs(4 * transaction_tokens - general_tokens) > 4 * sequence_length
+    ):
+        raise DataReadinessV3Error(f"Paired schedule {field} violates locked 80:20 bound")
+
+
 def validate_zero_tolerance_data_bundle(
     *,
     data_lock_path: str | Path,
@@ -129,6 +178,10 @@ def validate_zero_tolerance_data_bundle(
         or original_stage2.get("preserved") is not True
     ):
         raise DataReadinessV3Error("Original Stage-2 boundary was not preserved")
+    if Path(str(original_stage2.get("audit_path", ""))).resolve(strict=True) != original[
+        "corrected_audit"
+    ] or original_stage2.get("audit_sha256") != sha256_file(original["corrected_audit"]):
+        raise DataReadinessV3Error("Repair receipt does not bind the frozen blocked audit")
     if repair.get("gpu_preflight_started") is not False:
         raise DataReadinessV3Error("GPU preflight started before repaired-data readiness")
     if repair.get("scientific_e26a_started") is not False:
@@ -181,6 +234,29 @@ def validate_zero_tolerance_data_bundle(
         raise DataReadinessV3Error("Exclusion policy changed")
     if exclusion.get("human_labels_used") is not False:
         raise DataReadinessV3Error("Human/model semantic labels entered zero-tolerance repair")
+    try:
+        locked_initial, locked_graph, locked_flags = load_initial_exclusions(
+            original["corrected_audit"], protocol=protocol
+        )
+    except RepairProvenanceError as error:
+        raise DataReadinessV3Error(str(error)) from error
+    exclusion_rows = exclusion.get("exclusions")
+    if not isinstance(exclusion_rows, list):
+        raise DataReadinessV3Error("Initial exclusion manifest lacks rows")
+    observed_initial = tuple(
+        sorted(
+            str(row["content_sha256"])
+            for row in exclusion_rows
+            if isinstance(row, Mapping) and isinstance(row.get("content_sha256"), str)
+        )
+    )
+    if (
+        observed_initial != locked_initial
+        or len(exclusion_rows) != len(locked_initial)
+        or exclusion.get("flagged_pair_count") != len(locked_flags)
+        or exclusion.get("graph") != locked_graph
+    ):
+        raise DataReadinessV3Error("Initial exclusions differ from the frozen 541-pair audit")
     expected = protocol.get("outcome_independent_diagnostic_expectations")
     if not isinstance(expected, Mapping):
         raise DataReadinessV3Error("Protocol lacks diagnostic expectations")
@@ -216,6 +292,7 @@ def validate_zero_tolerance_data_bundle(
 
     if audit.get("pass") is not True or audit.get("flagged_pair_count") != 0:
         raise DataReadinessV3Error("Final protected-train near-duplicate audit is not zero")
+    _validate_internal_hash(audit, "audit_sha256", "final near-duplicate audit")
     if audit.get("flagged_pair_policy") != "FAIL_PENDING_MANUAL_AUDIT":
         raise DataReadinessV3Error("Registered detector output policy was relabelled")
     try:
@@ -251,6 +328,16 @@ def validate_zero_tolerance_data_bundle(
     for expected_iteration, row in enumerate(round_rows, start=1):
         if not isinstance(row, Mapping) or row.get("iteration") != expected_iteration:
             raise DataReadinessV3Error("Repair round order changed")
+        _, round_dedup, _ = _read_bound(row["dedup_receipt"], "round_dedup_receipt")
+        _, round_audit, round_audit_hash = _read_bound(row["audit"], "round_audit")
+        _validate_internal_hash(round_audit, "audit_sha256", "round audit")
+        try:
+            _validate_detector_payload(round_audit, _expected_detector_contract(protocol))
+        except RepairProvenanceError as error:
+            raise DataReadinessV3Error(str(error)) from error
+        if round_dedup.get("exclusion_sha256") != sha256_canonical_json(sorted(reconstructed)):
+            raise DataReadinessV3Error("Repair round index binds another exclusion set")
+        audit_additions = _audit_train_additions(round_audit)
         _, ledger, _ = _read_bound(row["round_ledger"], "round_ledger")
         _validate_internal_hash(ledger, "round_sha256", "round ledger")
         if ledger.get("input_exclusion_count") != len(reconstructed) or ledger.get(
@@ -262,6 +349,17 @@ def validate_zero_tolerance_data_bundle(
             not isinstance(value, str) for value in additions
         ):
             raise DataReadinessV3Error("Repair round additions are malformed")
+        ledger_audit = ledger.get("audit")
+        if (
+            tuple(additions) != audit_additions
+            or not isinstance(ledger_audit, Mapping)
+            or Path(str(ledger_audit.get("path", ""))).resolve(strict=True)
+            != Path(str(row["audit"]["path"])).resolve(strict=True)
+            or ledger_audit.get("sha256") != round_audit_hash
+            or ledger_audit.get("internal_audit_sha256") != round_audit.get("audit_sha256")
+            or ledger_audit.get("flagged_pair_count") != round_audit.get("flagged_pair_count")
+        ):
+            raise DataReadinessV3Error("Repair round ledger differs from its bound audit")
         reconstructed.update(additions)
     if reconstructed != final_exclusions:
         raise DataReadinessV3Error("Final exclusions do not replay from round ledgers")
@@ -335,6 +433,37 @@ def validate_zero_tolerance_data_bundle(
     ):
         raise DataReadinessV3Error("Repaired train document manifest differs from lock")
 
+    _validate_internal_hash(schedule, "manifest_sha256", "paired schedule")
+    frozen_schedule = read_json_object_strict(original["paired_schedule"])
+    _validate_internal_hash(frozen_schedule, "manifest_sha256", "frozen V1 paired schedule")
+    schedule_contract = (
+        "algorithm",
+        "transaction_packing",
+        "seed",
+        "sequence_length",
+        "target_general_fraction",
+        "target_transaction_fraction",
+        "mix_validation",
+        "tokenizer_manifest_sha256",
+    )
+    for field in schedule_contract:
+        if schedule.get(field) != frozen_schedule.get(field):
+            raise DataReadinessV3Error(f"Paired schedule contract changed: {field}")
+    locked_schedule_values: dict[str, Any] = {
+        "algorithm": "token_balanced_complete_example_80_20_v2",
+        "transaction_packing": "COMPLETE_EXAMPLES_NO_TRUNCATION_V2",
+        "seed": 260_026,
+        "sequence_length": 4_096,
+        "target_general_fraction": 0.8,
+        "target_transaction_fraction": 0.2,
+        "mix_validation": "ABS_4T_MINUS_G_LE_4_TIMES_SEQUENCE_LENGTH",
+        "tokenizer_manifest_sha256": sha256_file(original["tokenizer_manifest"]),
+    }
+    for field, value in locked_schedule_values.items():
+        if schedule.get(field) != value:
+            raise DataReadinessV3Error(f"Paired schedule violates locked value: {field}")
+    _validate_schedule_probe(schedule, "first_probe")
+    _validate_schedule_probe(schedule, "post_resume_probe")
     if schedule.get("train_corpus_manifest_sha256") != train.get("manifest_sha256"):
         raise DataReadinessV3Error("Paired schedule is not bound to repaired train corpus")
     for field in (

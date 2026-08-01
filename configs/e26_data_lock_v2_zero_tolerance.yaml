@@ -132,6 +132,7 @@ output:
 repository:
   repair_worktree: /home/minjun_dev/CATENA_E26_STAGE3
   branch: exp/e26-zero-tolerance-repair
+  required_stage2_base_commit: 55975897b441891312e977ce3734c6b9d2e3c36e
   require_clean_commit: true
   frozen_artifact_lock:
     path: /home/minjun_dev/CATENA_E26_STAGE3/docs/E26_FROZEN_E00_E25_ARTIFACT_LOCK.json

@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
 import yaml
 
 from catena.core.provenance_v61 import read_json_object_strict
@@ -17,6 +18,7 @@ from catena.lm.data_lock import (
     split_for_bucket,
     write_near_duplicate_audit,
 )
+from catena.lm.data_readiness_v3 import DataReadinessV3Error, _validate_schedule_probe
 from catena.lm.zero_tolerance_repair import (
     BLOCKED_CAPACITY,
     BLOCKED_PROVENANCE,
@@ -164,8 +166,35 @@ def test_protocol_keeps_original_block_and_only_registered_terminals() -> None:
     assert config["repair"]["human_adjudication_required"] is False
     assert config["source"]["train_selection_order"] == "CONTENT_SHA256_ASCENDING"
     assert config["source"]["additional_shard_download_allowed"] is False
+    assert (
+        config["repository"]["required_stage2_base_commit"]
+        == "55975897b441891312e977ce3734c6b9d2e3c36e"
+    )
     assert {ZERO_FLAGS, BLOCKED_CAPACITY, BLOCKED_PROVENANCE} == TERMINAL_DISPOSITIONS
     assert set(config["repair"]["terminal_dispositions"]) == TERMINAL_DISPOSITIONS
+
+
+def test_schedule_probe_enforces_locked_80_20_tolerance() -> None:
+    schedule = {
+        "algorithm": "token_balanced_complete_example_80_20_v2",
+        "sequence_length": 4_096,
+        "target_general_fraction": 0.8,
+        "target_transaction_fraction": 0.2,
+        "probe": {
+            "cursor_snapshot": {
+                "cursor_algorithm": "token_balanced_complete_example_80_20_v2",
+                "general_unpadded_tokens": 800_000,
+                "transaction_unpadded_tokens": 200_000,
+                "sequence_length": 4_096,
+                "target_general_fraction": 0.8,
+                "target_transaction_fraction": 0.2,
+            }
+        },
+    }
+    _validate_schedule_probe(schedule, "probe")
+    schedule["probe"]["cursor_snapshot"]["transaction_unpadded_tokens"] = 150_000
+    with pytest.raises(DataReadinessV3Error, match="80:20"):
+        _validate_schedule_probe(schedule, "probe")
 
 
 def test_new_readiness_and_repair_schemas_are_valid_json() -> None:

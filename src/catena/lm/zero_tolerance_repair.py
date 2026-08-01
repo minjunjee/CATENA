@@ -47,6 +47,7 @@ ZERO_FLAGS = "ZERO_PROTECTED_TRAIN_FLAGS"
 BLOCKED_CAPACITY = "BLOCKED_SOURCE_CAPACITY"
 BLOCKED_PROVENANCE = "BLOCKED_PROVENANCE"
 TERMINAL_DISPOSITIONS = frozenset({ZERO_FLAGS, BLOCKED_CAPACITY, BLOCKED_PROVENANCE})
+REQUIRED_STAGE2_BASE_COMMIT = "55975897b441891312e977ce3734c6b9d2e3c36e"
 PROTECTED_SPLITS = (
     ContentSplit.TOKENIZER_ONLY,
     ContentSplit.GENERAL_VALIDATION,
@@ -704,6 +705,22 @@ def build_repair_source_receipt(repo_root: str | Path) -> dict[str, Any]:
     ).stdout.strip()
     if status:
         raise RepairProvenanceError("Repair source worktree must be clean and committed")
+    ancestry = subprocess.run(
+        (
+            "git",
+            "-C",
+            str(root),
+            "merge-base",
+            "--is-ancestor",
+            REQUIRED_STAGE2_BASE_COMMIT,
+            head,
+        ),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if ancestry.returncode != 0:
+        raise RepairProvenanceError("Repair branch does not descend from the locked Stage-2 base")
     files: list[dict[str, Any]] = []
     for relative in REPAIR_SOURCE_FILES:
         path = (root / relative).resolve(strict=True)
@@ -730,6 +747,8 @@ def build_repair_source_receipt(repo_root: str | Path) -> dict[str, Any]:
         "repo_root": str(root),
         "git_head": head,
         "git_branch": branch,
+        "required_stage2_base_commit": REQUIRED_STAGE2_BASE_COMMIT,
+        "required_stage2_base_is_ancestor": True,
         "git_clean": True,
         "builder_files": files,
         "builder_source_sha256": sha256_canonical_json(files),
@@ -752,6 +771,11 @@ def validate_repair_source_receipt(payload: Mapping[str, Any]) -> None:
         raise RepairProvenanceError("Repair source receipt schema changed")
     if payload.get("git_clean") is not True:
         raise RepairProvenanceError("Repair source receipt was not generated from a clean tree")
+    if (
+        payload.get("required_stage2_base_commit") != REQUIRED_STAGE2_BASE_COMMIT
+        or payload.get("required_stage2_base_is_ancestor") is not True
+    ):
+        raise RepairProvenanceError("Repair source receipt lacks Stage-2 ancestry")
     rows = payload.get("builder_files")
     if not isinstance(rows, list):
         raise RepairProvenanceError("Repair source receipt lacks builder files")
