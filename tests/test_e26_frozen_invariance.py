@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 from copy import deepcopy
 from pathlib import Path
 from typing import Any
@@ -15,7 +16,56 @@ from catena.lm.frozen_invariance import (
     build_frozen_invariance_receipt,
     validate_frozen_invariance_receipt,
     verify_frozen_artifacts,
+    verify_pre_e26_source,
 )
+
+
+def _git(root: Path, *arguments: str) -> str:
+    return subprocess.check_output(["git", *arguments], cwd=root, text=True).strip()
+
+
+def test_pre_e26_source_accepts_additive_descendant_but_not_base_blob_change(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init")
+    _git(repo, "config", "user.email", "catena-test@example.invalid")
+    _git(repo, "config", "user.name", "CATENA Test")
+    base_file = repo / "base.txt"
+    base_file.write_text("frozen\n", encoding="utf-8")
+    _git(repo, "add", "base.txt")
+    _git(repo, "commit", "-m", "base")
+    expected_head = _git(repo, "rev-parse", "HEAD")
+    base_bytes = base_file.read_bytes()
+    base_sha = hashlib.sha256(base_bytes).hexdigest()
+    aggregate = _row_aggregate([{"path": "base.txt", "bytes": len(base_bytes), "sha256": base_sha}])
+
+    (repo / "additive.txt").write_text("new\n", encoding="utf-8")
+    _git(repo, "add", "additive.txt")
+    _git(repo, "commit", "-m", "additive descendant")
+    additive = verify_pre_e26_source(
+        live_repo=repo,
+        expected_head=expected_head,
+        expected_file_count=1,
+        expected_aggregate_sha256=aggregate,
+    )
+    assert additive["passed"] is True
+    assert additive["head_matches"] is False
+    assert additive["expected_head_is_ancestor"] is True
+    assert additive["verification_mode"] == "ANCESTOR_COMMIT_BASE_BLOBS_BYTE_IDENTICAL"
+
+    base_file.write_text("changed\n", encoding="utf-8")
+    _git(repo, "add", "base.txt")
+    _git(repo, "commit", "-m", "change frozen blob")
+    changed = verify_pre_e26_source(
+        live_repo=repo,
+        expected_head=expected_head,
+        expected_file_count=1,
+        expected_aggregate_sha256=aggregate,
+    )
+    assert changed["passed"] is False
+    assert changed["changed"] == ["base.txt"]
 
 
 def test_structured_frozen_receipt_requires_live_source_and_all_2062_artifacts(
@@ -29,6 +79,8 @@ def test_structured_frozen_receipt_requires_live_source_and_all_2062_artifacts(
         "expected_head": "a" * 40,
         "observed_head": "a" * 40,
         "head_matches": True,
+        "expected_head_is_ancestor": True,
+        "verification_mode": "ANCESTOR_COMMIT_BASE_BLOBS_BYTE_IDENTICAL",
         "git_clean": True,
         "registered_file_count": 556,
         "expected_files": 556,

@@ -31,6 +31,8 @@
         "expected_head",
         "observed_head",
         "head_matches",
+        "expected_head_is_ancestor",
+        "verification_mode",
         "git_clean",
         "registered_file_count",
         "expected_files",
@@ -40,7 +42,13 @@
         "missing",
         "changed",
         "passed"
-      ]
+      ],
+      "properties": {
+        "expected_head_is_ancestor": {"const": true},
+        "verification_mode": {
+          "const": "ANCESTOR_COMMIT_BASE_BLOBS_BYTE_IDENTICAL"
+        }
+      }
     },
     "frozen_artifacts": {
       "type": "object",

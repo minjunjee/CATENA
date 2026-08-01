@@ -48,6 +48,22 @@ def _git(root: Path, *arguments: str) -> str:
         ) from error
 
 
+def _git_is_ancestor(root: Path, ancestor: str, descendant: str) -> bool:
+    result = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", ancestor, descendant],
+        cwd=root,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.PIPE,
+        text=True,
+        check=False,
+    )
+    if result.returncode not in (0, 1):
+        raise FrozenInvarianceError(
+            f"Cannot verify frozen source ancestry: {result.stderr.strip()}"
+        )
+    return result.returncode == 0
+
+
 def _base_entries(root: Path, base_commit: str) -> list[tuple[str, str]]:
     output = _git(root, "ls-tree", "-r", base_commit)
     entries: list[tuple[str, str]] = []
@@ -119,10 +135,11 @@ def verify_pre_e26_source(
             changed.append(relative)
     clean = status == ""
     head_matches = observed_head == expected_head
+    expected_head_is_ancestor = _git_is_ancestor(root, expected_head, observed_head)
     aggregate = _row_aggregate(rows)
     passed = (
         clean
-        and head_matches
+        and expected_head_is_ancestor
         and not missing
         and not changed
         and len(entries) == expected_file_count
@@ -134,6 +151,8 @@ def verify_pre_e26_source(
         "expected_head": expected_head,
         "observed_head": observed_head,
         "head_matches": head_matches,
+        "expected_head_is_ancestor": expected_head_is_ancestor,
+        "verification_mode": "ANCESTOR_COMMIT_BASE_BLOBS_BYTE_IDENTICAL",
         "git_clean": clean,
         "git_status_porcelain": status,
         "expected_files": len(entries),
