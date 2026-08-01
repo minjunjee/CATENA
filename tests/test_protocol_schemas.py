@@ -6,7 +6,10 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 V8_CONFIG_PREFIXES = ("e26", "e27", "e28", "e29", "e30")
-NON_EXPERIMENT_CONFIG_NAMES = {"e26_data_lock_v1.yaml"}
+NON_EXPERIMENT_CONFIG_NAMES = {
+    "e26_data_lock_v1.yaml",
+    "e26_data_lock_v2_zero_tolerance.yaml",
+}
 PACKET_SCHEMA_NAMES = {
     "backend_candidate_lock.schema.json",
     "backend_manifest.schema.json",
@@ -23,6 +26,8 @@ SCIENTIFIC_DATA_SCHEMA_NAMES = {
     "e26_frozen_invariance_receipt.schema.json",
     "e26_resource_preflight_receipt.schema.json",
     "e26a_validation_population_lock.schema.json",
+    "e26_scientific_data_readiness_v3.schema.json",
+    "e26_zero_tolerance_repair_receipt.schema.json",
     "general_corpus_manifest.schema.json",
     "scientific_data_readiness.schema.json",
     "scientific_data_readiness_v2.schema.json",

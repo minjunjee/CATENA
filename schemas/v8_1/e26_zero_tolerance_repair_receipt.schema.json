@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://catena.local/schemas/v8.1/e26_zero_tolerance_repair_receipt.schema.json",
+  "title": "CATENA E26 Zero-Tolerance Data Repair R1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "manifest_type",
+    "scientific_evidence",
+    "evidence_tier",
+    "claim_ceiling",
+    "disposition",
+    "policy",
+    "human_labels_used",
+    "protocol_sha256",
+    "original_stage2",
+    "exclusion_manifest",
+    "final_exclusion_count",
+    "final_exclusions",
+    "final_exclusion_sha256",
+    "rounds",
+    "final",
+    "gpu_preflight_started",
+    "scientific_e26a_started",
+    "repair_receipt_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "catena-e26-zero-tolerance-repair-v1"
+    },
+    "manifest_type": {
+      "const": "E26_ZERO_TOLERANCE_DATA_REPAIR_R1"
+    },
+    "scientific_evidence": {
+      "const": false
+    },
+    "evidence_tier": {
+      "const": "SCIENTIFIC_INPUT_PROVENANCE"
+    },
+    "claim_ceiling": {
+      "const": "PROTOCOL_IDENTIFIABILITY_ONLY"
+    },
+    "disposition": {
+      "enum": [
+        "ZERO_PROTECTED_TRAIN_FLAGS",
+        "BLOCKED_SOURCE_CAPACITY",
+        "BLOCKED_PROVENANCE"
+      ]
+    },
+    "policy": {
+      "const": "EXCLUDE_ALL_FLAGGED_TRAIN_DOCUMENTS"
+    },
+    "human_labels_used": {
+      "const": false
+    },
+    "gpu_preflight_started": {
+      "const": false
+    },
+    "scientific_e26a_started": {
+      "const": false
+    },
+    "repair_receipt_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

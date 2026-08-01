@@ -1,0 +1,145 @@
+schema_version: catena-e26-data-lock-v2-zero-tolerance
+status: PROSPECTIVE_PRE_REPAIR_LOCK
+scientific_evidence: false
+claim_ceiling: SCIENTIFIC_INPUT_PROVENANCE_ONLY
+
+repair:
+  id: E26_DATA_REPAIR_R1
+  policy: EXCLUDE_ALL_FLAGGED_TRAIN_DOCUMENTS
+  outcome_independent: true
+  human_adjudication_required: false
+  original_stage2_disposition: BLOCKED_DATA_SOURCE
+  original_policy: FAIL_PENDING_MANUAL_AUDIT
+  preserve_original_disposition: true
+  monotonic_exclusion: true
+  protected_splits_immutable:
+    - tokenizer_only
+    - general_validation
+    - general_test
+  removable_split: general_train
+  terminal_dispositions:
+    - ZERO_PROTECTED_TRAIN_FLAGS
+    - BLOCKED_SOURCE_CAPACITY
+    - BLOCKED_PROVENANCE
+
+original_inputs:
+  data_lock:
+    path: /home/minjun_dev/CATENA/configs/e26_data_lock_v1.yaml
+    sha256: 4b80aa7c620d51eca8f59f4d06756daa0006ed3ae62b1b61420d2be4543c25e2
+  data_root: /data/minjun_dev/CATENA/e26_data_v1
+  corrected_audit:
+    path: /data/minjun_dev/CATENA/e26_data_v1/near_duplicate/build_v1_expansion1/near_duplicate_audit.json
+    sha256: 9bfe3c84df9368955b97ec6285db01450dff912cecd9f2f3334a7b8ced18f17a
+    internal_audit_sha256: 37e5616ab414c9e018ef46dcf8b6d77b927de222ba38f1e86ac7ffdfd8c5fb35
+    flagged_pair_count: 541
+    strata_counts:
+      general_test__general_train: 75
+      general_validation__general_train: 82
+      tokenizer_only__general_train: 384
+  document_index:
+    path: /data/minjun_dev/CATENA/e26_data_v1/document_index/expansion1/documents.sqlite3
+    sha256: 6f835450270811b0c08dd70df285fa5b64f99598bfc341aa69d389e7377c8f0a
+  dedup_receipt:
+    path: /data/minjun_dev/CATENA/e26_data_v1/document_index/expansion1/dedup_receipt.json
+    sha256: 8b69579d93e76b0184dec5b0b3cac818384e1c1627378af86eae2a1c439e6dca
+  download_receipt:
+    path: /data/minjun_dev/CATENA/e26_data_v1/source_manifest/expansion1/fineweb_download_receipt.json
+    sha256: ed0044dfcdac39e864130b3caa2285c254931925ca69a4b67ffb599811fbb4a6
+  source_inventory:
+    path: /data/minjun_dev/CATENA/e26_data_v1/source_manifest/expansion1/fineweb_inventory.json
+    sha256: 990bb95b7ed09913bd22e6a2d81cc42ed785edb86a4163060d8d43166e825753
+  source_metadata:
+    path: /data/minjun_dev/CATENA/e26_data_v1/source_manifest/metadata_v1_repair/metadata_receipt.json
+    sha256: 320fc9ebf5dabbcfd52dcccea2ee1a2c6d99a81eabb2c8a8ef548770b389c1fb
+  tokenizer_manifest:
+    path: /data/minjun_dev/CATENA/e26_data_v1/tokenizer/build_v1_expansion1/canonical/tokenizer_manifest.json
+    sha256: 9822e13d8cbbef4c3f3fac4d03674dcde4f6454832a05e23559ed43532cef40d
+  tokenizer_replay:
+    path: /data/minjun_dev/CATENA/e26_data_v1/tokenizer/build_v2_expansion1/tokenizer_replay_receipt.json
+    sha256: 9056cc3b79241a3f54c30b6a6303c4181ce45753fcd7ba08e01a3ee030037de8
+  general_memmap_receipt:
+    path: /data/minjun_dev/CATENA/e26_data_v1/general/build_v1_expansion1/general_memmaps_receipt.json
+    sha256: c6842c9ed5bca87ce305e9784b5fb45c35826a1defb8dc8556c0f012770ff5e6
+  transaction_manifest:
+    path: /data/minjun_dev/CATENA/e26_data_v1/transaction/build_v2_isolated/transaction_replay_manifest.json
+    sha256: 71849b23f58da7fbaf4c1e835e7f33cb2b5f12d03a8c038a445dbe51d51449e6
+  paired_schedule:
+    path: /data/minjun_dev/CATENA/e26_data_v1/schedule/build_v4_isolated/paired_schedule_manifest.json
+    sha256: 19d04449aa5fd0c1f5f675fe3768ca7ceef98c79908b6d5d4c0ceeeaf735b8f5
+
+source:
+  dataset_id: HuggingFaceFW/fineweb-edu
+  subset: sample-10BT
+  revision: 87f09149ef4734204d70ed1d046ddc9ca3f2b8f9
+  selected_indices: [0, 2, 4, 9, 13]
+  exact_dedup_identity: SHA256_NORMALIZED_UTF8_TEXT
+  duplicate_representative: FIRST_CANONICAL_SHARD_ROW
+  ingestion_order: CANONICAL_SHARD_ROW
+  train_selection_order: CONTENT_SHA256_ASCENDING
+  backfill_policy: NEXT_ELIGIBLE_CONTENT_SHA256
+  additional_shard_download_allowed: false
+
+detector:
+  algorithm: SHA256_PERMUTED_MINHASH_V1
+  normalization: LOWERCASE_NFC_WHITESPACE_TOKENS
+  shingle_width_words: 5
+  permutations: 128
+  field_prime: 4294967291
+  shingle_hash: SHA256_PREFIX_64_BIG_ENDIAN
+  field_reduction: SHINGLE_HASH_MOD_FIELD_BEFORE_AFFINE_PERMUTATION
+  bands: 32
+  rows_per_band: 4
+  seed: 260026
+  estimated_jaccard_flag_threshold: 0.80
+  candidate_generation: ASYMMETRIC_PROTECTED_INDEX_STREAMED_TRAIN_LSH_32X4
+
+capacity:
+  general_train_tokens_min: 400000000
+  general_validation_tokens_min: 5000000
+  general_test_tokens_min: 5000000
+  whole_document_overshoot: true
+  tokenizer_unchanged: true
+  protected_memmaps_must_be_byte_identical: true
+
+outcome_independent_diagnostic_expectations:
+  exclusion_count: 541
+  exclusion_sorted_json_sha256: a58d34f2128df09c61e68e1522582930fe505021194103fac4db96e1a4518ed2
+  excluded_normalized_utf8_bytes: 3892332
+  excluded_locked_content_tokens: 949498
+  excluded_raw_boundary_sha256: e5d28deb8ea79e55ecc53e86f8778b48b2e56780490424a17bb35137e5c59ee8
+  v1_selected_exclusion_count: 56
+  v1_selected_exclusion_tokens: 80318
+  v1_selected_exclusion_rows_sha256: 2a5948eee6e325594fcf9678376f7705d8e9055d93bc3a52587607fd92657f11
+  backfill_document_count: 82
+  repaired_train_token_count: 400000467
+  repaired_train_document_count: 359074
+  repaired_train_token_sha256: efc6f85b56328048e4f462addab34c973046ebf5ff3f3247852f32497b158f9c
+  repaired_train_documents_sha256: 57b30518d77ddc9ee87a13818ea8a5f0ea0600487d473afa7641e26c0acb9ffd
+  repaired_train_selection_sha256: 3d08c14e7dc610e47ab8d85e4e6336d0e3be6556b4e8d000a1a2ad0ac623855c
+
+iteration:
+  max_iterations: 8
+  new_flags_action: ADD_ALL_GENERAL_TRAIN_SIDES_TO_EXCLUSION_SET
+  rebuild_after_new_flags: true
+  stop_only_at_zero_flags: true
+
+output:
+  namespace_template: /data/minjun_dev/CATENA/e26_data_v2_zero_tolerance_<PROTOCOL_SHA_PREFIX>
+  protocol_sha_prefix_length: 12
+  overwrite_forbidden: true
+  readiness_schema: catena-e26-scientific-data-readiness-v3
+
+repository:
+  repair_worktree: /home/minjun_dev/CATENA_E26_STAGE3
+  branch: exp/e26-zero-tolerance-repair
+  require_clean_commit: true
+  frozen_artifact_lock:
+    path: /home/minjun_dev/CATENA_E26_STAGE3/docs/E26_FROZEN_E00_E25_ARTIFACT_LOCK.json
+    sha256: 3820d5d00b45a36e5bf207f962840bb3692d4b4be3ea9ffeaef0afe453a18423
+    file_count: 2062
+    aggregate_sha256: 46a779594c760fc1103833810bcc5227d7ca4526111911d7856cdfe2ff2d202b
+
+stop_policy:
+  execute_gpu_preflight: false
+  execute_scientific_e26a: false
+  execute_e26b_or_later: false

@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://catena.local/schemas/v8.1/e26_scientific_data_readiness_v3.schema.json",
+  "title": "CATENA E26 Scientific Data Readiness V3",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "manifest_type",
+    "scientific_evidence",
+    "evidence_tier",
+    "claim_ceiling",
+    "scientific_main_input_eligible",
+    "main_test_opened",
+    "repair_disposition",
+    "original_stage2_disposition",
+    "original_stage2_disposition_preserved",
+    "policy",
+    "human_labels_used",
+    "all_input_hashes_verified",
+    "near_duplicate_flagged_pair_count",
+    "split_collision_count",
+    "exact_duplicate_cross_split_count",
+    "gpu_preflight_started",
+    "scientific_e26a_started",
+    "readiness_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "catena-e26-scientific-data-readiness-v3"
+    },
+    "manifest_type": {
+      "const": "E26_SCIENTIFIC_DATA_READINESS_V3"
+    },
+    "scientific_evidence": {
+      "const": false
+    },
+    "evidence_tier": {
+      "const": "SCIENTIFIC_INPUT_PROVENANCE"
+    },
+    "claim_ceiling": {
+      "const": "PROTOCOL_IDENTIFIABILITY_ONLY"
+    },
+    "scientific_main_input_eligible": {
+      "const": true
+    },
+    "main_test_opened": {
+      "const": false
+    },
+    "repair_disposition": {
+      "const": "ZERO_PROTECTED_TRAIN_FLAGS"
+    },
+    "original_stage2_disposition": {
+      "const": "BLOCKED_DATA_SOURCE"
+    },
+    "original_stage2_disposition_preserved": {
+      "const": true
+    },
+    "policy": {
+      "const": "EXCLUDE_ALL_FLAGGED_TRAIN_DOCUMENTS"
+    },
+    "human_labels_used": {
+      "const": false
+    },
+    "all_input_hashes_verified": {
+      "const": true
+    },
+    "near_duplicate_flagged_pair_count": {
+      "const": 0
+    },
+    "split_collision_count": {
+      "const": 0
+    },
+    "exact_duplicate_cross_split_count": {
+      "const": 0
+    },
+    "gpu_preflight_started": {
+      "const": false
+    },
+    "scientific_e26a_started": {
+      "const": false
+    },
+    "readiness_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}
