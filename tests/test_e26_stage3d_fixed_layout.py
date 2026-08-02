@@ -26,6 +26,10 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = REPO_ROOT / "configs/e26_stage3d_fixed_layout_bf16_admissibility.yaml"
 VARIANTS = ("projected_tied_delta_lm", "dual_delta_lm")
 CONTEXTS = ("zero_state", "prefilled_state")
+FRESH_G3_BOUNDARY_RUN = Path(
+    "/data/minjun_dev/CATENA/artifacts/e26_stage3d_fixed_layout_bf16_admissibility/"
+    "20260802T144040.692630Z"
+)
 
 
 def _protocol(tmp_path: Path) -> tuple[dict[str, Any], Path]:
@@ -57,12 +61,46 @@ def _comparison(value: float = 0.0, *, passed: bool = True) -> dict[str, Any]:
     }
 
 
+def _g3_comparison(value: float = 0.0, *, passed: bool = True) -> dict[str, Any]:
+    return {
+        "logits": _error(value),
+        "runtime_state": _error(value),
+        "runtime_state_components": {
+            "recurrent": _error(value),
+            "attention_key": _error(value),
+            "attention_value": _error(value),
+        },
+        "state_metadata_exact": True,
+        "gradients": _error(value),
+        "gradients_worst_leaf": _error(value),
+        "tolerance": {"relative_l2_max": 0.007, "max_abs_max": None},
+        "passed": passed,
+    }
+
+
 def _g3(lock: dict[str, Any]) -> list[dict[str, Any]]:
     layouts = {row["candidate_id"]: row for row in lock["fixed_layouts"]}
     rows = []
     for candidate, layout in layouts.items():
         for variant in VARIANTS:
             for context in CONTEXTS:
+                layout_identity = {
+                    "physical_microbatch_sequences": int(layout["microbatch_sequences"]),
+                    "sequence_length": int(layout["context_length"]),
+                    "accumulation_steps": int(layout["accumulation_steps"]),
+                    "target_global_input_tokens": int(layout["target_global_input_tokens"]),
+                    "loss_denominator": (
+                        "TOTAL_VALID_NEXT_TOKEN_PREDICTIONS_ACROSS_FIXED_LAYOUT"
+                    ),
+                    "optimizer_update_boundary": "AFTER_EXACT_ACCUMULATION_STEPS",
+                    "autocast_scope": "CUDA_BF16_FORWARD_LOSS_ONLY",
+                    "gradient_clipping_order": "AFTER_ACCUMULATION_BEFORE_ADAMW",
+                    "initialization_matched": True,
+                    "parameter_surface_matched": True,
+                    "optimizer_state_shape_matched": True,
+                    "shape_contract_valid": True,
+                    "passed": True,
+                }
                 rows.append(
                     {
                         "candidate_id": candidate,
@@ -74,12 +112,21 @@ def _g3(lock: dict[str, Any]) -> list[dict[str, Any]]:
                         "optimizer_state_signature_sha256": "6" * 64,
                         "token_ids_sha256": "7" * 64,
                         "data_cursor_sha256": "8" * 64,
+                        "layout_identity": layout_identity,
                         "layout_identity_passed": True,
                         "comparisons": {
-                            "compiled_bf16_vs_reference_python_bf16": _comparison(),
-                            "reference_python_bf16_vs_reference_python_fp32": _comparison(),
+                            "compiled_bf16_vs_reference_python_bf16": _g3_comparison(),
+                            "reference_python_bf16_vs_reference_python_fp32": (
+                                _g3_comparison()
+                            ),
                         },
                         "gradient_finite": True,
+                        "gradient_norms": {
+                            "compiled_bf16": 1.0,
+                            "reference_python_bf16": 1.0,
+                            "reference_python_fp32": 1.0,
+                        },
+                        "gradient_norm_in_range": True,
                         "state_metadata_exact": True,
                         "clone_no_alias": True,
                         "graph_break_count": 0,
@@ -207,6 +254,47 @@ def test_fixed_layout_receipt_go_requires_exact_12_plus_6(tmp_path: Path) -> Non
         )
     )
     jsonschema.Draft202012Validator(schema).validate(receipt)
+
+
+def test_realistic_failed_g3_diagnostics_are_evaluable_and_schema_valid() -> None:
+    original_report_path = FRESH_G3_BOUNDARY_RUN / "report.json"
+    protocol_path = FRESH_G3_BOUNDARY_RUN / "protocol_lock.json"
+    original_report = json.loads(original_report_path.read_text(encoding="utf-8"))
+    protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
+    amended = build_stage3d_admissibility_receipt(
+        protocol_lock_path=protocol_path,
+        g3_cases=original_report["g3_cases"],
+        g4_replays=original_report["g4_replays"],
+        fp32_reference_binding=original_report["fp32_reference"],
+    )
+    assert amended["execution_status"] == "COMPLETED_NUMERICAL_EVALUATION"
+    assert amended["disposition"] == STAGE3D_BLOCKED
+    assert amended["gate_summary"]["g3_pass_count"] == 0
+    assert validate_stage3d_admissibility_receipt(amended, protocol_lock=protocol) == amended
+    schema = json.loads(
+        (REPO_ROOT / "schemas/v8_1/e26_stage3d_fixed_layout_receipt.schema.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    jsonschema.Draft202012Validator(schema).validate(amended)
+
+
+def test_g3_diagnostic_tampering_is_not_numerically_dispositioned() -> None:
+    original_report = json.loads(
+        (FRESH_G3_BOUNDARY_RUN / "report.json").read_text(encoding="utf-8")
+    )
+    protocol_path = FRESH_G3_BOUNDARY_RUN / "protocol_lock.json"
+    cases = deepcopy(original_report["g3_cases"])
+    comparison = cases[0]["comparisons"]["compiled_bf16_vs_reference_python_bf16"]
+    comparison["runtime_state_components"]["recurrent"]["relative_l2"] = 0.0
+    amended = build_stage3d_admissibility_receipt(
+        protocol_lock_path=protocol_path,
+        g3_cases=cases,
+        g4_replays=original_report["g4_replays"],
+        fp32_reference_binding=original_report["fp32_reference"],
+    )
+    assert amended["execution_status"] == "FAILED_IMPLEMENTATION_OR_EXECUTION"
+    assert amended["disposition"] == STAGE3D_NOT_EVALUABLE
 
 
 def test_g4_cross_variant_identity_is_recomputed_but_graph_may_differ(
@@ -364,7 +452,7 @@ def test_fixed_probe_reference_mismatch_is_separate_from_layout_sensitivity(
 ) -> None:
     lock, lock_path = _protocol(tmp_path)
     cases = _g3(lock)
-    cases[0]["comparisons"]["compiled_bf16_vs_reference_python_bf16"] = _comparison(
+    cases[0]["comparisons"]["compiled_bf16_vs_reference_python_bf16"] = _g3_comparison(
         0.02, passed=False
     )
     cases[0]["passed"] = False

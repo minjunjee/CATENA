@@ -169,6 +169,58 @@
                 "passed": {"type": "boolean"}
             }
         },
+        "g3Comparison": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "logits",
+                "runtime_state",
+                "runtime_state_components",
+                "state_metadata_exact",
+                "gradients",
+                "gradients_worst_leaf",
+                "tolerance",
+                "passed"
+            ],
+            "properties": {
+                "logits": {"$ref": "#/$defs/tensorError"},
+                "runtime_state": {"$ref": "#/$defs/tensorError"},
+                "runtime_state_components": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["recurrent", "attention_key", "attention_value"],
+                    "properties": {
+                        "recurrent": {"$ref": "#/$defs/tensorError"},
+                        "attention_key": {"$ref": "#/$defs/tensorError"},
+                        "attention_value": {"$ref": "#/$defs/tensorError"}
+                    }
+                },
+                "state_metadata_exact": {"type": "boolean"},
+                "gradients": {"$ref": "#/$defs/tensorError"},
+                "gradients_worst_leaf": {"$ref": "#/$defs/tensorError"},
+                "tolerance": {
+                    "const": {"relative_l2_max": 0.007, "max_abs_max": null}
+                },
+                "passed": {"type": "boolean"}
+            },
+            "allOf": [
+                {
+                    "if": {"properties": {"passed": {"const": true}}, "required": ["passed"]},
+                    "then": {
+                        "properties": {
+                            "logits": {"properties": {"relative_l2": {"maximum": 0.007}}},
+                            "runtime_state": {
+                                "properties": {"relative_l2": {"maximum": 0.007}}
+                            },
+                            "gradients": {
+                                "properties": {"relative_l2": {"maximum": 0.007}}
+                            },
+                            "state_metadata_exact": {"const": true}
+                        }
+                    }
+                }
+            ]
+        },
         "optimizerStepIntegrity": {
             "type": "object",
             "additionalProperties": false,
@@ -254,6 +306,7 @@
                 "optimizer_state_signature_sha256": {"$ref": "#/$defs/sha256"},
                 "token_ids_sha256": {"$ref": "#/$defs/sha256"},
                 "data_cursor_sha256": {"$ref": "#/$defs/sha256"},
+                "layout_identity": {"type": "object"},
                 "layout_identity_passed": {"type": "boolean"},
                 "comparisons": {
                     "type": "object",
@@ -263,13 +316,30 @@
                         "reference_python_bf16_vs_reference_python_fp32"
                     ],
                     "properties": {
-                        "compiled_bf16_vs_reference_python_bf16": {"$ref": "#/$defs/comparison"},
+                        "compiled_bf16_vs_reference_python_bf16": {
+                            "$ref": "#/$defs/g3Comparison"
+                        },
                         "reference_python_bf16_vs_reference_python_fp32": {
-                            "$ref": "#/$defs/comparison"
+                            "$ref": "#/$defs/g3Comparison"
                         }
                     }
                 },
                 "gradient_finite": {"type": "boolean"},
+                "gradient_norms": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                        "compiled_bf16",
+                        "reference_python_bf16",
+                        "reference_python_fp32"
+                    ],
+                    "properties": {
+                        "compiled_bf16": {"type": "number", "minimum": 0},
+                        "reference_python_bf16": {"type": "number", "minimum": 0},
+                        "reference_python_fp32": {"type": "number", "minimum": 0}
+                    }
+                },
+                "gradient_norm_in_range": {"type": "boolean"},
                 "state_metadata_exact": {"type": "boolean"},
                 "clone_no_alias": {"type": "boolean"},
                 "graph_break_count": {"type": "integer", "minimum": 0},
@@ -290,8 +360,11 @@
                             "optimizer_state_signature_sha256",
                             "token_ids_sha256",
                             "data_cursor_sha256",
+                            "layout_identity",
                             "comparisons",
                             "gradient_finite",
+                            "gradient_norms",
+                            "gradient_norm_in_range",
                             "state_metadata_exact",
                             "clone_no_alias",
                             "graph_break_count",

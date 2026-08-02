@@ -14,6 +14,7 @@ from catena.core.provenance_v61 import sha256_canonical_json, sha256_file, write
 from catena.lm.config import ModelConfig
 from catena.lm.model import CatenaLM
 from catena.lm.numerical_audit import NumericalTolerances
+from catena.lm.stage3d_fixed_layout import STAGE3D_BLOCKED
 
 _SPEC = importlib.util.spec_from_file_location(
     "catena_e26_stage3d_preflight_tool",
@@ -306,7 +307,7 @@ def test_execution_error_terminal_is_not_a_numerical_disposition(tmp_path: Path)
     report = json.loads((run / "report.json").read_text(encoding="utf-8"))
     assert report["execution_status"] == "EXECUTION_ERROR"
     assert report["disposition"] == _TOOL.STAGE3D_NOT_EVALUABLE
-    assert report["disposition"] != _TOOL.STAGE3D_BLOCKED
+    assert report["disposition"] != STAGE3D_BLOCKED
 
 
 def test_checkpoint_cursor_is_authoritative_and_rejects_data_drift() -> None:
@@ -488,14 +489,32 @@ def test_parent_exception_preserves_existing_terminal_files(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     output = tmp_path / "catena_e26_stage3d_preserve_terminal"
-    original_report = {"disposition": "PREEXISTING_REPORT", "gate_summary": {}}
-    original_status = {"disposition": "PREEXISTING_STATUS"}
+    original_report = {
+        "execution_status": "EXECUTION_ERROR",
+        "disposition": _TOOL.STAGE3D_NOT_EVALUABLE,
+        "scientific_evidence": False,
+        "scientific_e26a_started": False,
+        "passed": False,
+        "gate_summary": {},
+    }
+    original_status: dict[str, Any] = {}
 
     def fail_after_partial_terminal(_args: argparse.Namespace) -> int:
         output.mkdir()
         write_json_strict(output / "protocol_lock.json", {"locked": True})
         write_json_strict(output / "layout_manifest.json", {"locked": True})
         write_json_strict(output / "report.json", original_report)
+        original_status.update(
+            {
+                "execution_status": "EXECUTION_ERROR",
+                "disposition": _TOOL.STAGE3D_NOT_EVALUABLE,
+                "resource_preflight_eligible": False,
+                "resource_preflight_started": False,
+                "scientific_e26a_started": False,
+                "scientific_evidence": False,
+                "report_sha256": sha256_file(output / "report.json"),
+            }
+        )
         write_json_strict(output / "status.json", original_status)
         raise RuntimeError("post-report failure")
 
@@ -505,3 +524,150 @@ def test_parent_exception_preserves_existing_terminal_files(
     assert json.loads((output / "status.json").read_text(encoding="utf-8")) == original_status
     assert (output / "unexpected_execution_error.json").is_file()
     assert (output / "artifact_audit.json").is_file()
+
+
+def test_status_summary_and_audit_derive_from_not_evaluable_report(tmp_path: Path) -> None:
+    output = tmp_path / "catena_e26_stage3d_terminal_semantics"
+    output.mkdir()
+    report = {
+        "execution_status": "FAILED_IMPLEMENTATION_OR_EXECUTION",
+        "disposition": _TOOL.STAGE3D_NOT_EVALUABLE,
+        "scientific_evidence": False,
+        "scientific_e26a_started": False,
+        "passed": False,
+        "gate_summary": {
+            "g0_passed": True,
+            "g1_passed": True,
+            "g2_passed": True,
+            "g3_passed": False,
+            "g4_passed": False,
+            "g5_passed": False,
+            "g6_passed": False,
+            "g3_pass_count": 0,
+            "g3_required_count": 12,
+            "g4_pass_count": 0,
+            "g4_required_count": 6,
+        },
+    }
+    write_json_strict(output / "report.json", report)
+    status = _TOOL._write_status_from_report(
+        output,
+        extra={
+            "g3_expected_cases": 12,
+            "g3_completed_cases": 12,
+            "g4_expected_replay_pairs": 6,
+            "g4_completed_replay_pairs": 0,
+        },
+    )
+    assert status["execution_status"] == report["execution_status"]
+    assert status["disposition"] == report["disposition"]
+    assert status["resource_preflight_eligible"] is False
+
+    _TOOL._finalize_terminal_artifacts(output)
+    summary = (output / "RESULTS_SUMMARY_KO.md").read_text(encoding="utf-8")
+    assert "FAILED_IMPLEMENTATION_OR_EXECUTION" in summary
+    assert _TOOL.STAGE3D_NOT_EVALUABLE in summary
+    assert STAGE3D_BLOCKED not in summary
+    audit = json.loads((output / "artifact_audit.json").read_text(encoding="utf-8"))
+    assert audit["execution_status"] == report["execution_status"]
+    assert audit["disposition"] == report["disposition"]
+    assert audit["terminal_semantic_consistency_passed"] is True
+
+
+def test_contradictory_status_is_blocked_before_summary_or_audit(tmp_path: Path) -> None:
+    output = tmp_path / "catena_e26_stage3d_contradictory_status"
+    output.mkdir()
+    report = {
+        "execution_status": "FAILED_IMPLEMENTATION_OR_EXECUTION",
+        "disposition": _TOOL.STAGE3D_NOT_EVALUABLE,
+        "scientific_evidence": False,
+        "scientific_e26a_started": False,
+        "passed": False,
+    }
+    write_json_strict(output / "report.json", report)
+    write_json_strict(
+        output / "status.json",
+        {
+            "execution_status": "COMPLETED_NUMERICAL_EVALUATION",
+            "disposition": STAGE3D_BLOCKED,
+            "resource_preflight_eligible": False,
+            "resource_preflight_started": False,
+            "scientific_e26a_started": False,
+            "scientific_evidence": False,
+            "report_sha256": sha256_file(output / "report.json"),
+        },
+    )
+    with pytest.raises(ValueError, match="terminal semantic contradiction"):
+        _TOOL._finalize_terminal_artifacts(output)
+    assert not (output / "RESULTS_SUMMARY_KO.md").exists()
+    assert not (output / "artifact_audit.json").exists()
+
+
+def test_contradictory_existing_summary_is_blocked(tmp_path: Path) -> None:
+    output = tmp_path / "catena_e26_stage3d_contradictory_summary"
+    output.mkdir()
+    write_json_strict(
+        output / "report.json",
+        {
+            "execution_status": "EXECUTION_ERROR",
+            "disposition": _TOOL.STAGE3D_NOT_EVALUABLE,
+            "scientific_evidence": False,
+            "scientific_e26a_started": False,
+            "passed": False,
+        },
+    )
+    _TOOL._write_status_from_report(output)
+    (output / "RESULTS_SUMMARY_KO.md").write_text(
+        "contradictory BLOCKED summary\n", encoding="utf-8"
+    )
+    with pytest.raises(ValueError, match="summary contradicts"):
+        _TOOL._finalize_terminal_artifacts(output)
+    assert not (output / "artifact_audit.json").exists()
+
+
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    [
+        ({"disposition": "UNKNOWN"}, "unknown disposition"),
+        (
+            {
+                "disposition": _TOOL.STAGE3D_GO,
+                "execution_status": "EXECUTION_ERROR",
+                "passed": True,
+            },
+            "GO report is not a completed",
+        ),
+        (
+            {
+                "disposition": STAGE3D_BLOCKED,
+                "execution_status": "EXECUTION_ERROR",
+                "passed": False,
+            },
+            "BLOCKED report is not a completed",
+        ),
+        (
+            {
+                "disposition": _TOOL.STAGE3D_NOT_EVALUABLE,
+                "execution_status": "COMPLETED_NUMERICAL_EVALUATION",
+                "passed": False,
+            },
+            "invalid execution_status",
+        ),
+        ({"passed": True}, "pass flag contradicts"),
+        ({"scientific_evidence": "false"}, "illegally sets scientific_evidence"),
+        ({"scientific_e26a_started": True}, "illegally sets scientific_e26a_started"),
+        ({"resource_preflight_started": True}, "illegally sets resource_preflight_started"),
+    ],
+)
+def test_terminal_report_semantics_fail_closed(mutation: dict[str, Any], message: str) -> None:
+    report = {
+        "execution_status": "EXECUTION_ERROR",
+        "disposition": _TOOL.STAGE3D_NOT_EVALUABLE,
+        "scientific_evidence": False,
+        "scientific_e26a_started": False,
+        "resource_preflight_started": False,
+        "passed": False,
+        **mutation,
+    }
+    with pytest.raises(ValueError, match=message):
+        _TOOL._terminal_report_semantics(report)

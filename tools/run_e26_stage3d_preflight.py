@@ -1945,36 +1945,137 @@ def _write_execution_error_terminal(
         "resource_preflight_started": False,
         "scientific_e26a_started": False,
         "scientific_evidence": False,
+        "passed": False,
     }
     _write_hashed_json(output_root / "report.json", report, field="receipt_sha256")
+    _write_status_from_report(
+        output_root,
+        extra={
+            "failure_stage": stage,
+            "g3_expected_cases": 12,
+            "g3_completed_cases": completed_g3,
+            "g4_expected_replay_pairs": 6,
+            "g4_completed_replay_pairs": completed_g4,
+        },
+    )
+    _finalize_terminal_artifacts(output_root)
+
+
+def _terminal_report_semantics(report: Mapping[str, Any]) -> dict[str, Any]:
+    """Extract the only authoritative terminal disposition from a report."""
+
+    disposition = report.get("disposition")
+    execution_status = report.get("execution_status")
+    if not isinstance(disposition, str) or not disposition:
+        raise ValueError("Stage-3D report lacks a terminal disposition")
+    if not isinstance(execution_status, str) or not execution_status:
+        raise ValueError("Stage-3D report lacks a terminal execution_status")
+    if disposition not in {STAGE3D_GO, STAGE3D_BLOCKED, STAGE3D_NOT_EVALUABLE}:
+        raise ValueError(f"Stage-3D report has an unknown disposition: {disposition}")
+    resource_eligible = disposition == STAGE3D_GO
+    expected_passed = resource_eligible
+    if report.get("passed") is not expected_passed:
+        raise ValueError(
+            "Stage-3D report pass flag contradicts disposition: "
+            f"passed={report.get('passed')!r}, expected={expected_passed!r}"
+        )
+    if resource_eligible and execution_status != "COMPLETED_NUMERICAL_EVALUATION":
+        raise ValueError("Stage-3D GO report is not a completed numerical evaluation")
+    if disposition == STAGE3D_BLOCKED and execution_status != "COMPLETED_NUMERICAL_EVALUATION":
+        raise ValueError("Stage-3D BLOCKED report is not a completed numerical evaluation")
+    if disposition == STAGE3D_NOT_EVALUABLE and execution_status not in {
+        "EXECUTION_ERROR",
+        "FAILED_IMPLEMENTATION_OR_EXECUTION",
+    }:
+        raise ValueError(
+            f"Stage-3D NOT_EVALUABLE report has an invalid execution_status: {execution_status}"
+        )
+    resource_started = report.get("resource_preflight_started", False)
+    scientific_started = report.get("scientific_e26a_started", False)
+    scientific_evidence = report.get("scientific_evidence", False)
+    for field, value in (
+        ("resource_preflight_started", resource_started),
+        ("scientific_e26a_started", scientific_started),
+        ("scientific_evidence", scientific_evidence),
+    ):
+        if value is not False:
+            raise ValueError(f"Stage-3D terminal report illegally sets {field}={value!r}")
+    return {
+        "disposition": disposition,
+        "execution_status": execution_status,
+        "resource_preflight_eligible": resource_eligible,
+        "resource_preflight_started": resource_started,
+        "scientific_e26a_started": scientific_started,
+        "scientific_evidence": scientific_evidence,
+    }
+
+
+def _write_status_from_report(
+    output_root: Path,
+    *,
+    extra: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Write status fields from the already-written authoritative report."""
+
+    report_path = output_root / "report.json"
+    report = read_json_object_strict(report_path)
+    semantics = _terminal_report_semantics(report)
+    protected = {
+        "execution_status",
+        "disposition",
+        "resource_preflight_eligible",
+        "resource_preflight_started",
+        "scientific_e26a_started",
+        "scientific_evidence",
+        "report_sha256",
+    }
+    metadata = dict(extra or {})
+    overlap = sorted(protected.intersection(metadata))
+    if overlap:
+        raise ValueError(f"Status metadata cannot override report semantics: {overlap}")
     status = {
         "schema_version": "catena-v8.1",
         "manifest_type": "E26_STAGE3D_STATUS",
-        "execution_status": "EXECUTION_ERROR",
-        "disposition": STAGE3D_NOT_EVALUABLE,
-        "failure_stage": stage,
-        "resource_preflight_started": False,
-        "scientific_e26a_started": False,
-        "scientific_evidence": False,
-        "report_sha256": sha256_file(output_root / "report.json"),
+        **semantics,
+        **metadata,
+        "report_sha256": sha256_file(report_path),
     }
-    _write_hashed_json(output_root / "status.json", status, field="receipt_sha256")
-    _finalize_terminal_artifacts(output_root)
+    return _write_hashed_json(output_root / "status.json", status, field="receipt_sha256")
+
+
+def _validate_terminal_semantic_consistency(
+    output_root: Path,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """Reject a terminal whose status contradicts its authoritative report."""
+
+    report_path = output_root / "report.json"
+    status_path = output_root / "status.json"
+    report = read_json_object_strict(report_path)
+    status = read_json_object_strict(status_path)
+    semantics = _terminal_report_semantics(report)
+    for field, expected in semantics.items():
+        if status.get(field) != expected:
+            raise ValueError(
+                "Stage-3D terminal semantic contradiction: "
+                f"status.{field}={status.get(field)!r}, report-derived={expected!r}"
+            )
+    expected_report_sha = sha256_file(report_path)
+    if status.get("report_sha256") != expected_report_sha:
+        raise ValueError("Stage-3D status binds a different report SHA-256")
+    return report, status
 
 
 def _write_results_summary(output_root: Path) -> Path:
     """Generate the compact Korean terminal summary before artifact hashing."""
 
     destination = output_root / "RESULTS_SUMMARY_KO.md"
-    if destination.exists() or destination.is_symlink():
-        return destination
-    report = read_json_object_strict(output_root / "report.json")
-    status = read_json_object_strict(output_root / "status.json")
+    report, status = _validate_terminal_semantic_consistency(output_root)
+    semantics = _terminal_report_semantics(report)
     summary = report.get("gate_summary")
     gates = summary if isinstance(summary, Mapping) else {}
-    disposition = status.get("disposition", report.get("disposition", "UNKNOWN"))
-    execution_status = status.get("execution_status", report.get("execution_status", "UNKNOWN"))
-    go = disposition == STAGE3D_GO
+    disposition = semantics["disposition"]
+    execution_status = semantics["execution_status"]
+    go = semantics["resource_preflight_eligible"]
     gate_lines = []
     for index in range(7):
         gate_value = gates.get(f"g{index}_passed")
@@ -2000,8 +2101,11 @@ def _write_results_summary(output_root: Path) -> Path:
             f"- G4 passed/completed: `{g4_count}/{g4_expected}`",
             *gate_lines,
             f"- resource preflight eligible: `{str(go).lower()}`",
-            "- resource preflight started: `false`",
-            "- Scientific E26a started: `false`",
+            (
+                "- resource preflight started: "
+                f"`{str(semantics['resource_preflight_started']).lower()}`"
+            ),
+            (f"- Scientific E26a started: `{str(semantics['scientific_e26a_started']).lower()}`"),
             "",
             (
                 "허용 claim: Stage-3D가 GO인 경우에만 사전 고정한 단일 "
@@ -2015,6 +2119,12 @@ def _write_results_summary(output_root: Path) -> Path:
             "",
         ]
     )
+    if destination.is_symlink():
+        raise ValueError("Stage-3D results summary must not be a symlink")
+    if destination.exists():
+        if destination.read_text(encoding="utf-8") != text:
+            raise ValueError("Stage-3D results summary contradicts the report")
+        return destination
     destination.write_text(text, encoding="utf-8")
     return destination
 
@@ -2025,17 +2135,21 @@ def _publish_terminal_latest(output_root: Path) -> None:
     )
     if output_root.parent != canonical_namespace:
         return
-    status = read_json_object_strict(output_root / "status.json")
+    _write_results_summary(output_root)
+    report, _status = _validate_terminal_semantic_consistency(output_root)
+    semantics = _terminal_report_semantics(report)
     latest = {
         "schema_version": "catena-v8.1",
         "manifest_type": "E26_STAGE3D_LATEST_POINTER",
         "run_dir": str(output_root),
-        "disposition": status.get("disposition"),
+        "execution_status": semantics["execution_status"],
+        "disposition": semantics["disposition"],
+        "resource_preflight_eligible": semantics["resource_preflight_eligible"],
         "report_sha256": sha256_file(output_root / "report.json"),
         "status_sha256": sha256_file(output_root / "status.json"),
         "artifact_audit_sha256": sha256_file(output_root / "artifact_audit.json"),
         "results_summary_sha256": sha256_file(output_root / "RESULTS_SUMMARY_KO.md"),
-        "scientific_e26a_started": False,
+        "scientific_e26a_started": semantics["scientific_e26a_started"],
     }
     latest["pointer_sha256"] = sha256_canonical_json(latest)
     temporary = canonical_namespace / f".latest.{os.getpid()}.json"
@@ -2052,6 +2166,8 @@ def _finalize_terminal_artifacts(output_root: Path) -> None:
     missing = [name for name in required if not (output_root / name).is_file()]
     if missing:
         raise RuntimeError(f"Stage-3D terminal artifact set is incomplete: {missing}")
+    report, _status = _validate_terminal_semantic_consistency(output_root)
+    semantics = _terminal_report_semantics(report)
     _write_results_summary(output_root)
     paths = sorted(
         path
@@ -2070,13 +2186,16 @@ def _finalize_terminal_artifacts(output_root: Path) -> None:
         "schema_version": "catena-v8.1",
         "manifest_type": "E26_STAGE3D_TERMINAL_ARTIFACT_AUDIT",
         "scientific_evidence": False,
-        "scientific_e26a_started": False,
+        "execution_status": semantics["execution_status"],
+        "disposition": semantics["disposition"],
+        "scientific_e26a_started": semantics["scientific_e26a_started"],
         "run_dir": str(output_root),
         "file_count_excluding_self": len(rows),
         "aggregate_sha256_excluding_self": _row_aggregate(rows),
         "files": rows,
         "protocol_lock_present": (output_root / "protocol_lock.json").is_file(),
         "layout_manifest_present": (output_root / "layout_manifest.json").is_file(),
+        "terminal_semantic_consistency_passed": True,
         "passed": True,
     }
     _write_hashed_json(output_root / "artifact_audit.json", audit, field="receipt_sha256")
@@ -2338,24 +2457,21 @@ def _main_parent_run(args: argparse.Namespace) -> int:
         )
         receipt = validate_stage3d_admissibility_receipt(receipt, protocol_lock=protocol)
         write_json_strict(output_root / "report.json", receipt)
-        status = {
-            "schema_version": "catena-v8.1",
-            "manifest_type": "E26_STAGE3D_STATUS",
-            "disposition": STAGE3D_BLOCKED,
-            "diagnostic_disposition": KNOWN_LAYOUT_SENSITIVITY,
-            "g3_expected_cases": 12,
-            "g3_completed_cases": len(g3_rows),
-            "g3_numerical_failures": sum(row.get("passed") is not True for row in g3_rows),
-            "g4_started": False,
-            "g4_disposition": "NOT_RUN_BLOCKED_G3_DEPENDENCY",
-            "resource_preflight_started": False,
-            "scientific_e26a_started": False,
-            "scientific_evidence": False,
-            "report_sha256": sha256_file(output_root / "report.json"),
-        }
-        _write_hashed_json(output_root / "status.json", status, field="receipt_sha256")
+        _write_status_from_report(
+            output_root,
+            extra={
+                "diagnostic_disposition": KNOWN_LAYOUT_SENSITIVITY,
+                "g3_expected_cases": 12,
+                "g3_completed_cases": len(g3_rows),
+                "g3_numerical_failures": sum(row.get("passed") is not True for row in g3_rows),
+                "g4_expected_replay_pairs": 6,
+                "g4_completed_replay_pairs": 0,
+                "g4_started": False,
+                "g4_disposition": "NOT_RUN_BLOCKED_G3_DEPENDENCY",
+            },
+        )
         _finalize_terminal_artifacts(output_root)
-        return 1
+        return 2 if receipt["disposition"] == STAGE3D_NOT_EVALUABLE else 1
 
     replay_dir = output_root / "g4_replays"
     replay_dir.mkdir()
@@ -2427,24 +2543,20 @@ def _main_parent_run(args: argparse.Namespace) -> int:
     receipt = validate_stage3d_admissibility_receipt(receipt, protocol_lock=protocol)
     write_json_strict(output_root / "report.json", receipt)
     passed = receipt.get("disposition") == STAGE3D_GO
-    status = {
-        "schema_version": "catena-v8.1",
-        "manifest_type": "E26_STAGE3D_STATUS",
-        "disposition": receipt.get("disposition"),
-        "diagnostic_disposition": KNOWN_LAYOUT_SENSITIVITY,
-        "g3_expected_cases": 12,
-        "g3_completed_cases": len(g3_rows),
-        "g4_expected_replay_pairs": 6,
-        "g4_completed_replay_pairs": len(replay_rows),
-        "resource_preflight_eligible": passed,
-        "resource_preflight_started": False,
-        "scientific_e26a_started": False,
-        "scientific_evidence": False,
-        "report_sha256": sha256_file(output_root / "report.json"),
-        "input_hashes": input_hashes,
-    }
-    _write_hashed_json(output_root / "status.json", status, field="receipt_sha256")
+    _write_status_from_report(
+        output_root,
+        extra={
+            "diagnostic_disposition": KNOWN_LAYOUT_SENSITIVITY,
+            "g3_expected_cases": 12,
+            "g3_completed_cases": len(g3_rows),
+            "g4_expected_replay_pairs": 6,
+            "g4_completed_replay_pairs": len(replay_rows),
+            "input_hashes": input_hashes,
+        },
+    )
     _finalize_terminal_artifacts(output_root)
+    if receipt["disposition"] == STAGE3D_NOT_EVALUABLE:
+        return 2
     return 0 if passed else 1
 
 
@@ -2461,6 +2573,7 @@ def _recover_unexpected_parent_exception(*, output_root: Path, error: Exception)
         "resource_preflight_started": False,
         "scientific_e26a_started": False,
         "scientific_evidence": False,
+        "passed": False,
     }
     failure_path = output_root / "unexpected_execution_error.json"
     if not failure_path.exists() and not failure_path.is_symlink():
@@ -2471,18 +2584,10 @@ def _recover_unexpected_parent_exception(*, output_root: Path, error: Exception)
         _write_hashed_json(report_path, failure, field="receipt_sha256")
     status_path = output_root / "status.json"
     if not status_path.exists() and not status_path.is_symlink():
-        status = {
-            "schema_version": "catena-v8.1",
-            "manifest_type": "E26_STAGE3D_STATUS",
-            "execution_status": "EXECUTION_ERROR",
-            "disposition": STAGE3D_NOT_EVALUABLE,
-            "recovered_after_unexpected_parent_exception": True,
-            "resource_preflight_started": False,
-            "scientific_e26a_started": False,
-            "scientific_evidence": False,
-            "report_sha256": sha256_file(report_path),
-        }
-        _write_hashed_json(status_path, status, field="receipt_sha256")
+        _write_status_from_report(
+            output_root,
+            extra={"recovered_after_unexpected_parent_exception": True},
+        )
 
     # Do not alter a previously completed audit.  Otherwise inventory every
     # preserved partial file plus the explicit exception receipt.

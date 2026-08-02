@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from collections.abc import Mapping, Sequence
 from copy import deepcopy
 from pathlib import Path
@@ -846,7 +847,7 @@ def _validate_tensor_error(
         maximum = float(value["max_abs"])
     except (TypeError, ValueError) as error:
         raise Stage3DContractError(f"{label} contains a non-numeric error") from error
-    if relative < 0.0 or maximum < 0.0 or relative != relative or maximum != maximum:
+    if relative < 0.0 or maximum < 0.0 or not math.isfinite(relative) or not math.isfinite(maximum):
         raise Stage3DContractError(f"{label} contains a non-finite/negative error")
     if relative > relative_max:
         raise Stage3DContractError(f"{label} exceeds inherited BF16 tolerance")
@@ -864,7 +865,7 @@ def _validate_tensor_diagnostic(value: Any, label: str) -> None:
         maximum = float(value["max_abs"])
     except (TypeError, ValueError) as error:
         raise Stage3DContractError(f"{label} contains a non-numeric diagnostic") from error
-    if relative < 0.0 or maximum < 0.0 or relative != relative or maximum != maximum:
+    if relative < 0.0 or maximum < 0.0 or not math.isfinite(relative) or not math.isfinite(maximum):
         raise Stage3DContractError(f"{label} contains a non-finite/negative diagnostic")
 
 
@@ -1090,12 +1091,19 @@ def _partial_g3_coverage_valid(cases: Sequence[Mapping[str, Any]]) -> bool:
 def _tensor_error_observed(value: Any) -> bool:
     if not isinstance(value, Mapping) or set(value) != {"relative_l2", "max_abs"}:
         return False
-    try:
-        relative = float(value["relative_l2"])
-        maximum = float(value["max_abs"])
-    except (TypeError, ValueError):
+    if not all(
+        isinstance(value.get(field), (int, float)) and not isinstance(value.get(field), bool)
+        for field in ("relative_l2", "max_abs")
+    ):
         return False
-    return relative >= 0.0 and maximum >= 0.0 and relative == relative and maximum == maximum
+    relative = float(value["relative_l2"])
+    maximum = float(value["max_abs"])
+    return (
+        relative >= 0.0
+        and maximum >= 0.0
+        and math.isfinite(relative)
+        and math.isfinite(maximum)
+    )
 
 
 def _tensor_error_within(value: Any, relative_max: float) -> bool:
@@ -1116,6 +1124,217 @@ def _comparison_observed(value: Any) -> bool:
         )
         and isinstance(value.get("passed"), bool)
     )
+
+
+def _g3_comparison_observed(value: Any, *, relative_max: float) -> bool:
+    """Validate the complete G3 diagnostic row without requiring it to pass."""
+
+    expected_fields = {
+        "logits",
+        "runtime_state",
+        "runtime_state_components",
+        "state_metadata_exact",
+        "gradients",
+        "gradients_worst_leaf",
+        "tolerance",
+        "passed",
+    }
+    if not isinstance(value, Mapping) or set(value) != expected_fields:
+        return False
+    primary_fields = ("logits", "runtime_state", "gradients")
+    if not all(_tensor_error_observed(value.get(field)) for field in primary_fields):
+        return False
+    if not _tensor_error_observed(value.get("gradients_worst_leaf")):
+        return False
+    components = value.get("runtime_state_components")
+    if not isinstance(components, Mapping) or set(components) != {
+        "recurrent",
+        "attention_key",
+        "attention_value",
+    }:
+        return False
+    if not all(_tensor_error_observed(component) for component in components.values()):
+        return False
+    runtime = value["runtime_state"]
+    if not isinstance(runtime, Mapping):
+        return False
+    if float(runtime["relative_l2"]) != max(
+        float(component["relative_l2"])
+        for component in components.values()
+        if isinstance(component, Mapping)
+    ):
+        return False
+    if float(runtime["max_abs"]) != max(
+        float(component["max_abs"])
+        for component in components.values()
+        if isinstance(component, Mapping)
+    ):
+        return False
+    if value.get("tolerance") != {"relative_l2_max": relative_max, "max_abs_max": None}:
+        return False
+    if not isinstance(value.get("state_metadata_exact"), bool) or not isinstance(
+        value.get("passed"), bool
+    ):
+        return False
+    metric_pass = bool(
+        value.get("state_metadata_exact") is True
+        and all(
+            isinstance(value[field], Mapping)
+            and float(value[field]["relative_l2"]) <= relative_max
+            for field in primary_fields
+        )
+    )
+    # A metric failure must never be labelled PASS. A metric-valid comparison
+    # may still fail because per-path gradient finiteness is intentionally not
+    # duplicated inside this diagnostic mapping.
+    return value.get("passed") is not True or metric_pass
+
+
+def _g3_layout_identity_observed(
+    value: Any, *, fixed_layout: Mapping[str, Any]
+) -> bool:
+    expected_fields = {
+        "physical_microbatch_sequences",
+        "sequence_length",
+        "accumulation_steps",
+        "target_global_input_tokens",
+        "loss_denominator",
+        "optimizer_update_boundary",
+        "autocast_scope",
+        "gradient_clipping_order",
+        "initialization_matched",
+        "parameter_surface_matched",
+        "optimizer_state_shape_matched",
+        "shape_contract_valid",
+        "passed",
+    }
+    if not isinstance(value, Mapping) or set(value) != expected_fields:
+        return False
+    expected_shape = bool(
+        fixed_layout.get("microbatch_sequences") == 1
+        and fixed_layout.get("target_global_input_tokens")
+        == int(fixed_layout["microbatch_sequences"])
+        * int(fixed_layout["context_length"])
+        * int(fixed_layout["accumulation_steps"])
+    )
+    identity_bools = (
+        "initialization_matched",
+        "parameter_surface_matched",
+        "optimizer_state_shape_matched",
+    )
+    expected_pass = expected_shape and all(value.get(field) is True for field in identity_bools)
+    return bool(
+        value.get("physical_microbatch_sequences") == fixed_layout.get("microbatch_sequences")
+        and value.get("sequence_length") == fixed_layout.get("context_length")
+        and value.get("accumulation_steps") == fixed_layout.get("accumulation_steps")
+        and value.get("target_global_input_tokens")
+        == fixed_layout.get("target_global_input_tokens")
+        and value.get("loss_denominator")
+        == "TOTAL_VALID_NEXT_TOKEN_PREDICTIONS_ACROSS_FIXED_LAYOUT"
+        and value.get("optimizer_update_boundary") == "AFTER_EXACT_ACCUMULATION_STEPS"
+        and value.get("autocast_scope") == "CUDA_BF16_FORWARD_LOSS_ONLY"
+        and value.get("gradient_clipping_order") == "AFTER_ACCUMULATION_BEFORE_ADAMW"
+        and all(isinstance(value.get(field), bool) for field in (*identity_bools, "passed"))
+        and value.get("shape_contract_valid") is expected_shape
+        and value.get("passed") is expected_pass
+    )
+
+
+def _g3_case_observed(
+    row: Mapping[str, Any], *, protocol: Mapping[str, Any]
+) -> bool:
+    layouts = _layout_by_candidate(protocol)
+    candidate = str(row.get("candidate_id"))
+    if candidate not in layouts or row.get("fixed_layout") != layouts[candidate]:
+        return False
+    comparisons = row.get("comparisons")
+    if not isinstance(comparisons, Mapping) or set(comparisons) != set(_COMPARISON_NAMES):
+        return False
+    thresholds = protocol["inherited_thresholds"]
+    relative_max = float(thresholds["bf16_relative_l2_max"])
+    if any(
+        not _g3_comparison_observed(comparisons.get(name), relative_max=relative_max)
+        for name in _COMPARISON_NAMES
+    ):
+        return False
+    if not _g3_layout_identity_observed(
+        row.get("layout_identity"), fixed_layout=layouts[candidate]
+    ):
+        return False
+    layout_identity = row["layout_identity"]
+    if not isinstance(layout_identity, Mapping) or row.get("layout_identity_passed") is not bool(
+        layout_identity.get("passed")
+    ):
+        return False
+    norms = row.get("gradient_norms")
+    if not isinstance(norms, Mapping) or set(norms) != {
+        "compiled_bf16",
+        "reference_python_bf16",
+        "reference_python_fp32",
+    }:
+        return False
+    if not all(
+        isinstance(norms.get(name), (int, float)) and not isinstance(norms.get(name), bool)
+        for name in norms
+    ):
+        return False
+    try:
+        norm_values = [float(norms[name]) for name in sorted(norms)]
+    except (TypeError, ValueError):
+        return False
+    if not all(math.isfinite(value) and value >= 0.0 for value in norm_values):
+        return False
+    expected_norm_range = all(
+        float(thresholds["gradient_norm_min"])
+        <= value
+        <= float(thresholds["gradient_norm_max"])
+        for value in norm_values
+    )
+    if row.get("gradient_norm_in_range") is not expected_norm_range:
+        return False
+    if not all(
+        isinstance(row.get(field), bool)
+        for field in (
+            "gradient_finite",
+            "state_metadata_exact",
+            "clone_no_alias",
+            "passed",
+        )
+    ):
+        return False
+    comparison_metadata = all(
+        isinstance(comparisons[name], Mapping)
+        and comparisons[name].get("state_metadata_exact") is True
+        for name in _COMPARISON_NAMES
+    )
+    if row.get("state_metadata_exact") is not comparison_metadata:
+        return False
+    if not _backend_integrity_observed(row.get("backend_integrity")):
+        return False
+    backend = row["backend_integrity"]
+    if not isinstance(backend, Mapping):
+        return False
+    count_fields = (
+        "graph_break_count",
+        "fallback_count",
+        "variant_specific_fp32_path_count",
+        "variant_specific_padding_count",
+    )
+    if any(row.get(field) != backend.get(field) for field in count_fields):
+        return False
+    expected_pass = bool(
+        row.get("layout_identity_passed") is True
+        and all(
+            isinstance(comparisons[name], Mapping) and comparisons[name].get("passed") is True
+            for name in _COMPARISON_NAMES
+        )
+        and row.get("gradient_finite") is True
+        and expected_norm_range
+        and comparison_metadata
+        and row.get("clone_no_alias") is True
+        and backend.get("passed") is True
+    )
+    return row.get("passed") is expected_pass
 
 
 def _comparison_passed_within(value: Any, relative_max: float) -> bool:
@@ -1271,15 +1490,12 @@ def _g5_optimizer_integrity_passed(
     return all(_optimizer_trace_passed(row, relative_max) for row in replays)
 
 
-def _g3_raw_evaluable(cases: Sequence[Mapping[str, Any]]) -> bool:
+def _g3_raw_evaluable(
+    cases: Sequence[Mapping[str, Any]], protocol: Mapping[str, Any]
+) -> bool:
     if not _exact_g3_coverage(cases):
         return False
     for row in cases:
-        comparisons = row.get("comparisons")
-        if not isinstance(comparisons, Mapping) or set(comparisons) != set(_COMPARISON_NAMES):
-            return False
-        if any(not _comparison_observed(comparisons.get(name)) for name in _COMPARISON_NAMES):
-            return False
         if row.get("execution_status") in {
             "FAILED_WORKER_NO_RECEIPT",
             "NOT_RUN_BLOCKED_DEPENDENCY",
@@ -1288,18 +1504,7 @@ def _g3_raw_evaluable(cases: Sequence[Mapping[str, Any]]) -> bool:
             return False
         if not all(_is_sha256(row.get(field)) for field in _SHA_FIELDS):
             return False
-        if not isinstance(row.get("fixed_layout"), Mapping):
-            return False
-        if not all(
-            isinstance(row.get(field), bool)
-            for field in (
-                "layout_identity_passed",
-                "gradient_finite",
-                "state_metadata_exact",
-                "clone_no_alias",
-                "passed",
-            )
-        ):
+        if not _g3_case_observed(row, protocol=protocol):
             return False
         if not all(
             isinstance(row.get(field), int)
@@ -1312,8 +1517,6 @@ def _g3_raw_evaluable(cases: Sequence[Mapping[str, Any]]) -> bool:
                 "variant_specific_padding_count",
             )
         ):
-            return False
-        if not _backend_integrity_observed(row.get("backend_integrity")):
             return False
     return True
 
@@ -1624,7 +1827,7 @@ def build_stage3d_admissibility_receipt(
     g5_pass = _g5_optimizer_integrity_passed(replays, protocol)
     g6_pass = _g6_backend_integrity_passed(cases, replays)
     reference_mismatch = _fixed_probe_reference_mismatch(cases)
-    g3_evaluable = _g3_raw_evaluable(cases)
+    g3_evaluable = _g3_raw_evaluable(cases, protocol)
     g4_required = g3_evaluable and g3_pass
     g4_evaluable = _g4_raw_evaluable(replays) if g4_required else True
     execution_evaluable = g3_evaluable and g4_evaluable
@@ -1761,7 +1964,7 @@ def validate_stage3d_admissibility_receipt(
     if dict(summary) != expected_summary:
         raise Stage3DContractError("Stage-3D gate summary is inconsistent with raw cells")
     all_gates_pass = all(bool(expected_summary[f"g{index}_passed"]) for index in range(7))
-    g3_evaluable = _g3_raw_evaluable(cases)
+    g3_evaluable = _g3_raw_evaluable(cases, protocol)
     g4_required = g3_evaluable and expected_summary["g3_passed"]
     g4_evaluable = _g4_raw_evaluable(replays) if g4_required else True
     execution_evaluable = g3_evaluable and g4_evaluable
