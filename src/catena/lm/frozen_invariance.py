@@ -7,6 +7,7 @@ import os
 import re
 import subprocess
 from collections.abc import Iterable, Mapping
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
@@ -508,4 +509,111 @@ def validate_frozen_invariance_receipt(
         )
     if observed["passed"] is not True:
         raise FrozenInvarianceError("Frozen source/artifact invariance audit failed")
+    return observed
+
+
+def _validate_frozen_receipt_canonical_integrity(
+    payload: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Validate a frozen receipt without reinterpreting its historical HEAD.
+
+    ``validate_frozen_invariance_receipt`` deliberately requires byte-for-byte
+    equality with a receipt rebuilt at the current HEAD.  That is appropriate
+    while creating a receipt, but a committed additive descendant necessarily
+    changes ``observed_head``.  Stage-3D therefore first authenticates the
+    historical receipt itself and then performs a separate live re-audit.
+    """
+
+    historical = deepcopy(dict(payload))
+    claimed = historical.pop("receipt_sha256", None)
+    if not isinstance(claimed, str) or claimed != sha256_canonical_json(historical):
+        raise FrozenInvarianceError(
+            "Frozen invariance receipt canonical SHA-256 is invalid"
+        )
+    historical["receipt_sha256"] = claimed
+    if (
+        historical.get("schema_version") != "catena-e26-frozen-invariance-v1"
+        or historical.get("manifest_type") != "E26_FROZEN_INVARIANCE_RECEIPT"
+        or historical.get("scientific_evidence") is not False
+        or historical.get("passed") is not True
+        or historical.get("main_test_opened") is not False
+        or historical.get("main_test_access_count") != 0
+    ):
+        raise FrozenInvarianceError("Historical frozen receipt contract is invalid")
+    source = historical.get("live_repository")
+    artifacts = historical.get("frozen_artifacts")
+    if not isinstance(source, Mapping) or not isinstance(artifacts, Mapping):
+        raise FrozenInvarianceError("Historical frozen receipt is incomplete")
+    if (
+        source.get("passed") is not True
+        or source.get("git_clean") is not True
+        or source.get("git_status_porcelain") != ""
+        or source.get("expected_head_is_ancestor") is not True
+        or source.get("verification_mode")
+        != "ANCESTOR_COMMIT_BASE_BLOBS_BYTE_IDENTICAL"
+        or source.get("missing") != []
+        or source.get("changed") != []
+    ):
+        raise FrozenInvarianceError("Historical frozen source audit did not pass")
+    if (
+        artifacts.get("passed") is not True
+        or artifacts.get("missing") != []
+        or artifacts.get("unexpected") != []
+        or artifacts.get("changed") != []
+        or artifacts.get("missing_namespaces") != []
+        or artifacts.get("unexpected_namespaces") != []
+        or artifacts.get("changed_namespaces") != []
+    ):
+        raise FrozenInvarianceError("Historical frozen artifact audit did not pass")
+    return historical
+
+
+def _frozen_receipt_immutable_projection(
+    payload: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Return the immutable receipt contract, excluding only live-HEAD fields."""
+
+    projected = deepcopy(dict(payload))
+    projected.pop("receipt_sha256", None)
+    source = projected.get("live_repository")
+    if not isinstance(source, dict):
+        raise FrozenInvarianceError("Frozen receipt lacks live_repository details")
+    # These are observations of the current checkout, not frozen evidence.
+    # Every field that proves ancestry, cleanliness, base-blob identity, and
+    # artifact identity remains in the projection and must match exactly.
+    source.pop("observed_head", None)
+    source.pop("head_matches", None)
+    return projected
+
+
+def validate_historical_frozen_invariance_receipt(
+    payload: Mapping[str, Any],
+    *,
+    data_lock: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Authenticate a historical receipt and require an exact live re-audit.
+
+    Only the dynamic ``observed_head``/``head_matches`` observations and the
+    resulting top-level canonical receipt digest may differ.  In particular,
+    source ancestry, cleanliness, every base blob, and every E00--E25 artifact
+    remain exact hard gates.
+    """
+
+    historical = _validate_frozen_receipt_canonical_integrity(payload)
+    frozen = historical["frozen_artifacts"]
+    assert isinstance(frozen, Mapping)  # established by integrity validation
+    baseline_path = frozen.get("baseline_manifest")
+    if not isinstance(baseline_path, str):
+        raise FrozenInvarianceError("Frozen invariance receipt lacks baseline path")
+    observed = build_frozen_invariance_receipt(
+        data_lock=data_lock,
+        baseline_manifest=baseline_path,
+    )
+    observed = _validate_frozen_receipt_canonical_integrity(observed)
+    if _frozen_receipt_immutable_projection(
+        historical
+    ) != _frozen_receipt_immutable_projection(observed):
+        raise FrozenInvarianceError(
+            "Frozen invariance immutable contract differs from the live structured re-audit"
+        )
     return observed

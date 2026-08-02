@@ -51,7 +51,9 @@ from catena.lm.checkpointing import (
     load_training_checkpoint,
     save_training_checkpoint,
 )
-from catena.lm.frozen_invariance import validate_frozen_invariance_receipt
+from catena.lm.frozen_invariance import (
+    validate_historical_frozen_invariance_receipt,
+)
 from catena.lm.hashing import (
     optimizer_state_signature,
     parameter_signature_hash,
@@ -337,13 +339,38 @@ def _verify_g0_frozen_inputs(
     execution_paths = protocol.get("execution_input_paths")
     if not isinstance(execution_paths, Mapping):
         raise ValueError("Stage-3C protocol lacks execution_input_paths")
+    execution_inputs = protocol.get("execution_inputs")
+    if not isinstance(execution_inputs, Mapping):
+        raise ValueError("Stage-3C protocol lacks execution_inputs")
     data_lock_raw = execution_paths.get("data_lock")
     if not isinstance(data_lock_raw, str):
         raise ValueError("Stage-3C protocol lacks its bound data_lock path")
     data_lock_path = Path(data_lock_raw).expanduser().resolve(strict=True)
+    registered_data_lock_sha256 = execution_inputs.get("data_lock_sha256")
+    if (
+        not isinstance(registered_data_lock_sha256, str)
+        or sha256_file(data_lock_path) != registered_data_lock_sha256
+    ):
+        raise ValueError("Stage-3C bound data_lock SHA-256 changed")
+    frozen_receipt_raw = execution_paths.get("frozen_tree_receipt")
+    if not isinstance(frozen_receipt_raw, str):
+        raise ValueError("Stage-3C protocol lacks its bound frozen receipt path")
+    registered_frozen_path = Path(frozen_receipt_raw).expanduser().resolve(strict=True)
+    if frozen_receipt_path != registered_frozen_path:
+        raise ValueError("Supplied frozen receipt differs from the Stage-3C binding")
+    registered_frozen_sha256 = execution_inputs.get("frozen_tree_receipt_sha256")
+    historical_file_sha256 = sha256_file(frozen_receipt_path)
+    if (
+        not isinstance(registered_frozen_sha256, str)
+        or historical_file_sha256 != registered_frozen_sha256
+    ):
+        raise ValueError("Stage-3C bound frozen receipt SHA-256 changed")
     data_lock = read_json_object_strict(data_lock_path)
     frozen = read_json_object_strict(frozen_receipt_path)
-    refreshed = validate_frozen_invariance_receipt(frozen, data_lock=data_lock)
+    refreshed = validate_historical_frozen_invariance_receipt(
+        frozen,
+        data_lock=data_lock,
+    )
     artifact_audit = _verify_stage3c_artifact_manifest(
         manifest_path=stage3c_artifact_manifest_path,
         artifact_root=stage3c_artifact_root,
@@ -352,7 +379,15 @@ def _verify_g0_frozen_inputs(
     return {
         "stage3c_artifacts": artifact_audit,
         "e00_e25_frozen_receipt_path": str(frozen_receipt_path),
-        "e00_e25_frozen_receipt_sha256": sha256_file(frozen_receipt_path),
+        "e00_e25_frozen_receipt_sha256": historical_file_sha256,
+        "stage3c_registered_frozen_receipt_sha256": registered_frozen_sha256,
+        "stage3c_registered_data_lock_sha256": registered_data_lock_sha256,
+        "historical_observed_head": frozen["live_repository"]["observed_head"],
+        "live_observed_head": refreshed["live_repository"]["observed_head"],
+        "dynamic_head_change_allowed": (
+            frozen["live_repository"]["observed_head"]
+            != refreshed["live_repository"]["observed_head"]
+        ),
         "e00_e25_live_reaudit_receipt_sha256": refreshed["receipt_sha256"],
         "e00_e25_live_reaudit_passed": refreshed["passed"] is True,
         "passed": artifact_audit["passed"] is True and refreshed["passed"] is True,

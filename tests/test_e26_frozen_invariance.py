@@ -15,6 +15,7 @@ from catena.lm.frozen_invariance import (
     _row_aggregate,
     build_frozen_invariance_receipt,
     validate_frozen_invariance_receipt,
+    validate_historical_frozen_invariance_receipt,
     verify_frozen_artifacts,
     verify_pre_e26_source,
 )
@@ -294,4 +295,124 @@ def test_old_e00_e21_manifest_cannot_stand_in_for_completed_evidence(tmp_path: P
             baseline_manifest=old,
             expected_file_count=1,
             expected_aggregate_sha256="1" * 64,
+        )
+
+
+def _historical_receipt_fixture(
+    tmp_path: Path,
+) -> tuple[Path, Path, dict[str, Any], dict[str, Any], Path]:
+    repo = tmp_path / "live_repo"
+    repo.mkdir()
+    _git(repo, "init")
+    _git(repo, "config", "user.email", "catena-test@example.invalid")
+    _git(repo, "config", "user.name", "CATENA Test")
+    base_file = repo / "base.txt"
+    base_file.write_text("frozen base\n", encoding="utf-8")
+    _git(repo, "add", "base.txt")
+    _git(repo, "commit", "-m", "frozen base")
+    expected_head = _git(repo, "rev-parse", "HEAD")
+    base_bytes = base_file.read_bytes()
+    base_aggregate = _row_aggregate(
+        [
+            {
+                "path": "base.txt",
+                "bytes": len(base_bytes),
+                "sha256": hashlib.sha256(base_bytes).hexdigest(),
+            }
+        ]
+    )
+    completed_lock, artifact_root = _write_completed_lock(tmp_path)
+    base_lock = json.loads(
+        (completed_lock.parent / "base.json").read_text(encoding="utf-8")
+    )
+    data_lock: dict[str, Any] = {
+        "repository": {
+            "live_repo": str(repo.resolve()),
+            "expected_live_head": expected_head,
+            "pre_e26_source_file_count": 1,
+            "pre_e26_source_aggregate_sha256": base_aggregate,
+            "frozen_artifact_file_count": int(base_lock["file_count"]),
+            "frozen_artifact_aggregate_sha256": str(base_lock["aggregate_sha256"]),
+        }
+    }
+    historical = build_frozen_invariance_receipt(
+        data_lock=data_lock,
+        baseline_manifest=completed_lock,
+    )
+    assert historical["passed"] is True
+    (repo / "stage3d.txt").write_text("additive descendant\n", encoding="utf-8")
+    _git(repo, "add", "stage3d.txt")
+    _git(repo, "commit", "-m", "additive stage3d")
+    return repo, base_file, data_lock, historical, artifact_root
+
+
+def test_historical_receipt_allows_only_clean_additive_descendant_head(
+    tmp_path: Path,
+) -> None:
+    repo, _base_file, data_lock, historical, _artifact_root = (
+        _historical_receipt_fixture(tmp_path)
+    )
+    refreshed = validate_historical_frozen_invariance_receipt(
+        historical,
+        data_lock=data_lock,
+    )
+    assert refreshed["passed"] is True
+    assert refreshed["live_repository"]["observed_head"] == _git(
+        repo, "rev-parse", "HEAD"
+    )
+    assert (
+        refreshed["live_repository"]["observed_head"]
+        != historical["live_repository"]["observed_head"]
+    )
+
+
+def test_historical_receipt_blocks_dirty_or_changed_frozen_base(
+    tmp_path: Path,
+) -> None:
+    repo, base_file, data_lock, historical, _artifact_root = (
+        _historical_receipt_fixture(tmp_path)
+    )
+    additive = repo / "stage3d.txt"
+    additive.write_text("dirty descendant\n", encoding="utf-8")
+    with pytest.raises(FrozenInvarianceError):
+        validate_historical_frozen_invariance_receipt(
+            historical,
+            data_lock=data_lock,
+        )
+    additive.write_text("additive descendant\n", encoding="utf-8")
+    base_file.write_text("mutated frozen base\n", encoding="utf-8")
+    _git(repo, "add", "base.txt")
+    _git(repo, "commit", "-m", "mutate frozen base")
+    with pytest.raises(FrozenInvarianceError):
+        validate_historical_frozen_invariance_receipt(
+            historical,
+            data_lock=data_lock,
+        )
+
+
+def test_historical_receipt_blocks_frozen_artifact_drift(tmp_path: Path) -> None:
+    _repo, _base_file, data_lock, historical, artifact_root = (
+        _historical_receipt_fixture(tmp_path)
+    )
+    (artifact_root / "e25a_terminal_gate" / "report.json").write_text(
+        "mutated frozen e25\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(FrozenInvarianceError):
+        validate_historical_frozen_invariance_receipt(
+            historical,
+            data_lock=data_lock,
+        )
+
+
+def test_historical_receipt_blocks_tampering_before_live_reaudit(tmp_path: Path) -> None:
+    _repo, _base_file, data_lock, historical, _artifact_root = (
+        _historical_receipt_fixture(tmp_path)
+    )
+    tampered = deepcopy(historical)
+    tampered["frozen_artifacts"]["expected_file_count"] += 1
+    with pytest.raises(FrozenInvarianceError, match="canonical SHA-256"):
+        validate_historical_frozen_invariance_receipt(
+            tampered,
+            data_lock=data_lock,
         )
