@@ -36,6 +36,10 @@ from .data_readiness_v2 import (
     Stage2DataReadinessError,
     validate_stage2_data_bundle,
 )
+from .data_readiness_v3 import (
+    DataReadinessV3Error,
+    validate_zero_tolerance_data_bundle,
+)
 from .e26a_population_lock import (
     E26AValidationPopulationError,
     validate_e26a_validation_population_lock,
@@ -287,6 +291,24 @@ def _readiness_input_path(
     return _resolve_file(value, f"data_readiness.{field}")
 
 
+def _readiness_bound_input(
+    readiness: Mapping[str, Any],
+    field: str,
+) -> Path:
+    """Resolve one V3 input only after its recorded byte hash is verified."""
+
+    binding = readiness.get(field)
+    if not isinstance(binding, Mapping):
+        raise E26AGateBlocked(f"Data readiness lacks {field} byte binding")
+    expected = binding.get("sha256")
+    if not isinstance(expected, str) or not SHA256_PATTERN.fullmatch(expected):
+        raise E26AGateBlocked(f"Data readiness lacks valid {field}.sha256")
+    path = _readiness_input_path(readiness, field)
+    if sha256_file(path) != expected:
+        raise E26AGateBlocked(f"Data readiness {field} byte SHA-256 mismatch")
+    return path
+
+
 def _revalidate_stage2_data_readiness(
     *,
     paths: E26AGateInputPaths,
@@ -313,6 +335,88 @@ def _revalidate_stage2_data_readiness(
         raise E26AGateBlocked(f"Raw Stage-2 data bundle failed revalidation: {error}") from error
     if observed != recorded:
         raise E26AGateBlocked("Data-readiness receipt differs from a fresh raw-input revalidation")
+
+
+def _revalidate_stage3_data_readiness(
+    *,
+    paths: E26AGateInputPaths,
+    data_lock: Mapping[str, Any],
+    recorded: dict[str, Any],
+) -> None:
+    """Reconstruct V3 from its repaired bundle and verify its final-data binding."""
+
+    _require_embedded_canonical_hash(
+        recorded,
+        field="readiness_sha256",
+        label="data_readiness",
+    )
+    if data_lock.get("schema_version") != "catena-e26-data-lock-v3-final-preflight":
+        raise E26AGateBlocked("V3 data readiness requires the final Stage-3C data lock")
+    _require_embedded_canonical_hash(
+        dict(data_lock),
+        field="lock_sha256",
+        label="data_lock",
+    )
+    repaired = data_lock.get("final_repaired_data")
+    if not isinstance(repaired, Mapping):
+        raise E26AGateBlocked("Final Stage-3C data lock lacks repaired-data bindings")
+    readiness_binding = repaired.get("scientific_data_readiness_v3")
+    if not isinstance(readiness_binding, Mapping):
+        raise E26AGateBlocked("Final Stage-3C data lock lacks the V3 readiness binding")
+    bound_path = readiness_binding.get("path")
+    bound_sha = readiness_binding.get("sha256")
+    if not isinstance(bound_path, str) or not isinstance(bound_sha, str):
+        raise E26AGateBlocked("Final Stage-3C V3 readiness byte binding is incomplete")
+    try:
+        resolved_bound_path = Path(bound_path).expanduser().resolve(strict=True)
+    except FileNotFoundError as error:
+        raise E26AGateBlocked("Final Stage-3C V3 readiness binding is missing") from error
+    if resolved_bound_path != paths.data_readiness:
+        raise E26AGateBlocked("Final Stage-3C lock binds another V3 readiness path")
+    if not SHA256_PATTERN.fullmatch(bound_sha) or sha256_file(paths.data_readiness) != bound_sha:
+        raise E26AGateBlocked("Final Stage-3C V3 readiness byte SHA-256 mismatch")
+    if repaired.get("readiness_internal_sha256") != recorded.get("readiness_sha256"):
+        raise E26AGateBlocked("Final Stage-3C V3 readiness canonical binding mismatch")
+
+    repair_protocol = _readiness_bound_input(recorded, "protocol_lock")
+    repair_receipt = _readiness_bound_input(recorded, "repair_receipt")
+    repair_source = _readiness_bound_input(recorded, "repair_source")
+    try:
+        observed = validate_zero_tolerance_data_bundle(
+            data_lock_path=repair_protocol,
+            repair_receipt_path=repair_receipt,
+            source_receipt_path=repair_source,
+        ).as_dict()
+    except (DataReadinessV3Error, KeyError, OSError, TypeError, ValueError) as error:
+        raise E26AGateBlocked(
+            f"Raw Stage-3 repaired data bundle failed revalidation: {error}"
+        ) from error
+    if observed != recorded:
+        raise E26AGateBlocked(
+            "V3 data-readiness receipt differs from a fresh repaired-bundle revalidation"
+        )
+
+
+def _revalidate_data_readiness(
+    *,
+    paths: E26AGateInputPaths,
+    data_lock: Mapping[str, Any],
+    recorded: dict[str, Any],
+) -> None:
+    """Dispatch immutable data admission by the receipt's declared schema."""
+
+    manifest_type = recorded.get("manifest_type")
+    if manifest_type == "E26_SCIENTIFIC_DATA_READINESS_V2":
+        _revalidate_stage2_data_readiness(paths=paths, recorded=recorded)
+        return
+    if manifest_type == "E26_SCIENTIFIC_DATA_READINESS_V3":
+        _revalidate_stage3_data_readiness(
+            paths=paths,
+            data_lock=data_lock,
+            recorded=recorded,
+        )
+        return
+    raise E26AGateBlocked(f"Unsupported data-readiness manifest_type: {manifest_type!r}")
 
 
 def _deep_values(payload: Any, key: str) -> Iterator[Any]:
@@ -1251,7 +1355,11 @@ def validate_scientific_gate_admission(
     )
     if data_readiness.get("scientific_main_input_eligible") is not True:
         raise E26AGateBlocked("Data readiness is not eligible as a scientific input")
-    _revalidate_stage2_data_readiness(paths=paths, recorded=data_readiness)
+    _revalidate_data_readiness(
+        paths=paths,
+        data_lock=data_lock,
+        recorded=data_readiness,
+    )
     try:
         frozen_tree_receipt = validate_frozen_invariance_receipt(
             frozen_tree_receipt,

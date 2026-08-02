@@ -1,0 +1,245 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://catena.local/schemas/v8.1/e26_stage3c_data_lock.schema.json",
+  "title": "CATENA E26 Stage-3C Final-Data Lock",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "status",
+    "scientific_evidence",
+    "evidence_tier",
+    "claim_ceiling",
+    "repository",
+    "source",
+    "content_partition",
+    "tokenizer",
+    "data_root",
+    "memmaps",
+    "transaction",
+    "tooling",
+    "resource_policy",
+    "stop_policy",
+    "stage3c_execution",
+    "final_repaired_data",
+    "main_test_opened",
+    "main_test_access_count",
+    "lock_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "catena-e26-data-lock-v3-final-preflight"
+    },
+    "status": {
+      "const": "PROSPECTIVE_POST_REPAIR_PRE_E26A_LOCK"
+    },
+    "scientific_evidence": {
+      "const": false
+    },
+    "evidence_tier": {
+      "const": "SCIENTIFIC_INPUT_PROVENANCE"
+    },
+    "claim_ceiling": {
+      "const": "PROTOCOL_IDENTIFIABILITY_ONLY"
+    },
+    "main_test_opened": {
+      "const": false
+    },
+    "main_test_access_count": {
+      "const": 0
+    },
+    "repository": {
+      "type": "object"
+    },
+    "source": {
+      "type": "object"
+    },
+    "content_partition": {
+      "type": "object"
+    },
+    "tokenizer": {
+      "type": "object"
+    },
+    "data_root": {
+      "type": "string"
+    },
+    "memmaps": {
+      "type": "object"
+    },
+    "transaction": {
+      "type": "object"
+    },
+    "tooling": {
+      "type": "object"
+    },
+    "resource_policy": {
+      "type": "object"
+    },
+    "stop_policy": {
+      "type": "object",
+      "required": [
+        "execute_stage3c_non_evidence_preflight",
+        "execute_scientific_e26a",
+        "execute_e26b",
+        "execute_e26c_or_later"
+      ],
+      "properties": {
+        "execute_stage3c_non_evidence_preflight": {
+          "const": true
+        },
+        "execute_scientific_e26a": {
+          "const": false
+        },
+        "execute_e26b": {
+          "const": false
+        },
+        "execute_e26c_or_later": {
+          "const": false
+        }
+      }
+    },
+    "stage3c_execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "worktree",
+        "mode",
+        "git_head",
+        "git_status",
+        "source_tree_sha256",
+        "source_file_count",
+        "non_evidence_preflight_authorized",
+        "scientific_e26a_authorized",
+        "e26b_or_later_authorized"
+      ],
+      "properties": {
+        "worktree": {
+          "type": "string"
+        },
+        "mode": {
+          "const": "NON_EVIDENCE_FINAL_PREFLIGHT_ONLY"
+        },
+        "git_head": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40,64}$"
+        },
+        "git_status": {
+          "const": ""
+        },
+        "source_tree_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "source_file_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "non_evidence_preflight_authorized": {
+          "const": true
+        },
+        "scientific_e26a_authorized": {
+          "const": false
+        },
+        "e26b_or_later_authorized": {
+          "const": false
+        }
+      }
+    },
+    "final_repaired_data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy",
+        "human_labels_used",
+        "parent_data_lock",
+        "parent_payload_sha256",
+        "repair_protocol",
+        "repair_receipt",
+        "repair_receipt_internal_sha256",
+        "repair_source_receipt",
+        "scientific_data_readiness_v3",
+        "readiness_internal_sha256",
+        "general_memmap_receipt",
+        "train_corpus_manifest",
+        "schedule_manifest",
+        "transaction_manifest",
+        "final_protected_train_flag_count",
+        "main_test_opened"
+      ],
+      "properties": {
+        "policy": {
+          "const": "EXCLUDE_ALL_FLAGGED_TRAIN_DOCUMENTS"
+        },
+        "human_labels_used": {
+          "const": false
+        },
+        "parent_data_lock": {
+          "$ref": "#/$defs/binding"
+        },
+        "parent_payload_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "repair_protocol": {
+          "$ref": "#/$defs/binding"
+        },
+        "repair_receipt": {
+          "$ref": "#/$defs/binding"
+        },
+        "repair_receipt_internal_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "repair_source_receipt": {
+          "$ref": "#/$defs/binding"
+        },
+        "scientific_data_readiness_v3": {
+          "$ref": "#/$defs/binding"
+        },
+        "readiness_internal_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "general_memmap_receipt": {
+          "$ref": "#/$defs/binding"
+        },
+        "train_corpus_manifest": {
+          "$ref": "#/$defs/binding"
+        },
+        "schedule_manifest": {
+          "$ref": "#/$defs/binding"
+        },
+        "transaction_manifest": {
+          "$ref": "#/$defs/binding"
+        },
+        "final_protected_train_flag_count": {
+          "const": 0
+        },
+        "main_test_opened": {
+          "const": false
+        }
+      }
+    },
+    "lock_sha256": {
+      "$ref": "#/$defs/sha256"
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    }
+  }
+}

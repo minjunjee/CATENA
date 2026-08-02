@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -137,3 +138,39 @@ def test_stage2_protocol_lock_cli_has_no_scientific_launcher() -> None:
     assert "run_scientific_e26a" not in source
     assert "e26b" not in source.lower()
     assert "e26c" not in source.lower()
+
+
+def test_stage2_protocol_lock_validates_stage3c_data_lock(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        "catena.lm.stage2_protocol_lock.validate_frozen_invariance_receipt",
+        lambda payload, *, data_lock: dict(payload),
+    )
+    calls: list[dict[str, object]] = []
+    monkeypatch.setattr(
+        "catena.lm.stage2_protocol_lock.validate_stage3c_data_lock",
+        lambda payload: calls.append(dict(payload)),
+    )
+    repo, inputs = _fixture(tmp_path)
+    final_lock = tmp_path / "stage3c_data_lock.json"
+    write_json_strict(
+        final_lock,
+        {
+            "schema_version": "catena-e26-data-lock-v3-final-preflight",
+            "stage3c_execution": {"worktree": str(repo)},
+        },
+    )
+    build_stage2_protocol_lock(
+        repo_root=repo,
+        output_dir=tmp_path / "stage3c_protocol_lock",
+        lock_utc="2026-08-02T12:00:00Z",
+        inputs=replace(inputs, data_lock=final_lock),
+    )
+    assert calls == [
+        {
+            "schema_version": "catena-e26-data-lock-v3-final-preflight",
+            "stage3c_execution": {"worktree": str(repo)},
+        }
+    ]

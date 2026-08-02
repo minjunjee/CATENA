@@ -23,6 +23,7 @@ from .frozen_invariance import (
     FrozenInvarianceError,
     validate_frozen_invariance_receipt,
 )
+from .stage3c_data_lock import Stage3CDataLockError, validate_stage3c_data_lock
 
 
 class Stage2ProtocolLockError(RuntimeError):
@@ -164,6 +165,20 @@ def build_stage2_protocol_lock(
     except (OSError, ValueError) as error:
         raise Stage2ProtocolLockError(f"Backend candidate lock is invalid: {error}") from error
     data_lock = _yaml_mapping(resolved_inputs.data_lock, "data lock")
+    if data_lock.get("schema_version") == "catena-e26-data-lock-v3-final-preflight":
+        execution = data_lock.get("stage3c_execution")
+        if not isinstance(execution, Mapping) or not isinstance(execution.get("worktree"), str):
+            raise Stage2ProtocolLockError("Stage-3C final-data lock lacks its execution worktree")
+        if Path(str(execution["worktree"])).expanduser().resolve(strict=True) != repo:
+            raise Stage2ProtocolLockError(
+                "Stage-3C final-data lock belongs to another execution worktree"
+            )
+        try:
+            validate_stage3c_data_lock(data_lock)
+        except (Stage3CDataLockError, OSError, ValueError) as error:
+            raise Stage2ProtocolLockError(
+                f"Stage-3C final-data lock is invalid: {error}"
+            ) from error
     try:
         validate_frozen_invariance_receipt(
             read_json_object_strict(resolved_inputs.frozen_tree_receipt),

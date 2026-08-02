@@ -25,6 +25,7 @@ PACKET_SCHEMA_NAMES = {
 SCIENTIFIC_DATA_SCHEMA_NAMES = {
     "e26_frozen_invariance_receipt.schema.json",
     "e26_resource_preflight_receipt.schema.json",
+    "e26_stage3c_data_lock.schema.json",
     "e26a_validation_population_lock.schema.json",
     "e26_scientific_data_readiness_v3.schema.json",
     "e26_zero_tolerance_repair_receipt.schema.json",
