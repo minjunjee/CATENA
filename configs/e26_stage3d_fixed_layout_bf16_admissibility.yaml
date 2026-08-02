@@ -1,0 +1,188 @@
+schema_version: catena-v8.1
+experiment: e26_stage3d_fixed_layout_bf16_admissibility
+stage: GATE
+stage_id: E26_STAGE3D
+name: FIXED_PHYSICAL_LAYOUT_BF16_ADMISSIBILITY
+status: PROSPECTIVE_DRAFT
+run_mode: NON_EVIDENCE_NUMERICAL_PREFLIGHT
+scientific_evidence: false
+evidence_tier: NON_EVIDENCE_NUMERICAL_PREFLIGHT
+claim_ceiling: FIXED_LAYOUT_NUMERICAL_ADMISSIBILITY_ONLY
+
+predecessor:
+  stage_id: E26_STAGE3C
+  required_disposition: BLOCKED_NUMERICAL_GRADIENT_ACCUMULATION_LAYOUT_INVARIANCE
+  immutable: true
+  diagnostic_disposition: KNOWN_BF16_AND_OPTIMIZER_LAYOUT_SENSITIVITY
+  result_path: docs/E26_STAGE3C_FINAL_DATA_PREFLIGHT_RESULT_KO.md
+  result_sha256: 83fab26e7936654b664653776d501c3fdee6cb7f0ffd78c3d9682ed41d319b56
+  status_path: docs/E26_STAGE3C_FINAL_DATA_PREFLIGHT_STATUS.json
+  status_sha256: 15b896a33e0fe286c80f2c204b7be2be0fbe6aaf8cdc512fafbd31040f8aabda
+  raw_registered_file_count: 11
+  raw_registered_aggregate_sha256: 296556071853073cfdf678a114d95e61cc5d21d46caa2ab97a111eca508417cc
+  raw_registered_files_sha256:
+    d448_ctx4096.log: cd6bfb5bacc6808f99be1bbed00d1c043df9667cbfd0a5537febb5965a3c78ba
+    d448_ctx4096_numerical.json: d6232e02dd52d6fe96220ec8f846ae2e710992bea40b1139e254046c6fb2c4de
+    d448_ctx4096_worker_spec.json: d453dd4c53aae8396cd9f09c9c42ffd48a486baae5fd2c97711707fbbdf8a4a2
+    d512_ctx2048.log: cd6bfb5bacc6808f99be1bbed00d1c043df9667cbfd0a5537febb5965a3c78ba
+    d512_ctx2048_numerical.json: 63d6c364c475c8351ed24df4b331a5bcd84cabdd1e48895e3c52e22545c4e8e2
+    d512_ctx2048_worker_spec.json: 259af9c632779493ff308cc14c213056f983fdb964ed7633aef6b786ee5adddc
+    d512_ctx4096.log: cd6bfb5bacc6808f99be1bbed00d1c043df9667cbfd0a5537febb5965a3c78ba
+    d512_ctx4096_numerical.json: b9ce170be1766909cfe0624116c1305b7be345ca72676445045bbe7a85e3f55d
+    d512_ctx4096_worker_spec.json: 6a60adc88607e515a36796661d60855f35c4834fc76edd91963840cc2e9277f8
+    failure_status.json: dc7ed1837ccf022fe5110fdb44907c5e340391f0bcc5c92b7d5e26dcf2a95616
+    source_lock.json: c0107b3e836b3579dd89e747711da61fdd0a406dcc96a468f649b830fada6f32
+  failure_status_sha256: dc7ed1837ccf022fe5110fdb44907c5e340391f0bcc5c92b7d5e26dcf2a95616
+  require_protocol_hash_binding: true
+  require_artifact_hash_manifest_binding: true
+
+research_contract:
+  estimand: >-
+    Matched projected-tied-versus-dual training under one preregistered physical
+    microbatch, accumulation, data-order, optimizer and backend layout.
+  unchanged:
+    - scientific_outcome_thresholds
+    - optimizer_and_hyperparameters
+    - candidate_construction
+    - tokenizer_corpus_data_splits
+    - paired_seeds
+    - metrics_and_claim_gates
+    - maximal_parameter_surface
+    - bf16_main_precision
+    - fp32_optimizer_and_metric_policy
+    - stage3c_numerical_tolerances
+  prohibited:
+    - relabel_stage3c
+    - modify_stage3c_artifacts
+    - threshold_relaxation
+    - variant_specific_layout
+    - variant_specific_precision
+    - dense_fp32_fallback_for_stage3d
+    - semantic_padding_for_counterfactual_layout_equivalence
+    - automatic_scientific_e26a_start
+
+thresholds:
+  source: INHERIT_EXACTLY_FROM_STAGE3C_PROTOCOL_LOCK
+  fp32_relative_l2_max: 1.0e-5
+  fp32_max_abs_max: 1.0e-5
+  bf16_relative_l2_max: 7.0e-3
+  gradient_norm_min: 1.0e-8
+  gradient_norm_max: 1.0e3
+  nontrivial_row_definition: INHERIT_EXACTLY_FROM_STAGE3C_PROTOCOL_LOCK
+  stage3c_fp32_nontrivial_row_definition: >-
+    A row is nontrivial iff its partition vector is not exactly the singleton
+    [partition_length]. Logits, runtime-state leaves, the complete flattened
+    floating gradient tree and reference comparisons must independently satisfy
+    the frozen FP32 relative-L2 and max-absolute thresholds, and all
+    structural/finite flags must pass. Worst-leaf gradient error is retained as
+    a finite, nonnegative diagnostic and is not a primary Stage-3C gate.
+
+variants:
+  - projected_tied_delta_lm
+  - dual_delta_lm
+
+determinism:
+  initialization_seed: 260301
+  g3_data_seed: 260701
+  g4_data_seed: 260801
+  prefill_seed: 260901
+  prefill_length: 17
+
+fixed_physical_layout:
+  target_global_input_tokens: 65536
+  microbatch_sequences: 1
+  loss_denominator: GLOBAL_VALID_PREDICTION_TOKENS
+  optimizer_update_boundary: AFTER_FIXED_ACCUMULATION_STEPS
+  autocast_precision: bf16
+  optimizer_precision: fp32
+  metrics_precision: fp32
+  gradient_clipping_order: AFTER_ACCUMULATION_BEFORE_ADAMW_STEP
+  scheduler_order: AFTER_SUCCESSFUL_ADAMW_STEP
+  semantic_padding: false
+  variant_specific_layout_allowed: false
+  variant_specific_precision_allowed: false
+  candidates:
+    - candidate_id: d512_ctx4096
+      context_length: 4096
+      global_batch_sequences: 16
+      accumulation_steps: 16
+    - candidate_id: d512_ctx2048
+      context_length: 2048
+      global_batch_sequences: 32
+      accumulation_steps: 32
+    - candidate_id: d448_ctx4096
+      context_length: 4096
+      global_batch_sequences: 16
+      accumulation_steps: 16
+
+gates:
+  g0_predecessor_and_frozen_evidence:
+    require_stage3c_disposition_unchanged: true
+    require_stage3c_protocol_and_artifact_hashes: true
+    require_e00_e25_frozen_invariance: true
+    require_fresh_namespace: true
+  g1_variant_layout_identity:
+    require_exact_layout_match: true
+    require_exact_parameter_and_optimizer_shapes: true
+    require_initialization_digest_match: true
+    require_exact_token_ids_and_data_cursor: true
+  g2_fp32_reference:
+    reuse_allowed_only_by_exact_hash: true
+    inherit_stage3c_thresholds: true
+    inherit_stage3c_nontrivial_row_definition: true
+  g3_fixed_layout_bf16_admissibility:
+    state_contexts: [zero_state, prefilled_state]
+    compiled_backend: torch_compile_fixed_chunk_scan_v1
+    strict_reference_backend: reference_python
+    required_case_count: 12
+    comparisons_per_case:
+      - compiled_bf16_vs_reference_python_bf16
+      - reference_python_bf16_vs_reference_python_fp32
+    require_finite_gradients: true
+    require_exact_state_metadata: true
+    require_clone_no_alias: true
+    graph_break_count_max: 0
+    fallback_count_max: 0
+  g4_same_layout_replay:
+    required_case_count: 6
+    replay_count_per_case: 2
+    require_checkpoint_rng_data_optimizer_backend_identity: true
+    compare_with_inherited_bf16_tolerance: true
+  g5_optimizer_step_integrity:
+    require_global_token_normalization_identity: true
+    require_accumulation_reset_identity: true
+    require_gradient_clipping_order_identity: true
+    require_adamw_step_identity: true
+    require_weight_decay_order_identity: true
+    require_skipped_step_count_identity: true
+    require_all_gradients_finite: true
+  g6_backend_integrity:
+    graph_break_count_max: 0
+    fallback_count_max: 0
+    variant_specific_fp32_path_count_max: 0
+    variant_specific_padding_count_max: 0
+    forbid_reference_python_scientific_path: true
+
+registered_dispositions:
+  go: STAGE3D_GO_FIXED_LAYOUT_BF16_ADMISSIBLE
+  blocked: STAGE3D_BLOCKED_FIXED_LAYOUT_NUMERICAL_INSTABILITY
+  not_evaluable: STAGE3D_NOT_EVALUABLE_IMPLEMENTATION_OR_EXECUTION_ERROR
+
+resource_preflight:
+  execute_only_after_stage3d_go: true
+  scientific_evidence: false
+  main_token_budget_candidates: [250000000, 375000000, 500000000]
+  paired_training_seeds: 5
+  variants_per_seed: 2
+  deadline_reference_hours: 240
+  deadline_fraction_max: 0.70
+  max_main_wall_clock_hours: 168
+  safety_time_multiplier: 1.25
+  max_main_checkpoint_storage_gib: 100
+
+stop_policy:
+  execute_stage3d_non_evidence_preflight: true
+  execute_resource_preflight_only_after_go: true
+  execute_scientific_e26a: false
+  execute_e26b: false
+  execute_e26c_or_later: false

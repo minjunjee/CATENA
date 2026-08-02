@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "catena://schemas/v8_1/e26_stage3d_backend_manifest.schema.json",
+  "title": "CATENA E26 Stage-3D backend admissibility manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "manifest_type", "scientific_evidence", "evidence_tier",
+    "claim_ceiling", "protocol_lock", "stage3d_receipt", "source", "backend_id",
+    "strict_reference_backend", "fixed_layouts", "fallback_count", "graph_break_count",
+    "variant_specific_fp32_path_count", "variant_specific_padding_count",
+    "reference_python_scientific_path", "fixed_layout_admissible",
+    "batching_layout_invariance_claim_eligible", "scientific_e26a_started",
+    "scientific_main_started", "passed", "manifest_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "catena-e26-stage3d-backend-manifest-v1"},
+    "manifest_type": {"const": "E26_STAGE3D_BACKEND_MANIFEST"},
+    "scientific_evidence": {"const": false},
+    "evidence_tier": {"const": "NON_EVIDENCE_NUMERICAL_PREFLIGHT"},
+    "claim_ceiling": {"const": "FIXED_LAYOUT_BACKEND_ADMISSIBILITY_ONLY"},
+    "protocol_lock": {"type": "object"},
+    "stage3d_receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "receipt_sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "receipt_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "source": {"type": "object"},
+    "backend_id": {"type": "string", "minLength": 1, "not": {"const": "reference_python"}},
+    "strict_reference_backend": {"const": "reference_python"},
+    "fixed_layouts": {"type": "array", "minItems": 3, "maxItems": 3},
+    "fallback_count": {"const": 0},
+    "graph_break_count": {"const": 0},
+    "variant_specific_fp32_path_count": {"const": 0},
+    "variant_specific_padding_count": {"const": 0},
+    "reference_python_scientific_path": {"const": false},
+    "fixed_layout_admissible": {"const": true},
+    "batching_layout_invariance_claim_eligible": {"const": false},
+    "scientific_e26a_started": {"const": false},
+    "scientific_main_started": {"const": false},
+    "passed": {"const": true},
+    "manifest_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}

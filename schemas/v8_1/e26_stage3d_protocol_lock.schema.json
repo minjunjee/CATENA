@@ -1,0 +1,277 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "catena://schemas/v8_1/e26_stage3d_protocol_lock.schema.json",
+    "title": "CATENA E26 Stage-3D prospective protocol lock",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "schema_version",
+        "manifest_type",
+        "stage_id",
+        "status",
+        "scientific_evidence",
+        "evidence_tier",
+        "claim_ceiling",
+        "config",
+        "source",
+        "stage3c",
+        "frozen_e00_e25",
+        "inherited_thresholds",
+        "fp32_nontrivial_row_contract",
+        "fixed_layouts",
+        "variants",
+        "state_contexts",
+        "determinism",
+        "g3_required_case_count",
+        "g4_required_replay_count",
+        "backend_binding",
+        "strict_reference_backend",
+        "research_contract",
+        "stop_policy",
+        "main_test_opened",
+        "scientific_e26a_started",
+        "scientific_main_started",
+        "protocol_sha256"
+    ],
+    "properties": {
+        "schema_version": {"const": "catena-e26-stage3d-protocol-v1"},
+        "manifest_type": {"const": "E26_STAGE3D_PROTOCOL_LOCK"},
+        "stage_id": {"const": "E26_STAGE3D"},
+        "status": {"const": "PROSPECTIVE_LOCKED"},
+        "scientific_evidence": {"const": false},
+        "evidence_tier": {"const": "NON_EVIDENCE_NUMERICAL_PREFLIGHT"},
+        "claim_ceiling": {"const": "FIXED_LAYOUT_NUMERICAL_ADMISSIBILITY_ONLY"},
+        "config": {"$ref": "#/$defs/binding"},
+        "source": {"$ref": "#/$defs/source"},
+        "stage3c": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "stage_id",
+                "disposition",
+                "immutable",
+                "result",
+                "status",
+                "protocol",
+                "artifact_hash_manifest",
+                "artifact_manifest_internal_sha256",
+                "artifact_root",
+                "raw_registered_file_count",
+                "raw_registered_aggregate_sha256",
+                "raw_registered_files_sha256",
+                "artifact_manifest_rehash_aggregate_sha256",
+                "failure_status",
+                "diagnostic_disposition",
+                "fixed_probe_reference_mismatch"
+            ],
+            "properties": {
+                "stage_id": {"const": "E26_STAGE3C"},
+                "disposition": {
+                    "const": "BLOCKED_NUMERICAL_GRADIENT_ACCUMULATION_LAYOUT_INVARIANCE"
+                },
+                "immutable": {"const": true},
+                "result": {"$ref": "#/$defs/binding"},
+                "status": {"$ref": "#/$defs/binding"},
+                "protocol": {"$ref": "#/$defs/binding"},
+                "artifact_hash_manifest": {"$ref": "#/$defs/binding"},
+                "artifact_manifest_internal_sha256": {"$ref": "#/$defs/sha256"},
+                "artifact_root": {"type": "string", "minLength": 1},
+                "raw_registered_file_count": {"const": 11},
+                "raw_registered_aggregate_sha256": {
+                    "const": "296556071853073cfdf678a114d95e61cc5d21d46caa2ab97a111eca508417cc"
+                },
+                "raw_registered_files_sha256": {
+                    "type": "object",
+                    "minProperties": 11,
+                    "maxProperties": 11,
+                    "additionalProperties": {"$ref": "#/$defs/sha256"}
+                },
+                "artifact_manifest_rehash_aggregate_sha256": {"$ref": "#/$defs/sha256"},
+                "failure_status": {"$ref": "#/$defs/binding"},
+                "diagnostic_disposition": {"const": "KNOWN_BF16_AND_OPTIMIZER_LAYOUT_SENSITIVITY"},
+                "fixed_probe_reference_mismatch": {"const": "SEPARATE_STAGE3D_G3_HARD_GATE"}
+            }
+        },
+        "frozen_e00_e25": {"$ref": "#/$defs/binding"},
+        "inherited_thresholds": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "fp32_relative_l2_max",
+                "fp32_max_abs_max",
+                "bf16_relative_l2_max",
+                "gradient_norm_min",
+                "gradient_norm_max"
+            ],
+            "properties": {
+                "fp32_relative_l2_max": {"const": 0.00001},
+                "fp32_max_abs_max": {"const": 0.00001},
+                "bf16_relative_l2_max": {"const": 0.007},
+                "gradient_norm_min": {"const": 0.00000001},
+                "gradient_norm_max": {"const": 1000.0}
+            }
+        },
+        "fp32_nontrivial_row_contract": {
+            "const": {
+                "definition": "PARTITION_VECTOR_NOT_EXACT_SINGLETON_PARTITION_LENGTH;PRIMARY_LOGITS_RUNTIME_STATE_GLOBAL_GRADIENT_REFERENCE_RECOMPUTED;WORST_LEAF_FINITE_DIAGNOSTIC_ONLY",
+                "reports_required": 12,
+                "rows_per_report": 12,
+                "nontrivial_rows_per_report": 11,
+                "nontrivial_rows_required": 132,
+                "derive_from_raw_artifacts": true,
+                "trust_precomputed_pass_flag_only": false,
+                "gated_tensor_fields": [
+                    "logits",
+                    "runtime_state.recurrent",
+                    "runtime_state.attention_key",
+                    "runtime_state.attention_value",
+                    "gradients_global_tree",
+                    "reference_comparisons"
+                ],
+                "diagnostic_only_fields": ["gradients_worst_leaf"]
+            }
+        },
+        "fixed_layouts": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "prefixItems": [
+                {"$ref": "#/$defs/layout4096d512"},
+                {"$ref": "#/$defs/layout2048d512"},
+                {"$ref": "#/$defs/layout4096d448"}
+            ],
+            "items": false
+        },
+        "variants": {"const": ["projected_tied_delta_lm", "dual_delta_lm"]},
+        "state_contexts": {"const": ["zero_state", "prefilled_state"]},
+        "determinism": {
+            "const": {
+                "initialization_seed": 260301,
+                "g3_data_seed": 260701,
+                "g4_data_seed": 260801,
+                "prefill_seed": 260901,
+                "prefill_length": 17
+            }
+        },
+        "g3_required_case_count": {"const": 12},
+        "g4_required_replay_count": {"const": 6},
+        "backend_binding": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "registered_backend_id",
+                "runtime_backend_alias",
+                "strict_reference_backend_id"
+            ],
+            "properties": {
+                "registered_backend_id": {"const": "torch_compile_fixed_chunk_scan_v1"},
+                "runtime_backend_alias": {"const": "compiled_scan"},
+                "strict_reference_backend_id": {"const": "reference_python"}
+            }
+        },
+        "strict_reference_backend": {"const": "reference_python"},
+        "research_contract": {"type": "object"},
+        "stop_policy": {
+            "type": "object",
+            "required": [
+                "execute_stage3d_non_evidence_preflight",
+                "execute_resource_preflight_only_after_go",
+                "execute_scientific_e26a",
+                "execute_e26b",
+                "execute_e26c_or_later"
+            ],
+            "properties": {
+                "execute_stage3d_non_evidence_preflight": {"const": true},
+                "execute_resource_preflight_only_after_go": {"const": true},
+                "execute_scientific_e26a": {"const": false},
+                "execute_e26b": {"const": false},
+                "execute_e26c_or_later": {"const": false}
+            }
+        },
+        "main_test_opened": {"const": false},
+        "scientific_e26a_started": {"const": false},
+        "scientific_main_started": {"const": false},
+        "protocol_sha256": {"$ref": "#/$defs/sha256"}
+    },
+    "$defs": {
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "binding": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256"],
+            "properties": {
+                "path": {"type": "string", "minLength": 1},
+                "sha256": {"$ref": "#/$defs/sha256"}
+            }
+        },
+        "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["git_commit", "source_tree_sha256", "source_file_count"],
+            "properties": {
+                "git_commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+                "source_tree_sha256": {"$ref": "#/$defs/sha256"},
+                "source_file_count": {"type": "integer", "minimum": 1}
+            }
+        },
+        "layoutBase": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "candidate_id",
+                "context_length",
+                "microbatch_sequences",
+                "target_global_input_tokens",
+                "global_batch_sequences",
+                "accumulation_steps"
+            ],
+            "properties": {
+                "candidate_id": {"type": "string"},
+                "context_length": {"type": "integer"},
+                "microbatch_sequences": {"const": 1},
+                "target_global_input_tokens": {"const": 65536},
+                "global_batch_sequences": {"type": "integer"},
+                "accumulation_steps": {"type": "integer"}
+            }
+        },
+        "layout4096d512": {
+            "allOf": [
+                {"$ref": "#/$defs/layoutBase"},
+                {
+                    "properties": {
+                        "candidate_id": {"const": "d512_ctx4096"},
+                        "context_length": {"const": 4096},
+                        "global_batch_sequences": {"const": 16},
+                        "accumulation_steps": {"const": 16}
+                    }
+                }
+            ]
+        },
+        "layout2048d512": {
+            "allOf": [
+                {"$ref": "#/$defs/layoutBase"},
+                {
+                    "properties": {
+                        "candidate_id": {"const": "d512_ctx2048"},
+                        "context_length": {"const": 2048},
+                        "global_batch_sequences": {"const": 32},
+                        "accumulation_steps": {"const": 32}
+                    }
+                }
+            ]
+        },
+        "layout4096d448": {
+            "allOf": [
+                {"$ref": "#/$defs/layoutBase"},
+                {
+                    "properties": {
+                        "candidate_id": {"const": "d448_ctx4096"},
+                        "context_length": {"const": 4096},
+                        "global_batch_sequences": {"const": 16},
+                        "accumulation_steps": {"const": 16}
+                    }
+                }
+            ]
+        }
+    }
+}

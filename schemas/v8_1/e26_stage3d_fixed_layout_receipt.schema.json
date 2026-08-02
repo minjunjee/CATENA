@@ -1,0 +1,529 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "catena://schemas/v8_1/e26_stage3d_fixed_layout_receipt.schema.json",
+    "title": "CATENA E26 Stage-3D fixed-layout BF16 admissibility receipt",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "schema_version",
+        "manifest_type",
+        "scientific_evidence",
+        "evidence_tier",
+        "claim_ceiling",
+        "protocol_lock",
+        "source",
+        "stage3c",
+        "diagnostic_disposition",
+        "fixed_probe_reference_mismatch",
+        "inherited_thresholds",
+        "fixed_layouts",
+        "determinism",
+        "fp32_reference",
+        "g3_cases",
+        "g4_replays",
+        "gate_summary",
+        "execution_status",
+        "disposition",
+        "main_test_opened",
+        "scientific_e26a_started",
+        "scientific_main_started",
+        "passed",
+        "receipt_sha256"
+    ],
+    "properties": {
+        "schema_version": {"const": "catena-e26-stage3d-fixed-layout-receipt-v1"},
+        "manifest_type": {"const": "E26_STAGE3D_FIXED_LAYOUT_RECEIPT"},
+        "scientific_evidence": {"const": false},
+        "evidence_tier": {"const": "NON_EVIDENCE_NUMERICAL_PREFLIGHT"},
+        "claim_ceiling": {"const": "FIXED_LAYOUT_NUMERICAL_ADMISSIBILITY_ONLY"},
+        "protocol_lock": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256", "protocol_sha256"],
+            "properties": {
+                "path": {"type": "string", "minLength": 1},
+                "sha256": {"$ref": "#/$defs/sha256"},
+                "protocol_sha256": {"$ref": "#/$defs/sha256"}
+            }
+        },
+        "source": {"type": "object"},
+        "stage3c": {"type": "object"},
+        "diagnostic_disposition": {"const": "KNOWN_BF16_AND_OPTIMIZER_LAYOUT_SENSITIVITY"},
+        "fixed_probe_reference_mismatch": {"enum": ["NONE", "OBSERVED_IN_STAGE3D_G3"]},
+        "inherited_thresholds": {"type": "object"},
+        "fixed_layouts": {"type": "array", "minItems": 3, "maxItems": 3},
+        "determinism": {
+            "const": {
+                "initialization_seed": 260301,
+                "g3_data_seed": 260701,
+                "g4_data_seed": 260801,
+                "prefill_seed": 260901,
+                "prefill_length": 17
+            }
+        },
+        "fp32_reference": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "passed",
+                "reuse_policy",
+                "stage3c_result_sha256",
+                "stage3c_artifact_manifest_sha256",
+                "stage3c_artifact_aggregate_sha256",
+                "fp32_arbitrary_partition_reports_passed",
+                "fp32_arbitrary_partition_reports_required",
+                "fp32_nontrivial_rows_passed",
+                "fp32_nontrivial_rows_required",
+                "thresholds"
+            ],
+            "properties": {
+                "passed": {"const": true},
+                "reuse_policy": {"const": "EXACT_STAGE3C_HASH_BINDING_ONLY"},
+                "stage3c_result_sha256": {"$ref": "#/$defs/sha256"},
+                "stage3c_artifact_manifest_sha256": {"$ref": "#/$defs/sha256"},
+                "stage3c_artifact_aggregate_sha256": {"$ref": "#/$defs/sha256"},
+                "fp32_arbitrary_partition_reports_passed": {"const": 12},
+                "fp32_arbitrary_partition_reports_required": {"const": 12},
+                "fp32_nontrivial_rows_passed": {"const": 132},
+                "fp32_nontrivial_rows_required": {"const": 132},
+                "thresholds": {"const": {"relative_l2_max": 0.00001, "max_abs_max": 0.00001}}
+            }
+        },
+        "g3_cases": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 12,
+            "items": {"$ref": "#/$defs/g3Case"}
+        },
+        "g4_replays": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 6,
+            "items": {"$ref": "#/$defs/g4Replay"}
+        },
+        "gate_summary": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "g0_passed",
+                "g1_passed",
+                "g2_passed",
+                "g3_passed",
+                "g4_passed",
+                "g5_passed",
+                "g6_passed",
+                "g3_pass_count",
+                "g3_required_count",
+                "g4_pass_count",
+                "g4_required_count"
+            ],
+            "properties": {
+                "g0_passed": {"type": "boolean"},
+                "g1_passed": {"type": "boolean"},
+                "g2_passed": {"type": "boolean"},
+                "g3_passed": {"type": "boolean"},
+                "g4_passed": {"type": "boolean"},
+                "g5_passed": {"type": "boolean"},
+                "g6_passed": {"type": "boolean"},
+                "g3_pass_count": {"type": "integer", "minimum": 0, "maximum": 12},
+                "g3_required_count": {"const": 12},
+                "g4_pass_count": {"type": "integer", "minimum": 0, "maximum": 6},
+                "g4_required_count": {"const": 6}
+            }
+        },
+        "disposition": {
+            "enum": [
+                "STAGE3D_GO_FIXED_LAYOUT_BF16_ADMISSIBLE",
+                "STAGE3D_BLOCKED_FIXED_LAYOUT_NUMERICAL_INSTABILITY",
+                "STAGE3D_NOT_EVALUABLE_IMPLEMENTATION_OR_EXECUTION_ERROR"
+            ]
+        },
+        "execution_status": {
+            "enum": ["COMPLETED_NUMERICAL_EVALUATION", "FAILED_IMPLEMENTATION_OR_EXECUTION"]
+        },
+        "main_test_opened": {"const": false},
+        "scientific_e26a_started": {"const": false},
+        "scientific_main_started": {"const": false},
+        "passed": {"type": "boolean"},
+        "receipt_sha256": {"$ref": "#/$defs/sha256"}
+    },
+    "$defs": {
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "tensorError": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["relative_l2", "max_abs"],
+            "properties": {
+                "relative_l2": {"type": "number", "minimum": 0},
+                "max_abs": {"type": "number", "minimum": 0}
+            }
+        },
+        "comparison": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["logits", "runtime_state", "gradients", "passed"],
+            "properties": {
+                "logits": {"$ref": "#/$defs/tensorError"},
+                "runtime_state": {"$ref": "#/$defs/tensorError"},
+                "gradients": {"$ref": "#/$defs/tensorError"},
+                "passed": {"type": "boolean"}
+            }
+        },
+        "optimizerStepIntegrity": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "global_token_normalization_identity",
+                "accumulation_buffer_reset_once",
+                "gradient_clipping_after_accumulation",
+                "adamw_step_and_bias_correction_identity",
+                "weight_decay_order_and_value_identity",
+                "skipped_optimizer_steps_zero",
+                "all_gradients_finite",
+                "valid_prediction_tokens",
+                "expected_valid_prediction_tokens",
+                "exposed_input_tokens",
+                "expected_input_tokens",
+                "microbatch_count",
+                "expected_microbatch_count",
+                "execution_events",
+                "adamw_state_steps",
+                "passed"
+            ],
+            "properties": {
+                "global_token_normalization_identity": {"type": "boolean"},
+                "accumulation_buffer_reset_once": {"type": "boolean"},
+                "gradient_clipping_after_accumulation": {"type": "boolean"},
+                "adamw_step_and_bias_correction_identity": {"type": "boolean"},
+                "weight_decay_order_and_value_identity": {"type": "boolean"},
+                "skipped_optimizer_steps_zero": {"type": "boolean"},
+                "all_gradients_finite": {"type": "boolean"},
+                "valid_prediction_tokens": {"type": "integer", "minimum": 0},
+                "expected_valid_prediction_tokens": {"type": "integer", "minimum": 0},
+                "exposed_input_tokens": {"type": "integer", "minimum": 0},
+                "expected_input_tokens": {"type": "integer", "minimum": 0},
+                "microbatch_count": {"type": "integer", "minimum": 0},
+                "expected_microbatch_count": {"type": "integer", "minimum": 0},
+                "execution_events": {"type": "array", "items": {"type": "string"}},
+                "adamw_state_steps": {"type": "array", "items": {"type": "integer"}},
+                "passed": {"type": "boolean"}
+            },
+            "allOf": [
+                {
+                    "if": {"properties": {"passed": {"const": true}}, "required": ["passed"]},
+                    "then": {
+                        "properties": {
+                            "global_token_normalization_identity": {"const": true},
+                            "accumulation_buffer_reset_once": {"const": true},
+                            "gradient_clipping_after_accumulation": {"const": true},
+                            "adamw_step_and_bias_correction_identity": {"const": true},
+                            "weight_decay_order_and_value_identity": {"const": true},
+                            "skipped_optimizer_steps_zero": {"const": true},
+                            "all_gradients_finite": {"const": true},
+                            "execution_events": {
+                                "const": [
+                                    "zero_grad",
+                                    "gradient_clip",
+                                    "adamw_step",
+                                    "scheduler_step"
+                                ]
+                            },
+                            "adamw_state_steps": {"const": [1]}
+                        }
+                    }
+                }
+            ]
+        },
+        "g3Case": {
+            "type": "object",
+            "required": [
+                "candidate_id",
+                "variant",
+                "state_context",
+                "fixed_layout",
+                "layout_identity_passed",
+                "passed"
+            ],
+            "properties": {
+                "candidate_id": {"enum": ["d512_ctx4096", "d512_ctx2048", "d448_ctx4096"]},
+                "variant": {"enum": ["projected_tied_delta_lm", "dual_delta_lm"]},
+                "state_context": {"enum": ["zero_state", "prefilled_state"]},
+                "fixed_layout": {"type": "object"},
+                "initialization_digest": {"$ref": "#/$defs/sha256"},
+                "parameter_signature_sha256": {"$ref": "#/$defs/sha256"},
+                "optimizer_state_signature_sha256": {"$ref": "#/$defs/sha256"},
+                "token_ids_sha256": {"$ref": "#/$defs/sha256"},
+                "data_cursor_sha256": {"$ref": "#/$defs/sha256"},
+                "layout_identity_passed": {"type": "boolean"},
+                "comparisons": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                        "compiled_bf16_vs_reference_python_bf16",
+                        "reference_python_bf16_vs_reference_python_fp32"
+                    ],
+                    "properties": {
+                        "compiled_bf16_vs_reference_python_bf16": {"$ref": "#/$defs/comparison"},
+                        "reference_python_bf16_vs_reference_python_fp32": {
+                            "$ref": "#/$defs/comparison"
+                        }
+                    }
+                },
+                "gradient_finite": {"type": "boolean"},
+                "state_metadata_exact": {"type": "boolean"},
+                "clone_no_alias": {"type": "boolean"},
+                "graph_break_count": {"type": "integer", "minimum": 0},
+                "fallback_count": {"type": "integer", "minimum": 0},
+                "variant_specific_fp32_path_count": {"type": "integer", "minimum": 0},
+                "variant_specific_padding_count": {"type": "integer", "minimum": 0},
+                "backend_integrity": {"$ref": "#/$defs/backendIntegrity"},
+                "execution_status": {"type": "string"},
+                "passed": {"type": "boolean"}
+            },
+            "allOf": [
+                {
+                    "if": {"properties": {"passed": {"const": true}}, "required": ["passed"]},
+                    "then": {
+                        "required": [
+                            "initialization_digest",
+                            "parameter_signature_sha256",
+                            "optimizer_state_signature_sha256",
+                            "token_ids_sha256",
+                            "data_cursor_sha256",
+                            "comparisons",
+                            "gradient_finite",
+                            "state_metadata_exact",
+                            "clone_no_alias",
+                            "graph_break_count",
+                            "fallback_count",
+                            "variant_specific_fp32_path_count",
+                            "variant_specific_padding_count",
+                            "backend_integrity"
+                        ]
+                    }
+                }
+            ]
+        },
+        "backendIntegrity": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "optimized_backend_id",
+                "registered_backend_id",
+                "runtime_backend_alias",
+                "backend_alias_matches_registration",
+                "reference_backend_id",
+                "strict_reference_python",
+                "positive_compiled_execution",
+                "python_token_loop_at_scientific_runtime",
+                "graph_break_count",
+                "fallback_count",
+                "variant_specific_fp32_path_count",
+                "variant_specific_padding_count",
+                "passed"
+            ],
+            "properties": {
+                "optimized_backend_id": {"type": "string", "minLength": 1},
+                "registered_backend_id": {"type": "string", "minLength": 1},
+                "runtime_backend_alias": {"type": "string", "minLength": 1},
+                "backend_alias_matches_registration": {"type": "boolean"},
+                "reference_backend_id": {"type": "string", "minLength": 1},
+                "strict_reference_python": {"type": "boolean"},
+                "positive_compiled_execution": {"type": "boolean"},
+                "python_token_loop_at_scientific_runtime": {"type": "boolean"},
+                "graph_break_count": {"type": "integer", "minimum": 0},
+                "fallback_count": {"type": "integer", "minimum": 0},
+                "variant_specific_fp32_path_count": {"type": "integer", "minimum": 0},
+                "variant_specific_padding_count": {"type": "integer", "minimum": 0},
+                "observed_padded_tokens": {"type": "integer", "minimum": 0},
+                "precision_policy_sha256": {"$ref": "#/$defs/sha256"},
+                "passed": {"type": "boolean"}
+            },
+            "allOf": [
+                {
+                    "if": {"properties": {"passed": {"const": true}}, "required": ["passed"]},
+                    "then": {
+                        "properties": {
+                            "optimized_backend_id": {"not": {"const": "reference_python"}},
+                            "registered_backend_id": {"const": "torch_compile_fixed_chunk_scan_v1"},
+                            "runtime_backend_alias": {"const": "compiled_scan"},
+                            "backend_alias_matches_registration": {"const": true},
+                            "reference_backend_id": {"const": "reference_python"},
+                            "strict_reference_python": {"const": true},
+                            "positive_compiled_execution": {"const": true},
+                            "python_token_loop_at_scientific_runtime": {"const": false},
+                            "graph_break_count": {"const": 0},
+                            "fallback_count": {"const": 0},
+                            "variant_specific_fp32_path_count": {"const": 0},
+                            "variant_specific_padding_count": {"const": 0}
+                        }
+                    }
+                }
+            ]
+        },
+        "g4Replay": {
+            "type": "object",
+            "required": [
+                "candidate_id",
+                "variant",
+                "fixed_layout",
+                "optimizer_integrity_passed",
+                "graph_break_count",
+                "fallback_count",
+                "passed"
+            ],
+            "properties": {
+                "candidate_id": {"enum": ["d512_ctx4096", "d512_ctx2048", "d448_ctx4096"]},
+                "variant": {"enum": ["projected_tied_delta_lm", "dual_delta_lm"]},
+                "fixed_layout": {"type": "object"},
+                "checkpoint_sha256": {"$ref": "#/$defs/sha256"},
+                "checkpoint_semantic_sha256": {"$ref": "#/$defs/sha256"},
+                "rng_state_sha256": {"$ref": "#/$defs/sha256"},
+                "data_ids_sha256": {"$ref": "#/$defs/sha256"},
+                "data_cursor_sha256": {"$ref": "#/$defs/sha256"},
+                "backend_graph_sha256": {"$ref": "#/$defs/sha256"},
+                "backend_recipe_sha256": {"$ref": "#/$defs/sha256"},
+                "optimizer_input_sha256": {"$ref": "#/$defs/sha256"},
+                "initialization_digest": {"$ref": "#/$defs/sha256"},
+                "parameter_signature_sha256": {"$ref": "#/$defs/sha256"},
+                "initial_optimizer_state_signature_sha256": {"$ref": "#/$defs/sha256"},
+                "comparison": {"$ref": "#/$defs/comparison"},
+                "optimizer_state": {"$ref": "#/$defs/tensorError"},
+                "optimizer_state_structure_equal": {"type": "boolean"},
+                "scheduler_state_equal": {"type": "boolean"},
+                "optimizer_step_integrity": {"$ref": "#/$defs/optimizerStepIntegrity"},
+                "gradients_finite": {"type": "boolean"},
+                "state_metadata_exact": {"type": "boolean"},
+                "clone_no_alias": {"type": "boolean"},
+                "optimizer_integrity_passed": {"type": "boolean"},
+                "graph_break_count": {
+                    "anyOf": [{"type": "integer", "minimum": 0}, {"type": "null"}]
+                },
+                "fallback_count": {"anyOf": [{"type": "integer", "minimum": 0}, {"type": "null"}]},
+                "execution_status": {"type": "string"},
+                "blocked_reason": {"type": "string"},
+                "passed": {"type": "boolean"}
+            },
+            "allOf": [
+                {
+                    "if": {"properties": {"passed": {"const": true}}, "required": ["passed"]},
+                    "then": {
+                        "required": [
+                            "checkpoint_sha256",
+                            "checkpoint_semantic_sha256",
+                            "rng_state_sha256",
+                            "data_ids_sha256",
+                            "data_cursor_sha256",
+                            "backend_graph_sha256",
+                            "backend_recipe_sha256",
+                            "optimizer_input_sha256",
+                            "initialization_digest",
+                            "parameter_signature_sha256",
+                            "initial_optimizer_state_signature_sha256",
+                            "comparison",
+                            "optimizer_state",
+                            "optimizer_state_structure_equal",
+                            "scheduler_state_equal",
+                            "optimizer_step_integrity",
+                            "gradients_finite",
+                            "state_metadata_exact",
+                            "clone_no_alias"
+                        ],
+                        "properties": {
+                            "comparison": {
+                                "properties": {
+                                    "logits": {"properties": {"relative_l2": {"maximum": 0.007}}},
+                                    "runtime_state": {
+                                        "properties": {"relative_l2": {"maximum": 0.007}}
+                                    },
+                                    "gradients": {
+                                        "properties": {"relative_l2": {"maximum": 0.007}}
+                                    },
+                                    "passed": {"const": true}
+                                }
+                            },
+                            "optimizer_state": {"properties": {"relative_l2": {"maximum": 0.007}}},
+                            "optimizer_state_structure_equal": {"const": true},
+                            "scheduler_state_equal": {"const": true},
+                            "optimizer_integrity_passed": {"const": true},
+                            "gradients_finite": {"const": true},
+                            "state_metadata_exact": {"const": true},
+                            "clone_no_alias": {"const": true},
+                            "graph_break_count": {"const": 0},
+                            "fallback_count": {"const": 0}
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "candidate_id": {"const": "d512_ctx4096"},
+                            "passed": {"const": true}
+                        },
+                        "required": ["candidate_id", "passed"]
+                    },
+                    "then": {
+                        "properties": {
+                            "optimizer_step_integrity": {
+                                "properties": {
+                                    "valid_prediction_tokens": {"const": 65520},
+                                    "expected_valid_prediction_tokens": {"const": 65520},
+                                    "exposed_input_tokens": {"const": 65536},
+                                    "expected_input_tokens": {"const": 65536},
+                                    "microbatch_count": {"const": 16},
+                                    "expected_microbatch_count": {"const": 16}
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "candidate_id": {"const": "d512_ctx2048"},
+                            "passed": {"const": true}
+                        },
+                        "required": ["candidate_id", "passed"]
+                    },
+                    "then": {
+                        "properties": {
+                            "optimizer_step_integrity": {
+                                "properties": {
+                                    "valid_prediction_tokens": {"const": 65504},
+                                    "expected_valid_prediction_tokens": {"const": 65504},
+                                    "exposed_input_tokens": {"const": 65536},
+                                    "expected_input_tokens": {"const": 65536},
+                                    "microbatch_count": {"const": 32},
+                                    "expected_microbatch_count": {"const": 32}
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "candidate_id": {"const": "d448_ctx4096"},
+                            "passed": {"const": true}
+                        },
+                        "required": ["candidate_id", "passed"]
+                    },
+                    "then": {
+                        "properties": {
+                            "optimizer_step_integrity": {
+                                "properties": {
+                                    "valid_prediction_tokens": {"const": 65520},
+                                    "expected_valid_prediction_tokens": {"const": 65520},
+                                    "exposed_input_tokens": {"const": 65536},
+                                    "expected_input_tokens": {"const": 65536},
+                                    "microbatch_count": {"const": 16},
+                                    "expected_microbatch_count": {"const": 16}
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

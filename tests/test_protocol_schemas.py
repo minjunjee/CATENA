@@ -26,6 +26,10 @@ SCIENTIFIC_DATA_SCHEMA_NAMES = {
     "e26_frozen_invariance_receipt.schema.json",
     "e26_resource_preflight_receipt.schema.json",
     "e26_stage3c_data_lock.schema.json",
+    "e26_stage3d_backend_manifest.schema.json",
+    "e26_stage3d_fixed_layout_receipt.schema.json",
+    "e26_stage3d_protocol_lock.schema.json",
+    "e26_stage3d_resource_preflight_receipt.schema.json",
     "e26a_validation_population_lock.schema.json",
     "e26_scientific_data_readiness_v3.schema.json",
     "e26_zero_tolerance_repair_receipt.schema.json",
@@ -42,7 +46,7 @@ def test_all_protocol_yaml_parse_and_have_core_keys() -> None:
         for path in sorted((REPO_ROOT / "configs").glob("*.yaml"))
         if path.name.startswith(V8_CONFIG_PREFIXES) and path.name not in NON_EXPERIMENT_CONFIG_NAMES
     ]
-    assert len(paths) == 14
+    assert len(paths) == 15
     for path in paths:
         payload = yaml.safe_load(path.read_text(encoding="utf-8"))
         assert payload["schema_version"] == "catena-v8.1"
