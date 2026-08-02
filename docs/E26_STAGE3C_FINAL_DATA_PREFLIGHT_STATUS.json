@@ -1,0 +1,17 @@
+{
+  "raw_run_aggregate_sha256": "296556071853073cfdf678a114d95e61cc5d21d46caa2ab97a111eca508417cc",
+  "claim_eligible": false,
+  "durable_run_path": "/data/minjun_dev/CATENA/artifacts/e26_stage3c_numerical_preflight/20260802T060323Z",
+  "evidence_tier": "NON_EVIDENCE_VALIDATION",
+  "failure_status_sha256": "dc7ed1837ccf022fe5110fdb44907c5e340391f0bcc5c92b7d5e26dcf2a95616",
+  "main_test_opened": false,
+  "manifest_type": "E26_STAGE3C_FINAL_DATA_PREFLIGHT_STATUS",
+  "original_run_path": "/tmp/catena_e26_preflight_fd22ea544139",
+  "resource_preflight_started": false,
+  "restart_audit_started": false,
+  "schema_version": "catena-v8.1",
+  "scientific_e26a_started": false,
+  "scientific_evidence": false,
+  "source_commit": "56d6027e51f7aad1a4ab16376bf4e912f26fb4da",
+  "stage3c_disposition": "BLOCKED_NUMERICAL_GRADIENT_ACCUMULATION_LAYOUT_INVARIANCE"
+}
