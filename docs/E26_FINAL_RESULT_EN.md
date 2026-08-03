@@ -14,6 +14,18 @@ community-checkpoint transport and strict structural compatibility, tokenizer
 bytes, and the CUDA 13 / PyTorch 2.9 / FlashAttention / API-compatible FLA
 dependency provenance passed. The canonical official-runtime admission did not.
 
+The exact source pin is NVLabs `GatedDeltaNet-2` commit
+`95709fc250357c2dd109361c353192f2aa5913f9`, licensed under the non-commercial
+`NVIDIA Source Code License-NC`. The starting community checkpoint is
+`model-100b.pth`, 17,401,727,659 bytes, SHA-256
+`0322ebeefa96badb24d6b4b511c36b02374b704dc1a65b90eab2ee1383a9ce23`.
+It is not an official NVIDIA weight and is byte-identical to the repository's
+`model-95b.pth`, so the 100B training-token identity is not established. The
+TinyLlama tokenizer revision is
+`ff3c701f2424c7625fdefb9dd470f45ef18b02d6`, but it is not cryptographically
+linked to the community checkpoint. The source-license/model-card-license
+difference remains a manual-review boundary.
+
 The first Dual and Projected-Tied attempts stopped before GPU execution because
 implementation validation had left Python bytecode caches in the derived
 checkout. Both blocked receipts were retained. Under the prospective R1
@@ -35,6 +47,11 @@ evaluation, mechanism intervention, quality guardrail, or systems benchmark was
 run. Consequently this is neither a null result nor a refutation of E26; it is
 an official-runtime admission failure. No pretrained-LM, official-operator,
 transaction-effect, mechanism, quality/locality, or speed claim is eligible.
+Data, throughput, VRAM, power, bridge quality, and all scientific metrics are
+therefore `NOT RUN` or `NOT MEASURED`. The dependency receipt passed provenance
+only: external decode-cache clone/restore plumbing remained unimplemented and
+`decode_cache_evaluation_eligible=false`. This independent later-stage
+limitation did not change the earlier namespace-blocker execution branch.
 
 The Stage-3C/3D dispositions remain unchanged, and the frozen E00--E25 aggregate
 (2,062 files; SHA-256
