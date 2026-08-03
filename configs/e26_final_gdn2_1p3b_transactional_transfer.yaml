@@ -1,0 +1,203 @@
+schema_version: catena-e26-final-v1
+experiment_id: E26_FINAL_GDN2_1P3B_TRANSACTIONAL_TRANSFER
+status: PROSPECTIVE_LOCK
+
+evidence:
+  previous_stage3c_disposition: BLOCKED_NUMERICAL_GRADIENT_ACCUMULATION_LAYOUT_INVARIANCE
+  previous_stage3d_disposition: STAGE3D_BLOCKED_FIXED_LAYOUT_NUMERICAL_INSTABILITY
+  previous_stage3d_report_sha256: 4c4528bf35052423896b29dbc12944e9ad5df3ec2f87410a9688417297a42650
+  previous_stage3d_source_commit: 47cbc68636367e32832c66ea57d1a827282ef447
+  scientific_e26_previously_started: false
+  predecessors_immutable: true
+
+source:
+  official_gdn2:
+    repo: https://github.com/NVlabs/GatedDeltaNet-2
+    commit: 95709fc250357c2dd109361c353192f2aa5913f9
+    license: NVIDIA Source Code License-NC
+    local_path: /data/minjun_dev/CATENA/external/gdn2_official
+  checkpoint:
+    repo_id: LLM-OS-Models2/gdn2-1.3b-paper-matched
+    revision: 8b1f11f6ac0322825120580bbf7ac7133e72a167
+    filename: model-100b.pth
+    size_bytes: 17401727659
+    sha256: 0322ebeefa96badb24d6b4b511c36b02374b704dc1a65b90eab2ee1383a9ce23
+    provenance: COMMUNITY_NOT_OFFICIAL_NVIDIA
+    load_policy: WEIGHTS_ONLY_TRUE_NO_UNSAFE_FALLBACK
+    strict_model_load: true
+    local_path: /data/minjun_dev/CATENA/checkpoints/e26/model-100b.pth
+  tokenizer:
+    repo_id: TinyLlama/TinyLlama_v1.1
+    revision: ff3c701f2424c7625fdefb9dd470f45ef18b02d6
+    vocab_size: 32000
+    tokenizer_model_sha256: 9e556afd44213b6bd1be2b850ebbbd98f5481437a8021afaf58ee7fb1818d347
+    tokenizer_json_sha256: bcd04f0eadf90287bd26e1a183ac487d8a141b09b06aecb7725bbdd343640f2e
+    bos_token_id: 1
+    eos_token_id: 2
+    unk_token_id: 0
+    pad_policy: EOS_AS_PAD_MATCHING_OFFICIAL_TRAINING_PATH
+
+model:
+  config_name: gdn2_1.3B
+  expected_parameter_count: 1302638112
+  pure_recurrent: true
+  block_size: 4096
+  vocab_size: 32000
+  n_layer: 18
+  n_head: 18
+  n_embd: 2304
+  intermediate_size: 6208
+  gdn2_per_layer: 1
+  norm_class_name: FusedRMSNorm
+  allow_neg_eigval: false
+  expected_training_kernel: chunk_gdn2
+  expected_decode_kernel: fused_recurrent_gdn2
+  precision:
+    model_activations: bf16
+    recurrent_state: official_fp32
+    matrix_accumulators: official_fp32
+    optimizer_state: fp32
+
+variants:
+  - id: projected_tied_gdn2
+    gate_policy: projected_tied
+    parameter_surface: maximal_two_projection
+  - id: dual_gdn2
+    gate_policy: dual
+    parameter_surface: maximal_two_projection
+
+common_fork:
+  required: true
+  symmetrization: average_b_proj_w_proj_weights
+  bridge_initial_tokens: 100000000
+  bridge_extension_total_tokens: 200000000
+  bridge_extension_allowed_once: true
+  bridge_mix:
+    general: 0.90
+    transactional_calibration: 0.10
+  exact_function_identity_before_release: true
+  main_test_access: forbidden
+  gates:
+    general_ppl_relative_to_original_max: 1.10
+    exact_refresh_minus_stale_min_each_primary_operation: 0.10
+    finite_state_and_gradient: true
+    official_kernel_only: true
+    projection_and_optimizer_moment_equality: true
+
+training:
+  seeds: [26011, 26022, 26033, 26044, 26055]
+  sequence_length: 4096
+  global_batch_sequences: 32
+  global_batch_tokens: 131072
+  microbatch_candidates: [1, 2, 4, 8, 16]
+  token_budget_candidates: [350000000, 500000000, 750000000, 1000000000]
+  token_budget_selection: THROUGHPUT_ONLY_LARGEST_WITHIN_36H
+  objective: next_token_cross_entropy_only
+  optimizer:
+    name: AdamW
+    betas: [0.9, 0.95]
+    peak_learning_rate: 3.0e-5
+    minimum_learning_rate: 3.0e-6
+    weight_decay: 0.1
+    gradient_clip_norm: 1.0
+    warmup_fraction: 0.02
+    scheduler: cosine
+  early_stopping: false
+  best_checkpoint_selection: false
+  checkpoints_at_fractions: [0.25, 0.5, 0.75, 1.0]
+
+data:
+  train_token_mix:
+    general: 0.75
+    transactional: 0.25
+  operations_primary: [PRESERVE, ADD, INVALIDATE, SUPERSEDE]
+  operations_secondary: [ADD_EXCEPTION]
+  update_counts: [1, 4, 8]
+  distractor_gaps: [0, 512, 1536, 3072]
+  ood_splits: [template_ood, paraphrase_ood, opaque_entity_ood, domain_ood]
+  natural_language_domains:
+    - access_control_permissions
+    - api_versioned_configuration
+    - workflow_executable_plans
+    - user_preferences_persistent_instructions
+  heldout_domain_selection: LOCK_BEFORE_DATA_GENERATION
+  main_test_episodes_per_cell: 32
+  input_supervision_forbidden:
+    - operation_label
+    - erase_write_bit
+    - gate_target
+    - address_mask
+  main_test_sealed_during_training: true
+  paired_token_ids_and_boundaries_exact: true
+
+evaluation:
+  primary_score: mean_current_derived_stale_candidate_accuracy
+  candidate_logprob_length_normalized: true
+  free_generation_secondary: true
+  state_clone_per_query: true
+  query_bundle:
+    - current_state_fact
+    - derived_action_or_schema_json
+    - stale_rule_suppression
+    - unaffected_active_context_retention
+  general_validation_tokens: 5000000
+  ruler_guardrails: [S_NIAH_2, S_NIAH_3, MK_NIAH_1]
+  main_primary_episode_count: 6144
+
+statistics:
+  independent_unit: training_seed
+  primary_estimand: asymmetric_minus_symmetric_dual_advantage
+  exact_one_sided_sign_flip: true
+  required_seed_direction_count: 5
+  asymmetric_absolute_sesoi: 0.02
+  asymmetric_headroom_recovery_min: 0.10
+  symmetric_equivalence_margin: 0.01
+  retention_noninferiority_margin: 0.01
+  worst_active_non_target_max_degradation: 0.01
+  general_ppl_relative_degradation_max: 0.015
+  each_variant_general_ppl_degradation_vs_common_fork_max: 0.03
+  selected_ruler_mean_degradation_vs_common_fork_max: 0.05
+  tied_dual_speed_relative_difference_max: 0.05
+  mechanism_runtime_tying_gain_removed_min: 0.50
+
+speed:
+  minimum_train_tokens_per_second_per_gpu: 12000
+  minimum_median_gpu_utilization_percent: 60
+  underutilization_joint_block:
+    gpu_utilization_below_percent: 50
+    mean_power_below_watts: 150
+  peak_vram_limit_gib: 92
+  max_projected_wall_hours: 36
+  contingency_fraction: 0.20
+  evaluation_allowance_hours: 3
+  python_token_loop_count_max: 0
+  unexpected_fallback_count_max: 0
+  measured_optimizer_steps: 200
+
+runtime:
+  gpu_count: 4
+  visible_gpu_indices: [0, 1, 2, 3]
+  wave_count: 3
+  automatic_execution_after_gates: true
+  root_checkpoint_storage_forbidden: true
+  minimum_data_free_space_gib: 800
+  maximum_infrastructure_retry_count: 1
+  canonical_artifact_root: /data/minjun_dev/CATENA/artifacts
+  external_source_root: /data/minjun_dev/CATENA/external/gdn2_official
+  checkpoint_root: /data/minjun_dev/CATENA/checkpoints/e26
+  data_root: /data/minjun_dev/CATENA/data/e26_final
+  worktree: /home/minjun_dev/CATENA_E26_FINAL
+
+prohibited:
+  - custom_catena_compiled_scan_scientific_runtime
+  - python_token_loop_scientific_runtime
+  - unpinned_official_source
+  - unsafe_checkpoint_load_fallback
+  - strict_false_checkpoint_load
+  - posthoc_seed_data_budget_threshold_changes
+  - variant_specific_hyperparameters_precision_padding_data
+  - parameter_deletion_tied_baseline
+  - operation_gate_address_supervision
+  - early_stopping_or_best_checkpoint_primary
+  - silent_backend_or_checkpoint_substitution
+

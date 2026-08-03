@@ -256,7 +256,14 @@ def test_fixed_layout_receipt_go_requires_exact_12_plus_6(tmp_path: Path) -> Non
     jsonschema.Draft202012Validator(schema).validate(receipt)
 
 
-def test_realistic_failed_g3_diagnostics_are_evaluable_and_schema_valid() -> None:
+def test_realistic_failed_g3_diagnostics_are_evaluable_and_schema_valid(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    # The frozen Stage-3C manifest intentionally records absolute predecessor
+    # anchors from the frozen live repository. Resolve its relative semantic
+    # checks in that registered context when regression runs from a later
+    # additive worktree.
+    monkeypatch.chdir("/home/minjun_dev/CATENA")
     original_report_path = FRESH_G3_BOUNDARY_RUN / "report.json"
     protocol_path = FRESH_G3_BOUNDARY_RUN / "protocol_lock.json"
     original_report = json.loads(original_report_path.read_text(encoding="utf-8"))
@@ -279,7 +286,10 @@ def test_realistic_failed_g3_diagnostics_are_evaluable_and_schema_valid() -> Non
     jsonschema.Draft202012Validator(schema).validate(amended)
 
 
-def test_g3_diagnostic_tampering_is_not_numerically_dispositioned() -> None:
+def test_g3_diagnostic_tampering_is_not_numerically_dispositioned(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.chdir("/home/minjun_dev/CATENA")
     original_report = json.loads(
         (FRESH_G3_BOUNDARY_RUN / "report.json").read_text(encoding="utf-8")
     )

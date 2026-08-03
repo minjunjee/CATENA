@@ -9,6 +9,9 @@ V8_CONFIG_PREFIXES = ("e26", "e27", "e28", "e29", "e30")
 NON_EXPERIMENT_CONFIG_NAMES = {
     "e26_data_lock_v1.yaml",
     "e26_data_lock_v2_zero_tolerance.yaml",
+    # E26 Final is a fresh prospective protocol with its own versioned schema;
+    # the legacy packet-wide catena-v8.1 shape assertion below does not apply.
+    "e26_final_gdn2_1p3b_transactional_transfer.yaml",
 }
 PACKET_SCHEMA_NAMES = {
     "backend_candidate_lock.schema.json",
@@ -53,6 +56,15 @@ def test_all_protocol_yaml_parse_and_have_core_keys() -> None:
         assert payload["experiment"].startswith("e")
         assert payload["stage"]
         assert payload["registered_dispositions"]
+
+
+def test_e26_final_protocol_yaml_has_its_registered_identity() -> None:
+    path = REPO_ROOT / "configs/e26_final_gdn2_1p3b_transactional_transfer.yaml"
+    payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+    assert payload["schema_version"] == "catena-e26-final-v1"
+    assert payload["experiment_id"] == "E26_FINAL_GDN2_1P3B_TRANSACTIONAL_TRANSFER"
+    assert payload["status"] == "PROSPECTIVE_LOCK"
+    assert payload["runtime"]["automatic_execution_after_gates"] is True
 
 
 def test_schema_files_are_valid_json_schemas() -> None:
